@@ -1,0 +1,103 @@
+title Auto Test Execution Recording Flow
+
+participant "**Outside System or Action**" as exSys
+
+participant "**AutoTested Object**\nThis object is autotest proxied and so\n are its dependencies" as atObj
+
+participant "**AutoTested Object Dependency**" as atDep
+
+participant "**Proxy Generator**\nThis is a pluggable implementation\n of a proxy generator.  This can either\n be implemented with the ioc container\nor a dynamic proxy generator" as proxy
+
+
+participant "**AutoTest Engine**" as at
+
+participant "**Interception Validator**\nSends each interception through\n a validation pipeline" as iVal
+
+participant "**Process Multiplexer**\nDetermines which processing\n should be done with current\n interception based on config" as mux
+
+participant "**Execution cache**\nholds currently recording execution's\nmeta data" as exCache
+
+participant "**Execution recorder process**\nRecords execution data for\nfuture tests" as exRec
+
+participant "**Unit Test Process**" as ut
+
+participant "**AutoTest Repository**" as atRep
+
+exSys -> atObj : Initialize new AT object
+loop foreach dependency
+atObj -> atDep : initialize dependency
+atDep -> atObj : return instance
+atObj -> proxy : proxy dependency instance
+proxy -> atObj : return proxied dependency
+end
+
+atObj -> exSys : return instance
+exSys -> proxy : proxy AT object instance
+proxy -> exSys : return proxied AT object
+exSys -> atObj : call interfaced method
+atObj -> at : intercept method entry
+at -> iVal : validate interception
+alt if validation fails 
+iVal -> at: return validation failure
+at -> atObj : abort at engine processing
+end
+iVal -> at: return successful validation
+at -> mux : send to correct interception processor
+note over mux : This flow will assume execution\nrecorder is what will run
+mux -> exRec : process entry
+exRec -> exCache : Create new execution object
+exCache -> exRec :
+exRec -> mux :
+mux -> at :
+at -> atObj : continue execution
+loop foreach call to Auto Test Object Dependency
+atObj -> at : intercept depency call
+at -> iVal : validate interception
+alt if validation fails 
+iVal -> at: return validation failure
+at -> atDep : abort engine processing
+end
+iVal -> at: return successful validation
+at -> mux : send to correct interception processor
+note over mux : This flow will assume execution\nrecorder is what will run
+mux -> exRec : process entry
+exRec -> exCache : append AT object exuction recording
+exCache -> exRec :
+exRec -> mux :
+mux -> at :
+at -> atDep : proceed with dependency call
+atDep -> at : intercept dependency exit
+at -> iVal : validate interception
+alt if validation fails 
+iVal -> at: return validation failure
+at -> atDep : abort engine processing
+end
+iVal -> at: return successful validation
+at -> mux : send to correct interception processor
+note over mux : This flow will assume execution\nrecorder is what will run
+mux -> exRec : process exit
+exRec -> exCache : append AT object exuction recording
+exCache -> exRec :
+exRec -> mux :
+mux -> at :
+at -> atObj : return dependency method return val
+end
+atObj -> at : intercept at method exit
+at -> iVal : validate interception
+alt if validation fails 
+iVal -> at: return validation failure
+at -> atObj : abort at engine processing
+end
+iVal -> at: return successful validation
+at -> mux : send to correct interception processor
+note over mux : This flow will assume execution\nrecorder is what will run
+mux -> exRec : process exit
+exRec -> exCache : Modify and complete method execution object
+exCache -> exRec : 
+exRec -> exCache : Retrieve and remove execution object from cache
+exCache -> exRec : return object
+exRec -> atRep : persist execution object
+atRep -> exRec:
+exRec -> mux :
+mux -> at : 
+at -> exSys : resume execution
