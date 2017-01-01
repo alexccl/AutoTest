@@ -8,5 +8,10 @@ namespace AutoTestEngine.InterceptionVerification.Verifiers
 {
     internal interface IVerifier
     {
+        /// <summary>
+        /// Determines where this verifier is ordered in the pipeline, the lower the number the sooner it will be executed
+        /// </summary>
+        int VerificationPriority { get; }
+        VerifierResult Verify(InterceptionProcessingModel processingData);
     }
 }

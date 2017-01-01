@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine.InterceptionVerification.Verifiers
 {
-    class VerifierResult
+    internal class VerifierResult
     {
+        public bool VerificationFailed { get; internal set; }
+
+        public VerifierResult(bool hasFailed)
+        {
+            this.VerificationFailed = hasFailed;
+        }
     }
 }

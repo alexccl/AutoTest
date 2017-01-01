@@ -66,6 +66,7 @@
     <Compile Include="InterceptionVerification\VerificationPipelineResult.cs" />
     <Compile Include="InterceptionProcessingModel.cs" />
     <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
+    <Compile Include="InterceptionVerification\Verifiers\VerifierResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
