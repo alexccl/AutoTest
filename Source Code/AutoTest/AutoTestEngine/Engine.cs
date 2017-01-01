@@ -8,12 +8,28 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine
 {
-    public class Engine
+    public class Engine : IEngine
     {
-        public Engine()
+        private EngineConfiguration _configuration;
+        public Engine(EngineConfiguration configuration)
         {
+            _configuration = configuration;
             IOCInit();
+        }
 
+        public EntryProcessingResult OnEntry(InterceptionEntryModel entryModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnException(InterceptionExceptionModel exceptionModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnExit(InterceptionExitModel exitModel)
+        {
+            throw new NotImplementedException();
         }
 
         private void IOCInit()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine
 {
-    internal class ProccessingData
+    internal class InterceptionProcessingModel
     {
         public BoundaryType BoundaryType { get; private set; }
         public object TargetInstance { get; internal set; }
@@ -15,6 +15,7 @@ namespace AutoTestEngine
         public Exception Exception { get; set; }
         public List<object> MethodArgs { get; set; }
         public MethodBase Method { get; set; }
+        public EngineConfiguration Configuration { get; internal set; }
 
         public Type ReturnType { get
             {
@@ -25,28 +26,31 @@ namespace AutoTestEngine
                 else throw new Exception("Unable to find type info on current instance of ProcessingData class");
             } }
 
-        public ProccessingData(InterceptionEntryModel entryModel)
+        public InterceptionProcessingModel(InterceptionEntryModel entryModel, EngineConfiguration configuration)
         {
             this.BoundaryType = BoundaryType.Entry;
             this.TargetInstance = entryModel.TargetInstance;
             this.MethodArgs = entryModel.MethodArgs;
             this.Method = entryModel.Method;
+            this.Configuration = configuration;
         }
 
-        public ProccessingData(InterceptionExceptionModel exceptionModel)
+        public InterceptionProcessingModel(InterceptionExceptionModel exceptionModel, EngineConfiguration configuration)
         {
             this.BoundaryType = BoundaryType.Exception;
             this.TargetInstance = exceptionModel.TargetInstance;
             this.Exception = exceptionModel.Exception;
             this.Method = exceptionModel.Method;
+            this.Configuration = configuration;
         }
 
-        public ProccessingData(InterceptionExitModel exitModel)
+        public InterceptionProcessingModel(InterceptionExitModel exitModel, EngineConfiguration configuration)
         {
             this.BoundaryType = BoundaryType.Exit;
             this.TargetInstance = this.TargetInstance;
             this.ReturnValue = exitModel.ReturnValue;
             this.Method = exitModel.Method;
+            this.Configuration = configuration;
         }
     }
 }

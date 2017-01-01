@@ -50,17 +50,31 @@
   <ItemGroup>
     <Compile Include="Bindings.cs" />
     <Compile Include="BoundaryType.cs" />
+    <Compile Include="DAL\IDAL.cs" />
+    <Compile Include="DAL\TexFileImplementation\IRepository.cs" />
+    <Compile Include="DAL\TexFileImplementation\Repository.cs" />
+    <Compile Include="DAL\TexFileImplementation\TextFileDAL.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="EngineConfiguration.cs" />
     <Compile Include="EntryProcessingResult.cs" />
+    <Compile Include="Helpers\SerializationHelper.cs" />
     <Compile Include="IEngine.cs" />
     <Compile Include="InterceptionEntryModel.cs" />
     <Compile Include="InterceptionExceptionModel.cs" />
     <Compile Include="InterceptionExitModel.cs" />
-    <Compile Include="ProccessingData.cs" />
+    <Compile Include="InterceptionVerification\VerificationPipeline.cs" />
+    <Compile Include="InterceptionVerification\VerificationPipelineResult.cs" />
+    <Compile Include="InterceptionProcessingModel.cs" />
+    <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DAL\TexFileImplementation\Storage.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,6 +10,6 @@ namespace AutoTestEngine
     {
         EntryProcessingResult OnEntry(InterceptionEntryModel entryModel);
         void OnException(InterceptionExceptionModel exceptionModel);
-        void InterceptionExitModel(InterceptionExitModel exitModel);
+        void OnExit(InterceptionExitModel exitModel);
     }
 }
