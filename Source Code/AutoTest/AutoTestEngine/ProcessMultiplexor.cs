@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine
 {
-    public class EntryProcessingResult
+    class ProcessMultiplexor
     {
-        public bool BypassProxiedMethod { get; set; }
-        public bool BypassProxiedMethodValue { get; set; }
     }
 }

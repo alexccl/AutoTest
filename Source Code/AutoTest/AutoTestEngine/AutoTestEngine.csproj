@@ -67,6 +67,10 @@
     <Compile Include="InterceptionProcessingModel.cs" />
     <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
     <Compile Include="InterceptionVerification\Verifiers\VerifierResult.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\IProcess.cs" />
+    <Compile Include="ProcessMultiplexer\ProcessMultiplexer.cs" />
+    <Compile Include="ProcessMultiplexer\ProcessResult.cs" />
+    <Compile Include="ProcessMultiplexor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
