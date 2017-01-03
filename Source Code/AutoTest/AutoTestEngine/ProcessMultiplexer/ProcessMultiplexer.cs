@@ -9,9 +9,23 @@ namespace AutoTestEngine.ProcessMultiplexer
 {
     internal class ProcessMultiplexer
     {
+        private List<IProcess> _processes;
         public ProcessMultiplexer(IProcess[] processes)
         {
+            _processes = processes.OrderBy(x => x.ProcessPriority).ToList();
+        }
 
+        public ProcessResult Process(InterceptionProcessingModel processingData)
+        {
+            foreach(var process in _processes)
+            {
+                if(process.ShouldExecuteProcess(processingData))
+                {
+                    return process.ExecuteProcess(processingData);
+                }
+            }
+
+            return new ProcessResult();
         }
     }
 }

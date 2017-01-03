@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="AutoTestEngineTests\DataHelper.cs" />
     <Compile Include="AutoTestEngineTests\ProcessingDataTests.cs" />
+    <Compile Include="AutoTestEngineTests\ProcessMultiplexerTest.cs" />
     <Compile Include="AutoTestEngineTests\TextFileDALTest.cs" />
     <Compile Include="AutoTestEngineTests\VerificationPipelineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
