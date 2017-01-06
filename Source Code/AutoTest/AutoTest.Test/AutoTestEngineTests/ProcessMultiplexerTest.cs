@@ -19,12 +19,12 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock = new Mock<IProcess>();
             mock.Setup(x => x.ProcessPriority).Returns(1);
-            mock.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(true);
+            mock.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(true);
             var procMult = new ProcessMultiplexer(new IProcess[] { mock.Object });
 
             procMult.Process(null);
 
-            mock.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Once);
+            mock.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Once);
         }
 
         [TestMethod]
@@ -32,12 +32,12 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock = new Mock<IProcess>();
             mock.Setup(x => x.ProcessPriority).Returns(1);
-            mock.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(false);
+            mock.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(false);
             var procMult = new ProcessMultiplexer(new IProcess[] { mock.Object });
 
             procMult.Process(null);
 
-            mock.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Never);
+            mock.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Never);
         }
 
         [TestMethod]
@@ -49,15 +49,15 @@ namespace AutoTest.Test.AutoTestEngineTests
             mock1.Setup(x => x.ProcessPriority).Returns(1);
             mock2.Setup(x => x.ProcessPriority).Returns(2);
 
-            mock1.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(true);
-            mock2.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(true);
+            mock1.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(true);
+            mock2.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(true);
 
             var procMult = new ProcessMultiplexer(new IProcess[] { mock1.Object, mock2.Object });
 
             procMult.Process(null);
 
-            mock1.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Once);
-            mock2.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Never);
+            mock1.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Once);
+            mock2.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Never);
         }
 
         [TestMethod]
@@ -71,48 +71,48 @@ namespace AutoTest.Test.AutoTestEngineTests
             mock2.Setup(x => x.ProcessPriority).Returns(2);
             mock3.Setup(x => x.ProcessPriority).Returns(3);
 
-            mock1.Setup(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(new ProcessResult());
-            mock1.Setup(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(new ProcessResult());
-            mock1.Setup(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(new ProcessResult());
+            mock1.Setup(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(new ProcessResult());
+            mock1.Setup(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(new ProcessResult());
+            mock1.Setup(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(new ProcessResult());
 
             //mock 1 should be called
-            mock1.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(true);
-            mock2.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(true);
-            mock3.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(true);
+            mock1.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(true);
+            mock2.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(true);
+            mock3.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(true);
 
             var procMult = new ProcessMultiplexer(new IProcess[] { mock3.Object, mock2.Object, mock1.Object });
             procMult.Process(null);
-            mock1.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Once);
-            mock2.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Never);
-            mock3.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Never);
+            mock1.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Once);
+            mock2.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Never);
+            mock3.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Never);
 
             //mock 2 should be called
             mock1.ResetCalls();
             mock2.ResetCalls();
             mock3.ResetCalls();
-            mock1.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(false);
-            mock2.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(true);
-            mock3.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(true);
+            mock1.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(false);
+            mock2.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(true);
+            mock3.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(true);
 
             procMult = new ProcessMultiplexer(new IProcess[] { mock3.Object, mock2.Object, mock1.Object });
             procMult.Process(null);
-            mock1.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Never);
-            mock2.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Once);
-            mock3.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Never);
+            mock1.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Never);
+            mock2.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Once);
+            mock3.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Never);
 
             //mock 3 should be called
             mock1.ResetCalls();
             mock2.ResetCalls();
             mock3.ResetCalls();
-            mock1.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(false);
-            mock2.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(false);
-            mock3.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingModel>())).Returns(true);
+            mock1.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(false);
+            mock2.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(false);
+            mock3.Setup(x => x.ShouldExecuteProcess(It.IsAny<InterceptionProcessingData>())).Returns(true);
 
             procMult = new ProcessMultiplexer(new IProcess[] { mock3.Object, mock2.Object, mock1.Object });
             procMult.Process(null);
-            mock1.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Never);
-            mock2.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Never);
-            mock3.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingModel>()), Times.Once);
+            mock1.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Never);
+            mock2.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Never);
+            mock3.Verify(x => x.ExecuteProcess(It.IsAny<InterceptionProcessingData>()), Times.Once);
 
 
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoTestEngine.Helpers.Serialization;
 
 namespace AutoTestEngine.DAL.TexFileImplementation
 {
@@ -46,12 +47,12 @@ namespace AutoTestEngine.DAL.TexFileImplementation
         private void RetrieveStoredContents()
         {
             var contents = File.ReadAllText(_storageFilePath);
-            this.StoredObject = Helpers.SerializationHelper.Deserialize<Dictionary<Type, List<object>>>(contents);
+            this.StoredObject = SerializationHelper.Deserialize<Dictionary<Type, List<object>>>(contents);
         }
 
         private void WriteToStorage()
         {
-            var newContents = Helpers.SerializationHelper.Serialize(this.StoredObject);
+            var newContents = SerializationHelper.Serialize(this.StoredObject);
             File.WriteAllText(_storageFilePath, newContents);
         }
     }

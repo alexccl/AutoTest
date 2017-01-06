@@ -12,6 +12,6 @@ namespace AutoTestEngine.InterceptionVerification.Verifiers
         /// Determines where this verifier is ordered in the pipeline, the lower the number the sooner it will be executed
         /// </summary>
         int VerificationPriority { get; }
-        VerifierResult Verify(InterceptionProcessingModel processingData);
+        VerifierResult Verify(InterceptionProcessingData processingData);
     }
 }

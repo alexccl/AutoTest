@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AttibuteTypes.cs" />
+    <Compile Include="Attributes\AttributeGrabber.cs" />
+    <Compile Include="Attributes\AutoTest.cs" />
     <Compile Include="Bindings.cs" />
     <Compile Include="BoundaryType.cs" />
     <Compile Include="DAL\IDAL.cs" />
@@ -57,20 +60,24 @@
     <Compile Include="Engine.cs" />
     <Compile Include="EngineConfiguration.cs" />
     <Compile Include="EntryProcessingResult.cs" />
-    <Compile Include="Helpers\SerializationHelper.cs" />
+    <Compile Include="Helpers\Serialization\SerializationException.cs" />
+    <Compile Include="Helpers\Serialization\SerializationHelper.cs" />
     <Compile Include="IEngine.cs" />
     <Compile Include="InterceptionEntryModel.cs" />
     <Compile Include="InterceptionExceptionModel.cs" />
     <Compile Include="InterceptionExitModel.cs" />
     <Compile Include="InterceptionVerification\VerificationPipeline.cs" />
     <Compile Include="InterceptionVerification\VerificationPipelineResult.cs" />
-    <Compile Include="InterceptionProcessingModel.cs" />
+    <Compile Include="InterceptionProcessingData.cs" />
     <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
     <Compile Include="InterceptionVerification\Verifiers\VerifierResult.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethod.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethodManager.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedSubMethod.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\TypeValModel.cs" />
     <Compile Include="ProcessMultiplexer\Processes\IProcess.cs" />
     <Compile Include="ProcessMultiplexer\ProcessMultiplexer.cs" />
     <Compile Include="ProcessMultiplexer\ProcessResult.cs" />
-    <Compile Include="ProcessMultiplexor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +87,9 @@
     <Content Include="DAL\TexFileImplementation\Storage.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

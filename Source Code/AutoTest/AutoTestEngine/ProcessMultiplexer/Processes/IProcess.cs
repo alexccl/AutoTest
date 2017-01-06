@@ -9,7 +9,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes
     internal interface IProcess
     {
         int ProcessPriority { get; }
-        bool ShouldExecuteProcess(InterceptionProcessingModel processingData);
-        ProcessResult ExecuteProcess(InterceptionProcessingModel processingData);
+        bool ShouldExecuteProcess(InterceptionProcessingData processingData);
+        ProcessResult ExecuteProcess(InterceptionProcessingData processingData);
     }
 }

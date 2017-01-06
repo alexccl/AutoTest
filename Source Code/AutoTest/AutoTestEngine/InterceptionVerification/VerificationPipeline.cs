@@ -15,7 +15,7 @@ namespace AutoTestEngine.InterceptionVerification
             _verifiers = verifiers.OrderBy(x => x.VerificationPriority).ToList();
         }
 
-        public VerificationPipelineResult VerifyInterception(InterceptionProcessingModel processingData)
+        public VerificationPipelineResult VerifyInterception(InterceptionProcessingData processingData)
         {
             foreach(var verifier in _verifiers)
             {

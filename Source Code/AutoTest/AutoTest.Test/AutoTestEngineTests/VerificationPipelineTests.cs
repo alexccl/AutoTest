@@ -21,7 +21,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock = new Mock<IVerifier>();
             mock.Setup(x => x.VerificationPriority).Returns(1);
-            mock.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(failureVerify);
+            mock.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(failureVerify);
 
             var verifiers = new IVerifier[] { mock.Object };
             var pipeline = new VerificationPipeline(verifiers);
@@ -35,7 +35,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock = new Mock<IVerifier>();
             mock.Setup(x => x.VerificationPriority).Returns(1);
-            mock.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(successfulVerify);
+            mock.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
 
             var verifiers = new IVerifier[] { mock.Object };
             var pipeline = new VerificationPipeline(verifiers);
@@ -49,11 +49,11 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock1 = new Mock<IVerifier>();
             mock1.Setup(x => x.VerificationPriority).Returns(1);
-            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(successfulVerify);
+            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
 
             var mock2 = new Mock<IVerifier>();
             mock2.Setup(x => x.VerificationPriority).Returns(2);
-            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(failureVerify);
+            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(failureVerify);
 
             var verifiers = new IVerifier[] { mock2.Object, mock1.Object};
             var pipeline = new VerificationPipeline(verifiers);
@@ -67,11 +67,11 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock1 = new Mock<IVerifier>();
             mock1.Setup(x => x.VerificationPriority).Returns(1);
-            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(successfulVerify);
+            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
 
             var mock2 = new Mock<IVerifier>();
             mock2.Setup(x => x.VerificationPriority).Returns(2);
-            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(successfulVerify);
+            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
 
             var verifiers = new IVerifier[] { mock2.Object, mock1.Object };
             var pipeline = new VerificationPipeline(verifiers);
@@ -85,21 +85,21 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock1 = new Mock<IVerifier>();
             mock1.Setup(x => x.VerificationPriority).Returns(1);
-            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(successfulVerify);
+            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
 
             var mock2 = new Mock<IVerifier>();
             mock2.Setup(x => x.VerificationPriority).Returns(2);
-            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(failureVerify);
+            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(failureVerify);
 
             var mock3 = new Mock<IVerifier>();
             mock3.Setup(x => x.VerificationPriority).Returns(3);
-            mock3.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(successfulVerify);
+            mock3.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
 
             var verifiers = new IVerifier[] { mock2.Object, mock1.Object, mock3.Object};
             var pipeline = new VerificationPipeline(verifiers);
 
             var res = pipeline.VerifyInterception(null);
-            mock3.Verify(x => x.Verify(It.IsAny<InterceptionProcessingModel>()), Times.Never);
+            mock3.Verify(x => x.Verify(It.IsAny<InterceptionProcessingData>()), Times.Never);
         }
 
         [TestMethod]
@@ -107,17 +107,17 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock1 = new Mock<IVerifier>();
             mock1.Setup(x => x.VerificationPriority).Returns(2);
-            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(successfulVerify);
+            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
 
             var mock2 = new Mock<IVerifier>();
             mock2.Setup(x => x.VerificationPriority).Returns(1);
-            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingModel>())).Returns(failureVerify);
+            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(failureVerify);
 
             var verifiers = new IVerifier[] { mock1.Object, mock2.Object};
             var pipeline = new VerificationPipeline(verifiers);
 
             var res = pipeline.VerifyInterception(null);
-            mock1.Verify(x => x.Verify(It.IsAny<InterceptionProcessingModel>()), Times.Never);
+            mock1.Verify(x => x.Verify(It.IsAny<InterceptionProcessingData>()), Times.Never);
         }
     }
 }

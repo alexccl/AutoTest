@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace AutoTestEngine.Helpers
+namespace AutoTestEngine.Helpers.Serialization
 {
     /// <summary>
     /// Wrapper around newtonsoft json to optimize for auto test application

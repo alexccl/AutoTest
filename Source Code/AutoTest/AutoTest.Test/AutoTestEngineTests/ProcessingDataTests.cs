@@ -19,7 +19,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void ProcessingDataEntryInitTest()
         {
             var entryModel = DataHelper.MathPowerData.Entry;
-            var procData = new InterceptionProcessingModel(entryModel, _config);
+            var procData = new InterceptionProcessingData(entryModel, _config);
 
             Assert.IsTrue(procData.BoundaryType == BoundaryType.Entry);
             Assert.IsTrue(procData.Exception == null);
@@ -33,7 +33,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void ProcessingDataExceptionInitTest()
         {
             var exceptionModel = DataHelper.MathPowerData.Exception;
-            var procData = new InterceptionProcessingModel(exceptionModel, _config);
+            var procData = new InterceptionProcessingData(exceptionModel, _config);
 
             Assert.IsTrue(procData.BoundaryType == BoundaryType.Exception);
             Assert.IsTrue(procData.Exception != null);
@@ -47,7 +47,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void ProcessingDataExitInitTest()
         {
             var exitModel = DataHelper.MathPowerData.Exit;
-            var procData = new InterceptionProcessingModel(exitModel, _config);
+            var procData = new InterceptionProcessingData(exitModel, _config);
 
             Assert.IsTrue(procData.BoundaryType == BoundaryType.Exit);
             Assert.IsTrue(procData.Exception == null);

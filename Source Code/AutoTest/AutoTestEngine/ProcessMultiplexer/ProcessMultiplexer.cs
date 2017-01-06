@@ -15,7 +15,7 @@ namespace AutoTestEngine.ProcessMultiplexer
             _processes = processes.OrderBy(x => x.ProcessPriority).ToList();
         }
 
-        public ProcessResult Process(InterceptionProcessingModel processingData)
+        public ProcessResult Process(InterceptionProcessingData processingData)
         {
             foreach(var process in _processes)
             {

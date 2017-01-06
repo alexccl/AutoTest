@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine
 {
-    internal class InterceptionProcessingModel
+    internal class InterceptionProcessingData
     {
         public BoundaryType BoundaryType { get; private set; }
         public object TargetInstance { get; internal set; }
@@ -26,7 +26,7 @@ namespace AutoTestEngine
                 else throw new Exception("Unable to find type info on current instance of ProcessingData class");
             } }
 
-        public InterceptionProcessingModel(InterceptionEntryModel entryModel, EngineConfiguration configuration)
+        public InterceptionProcessingData(InterceptionEntryModel entryModel, EngineConfiguration configuration)
         {
             this.BoundaryType = BoundaryType.Entry;
             this.TargetInstance = entryModel.TargetInstance;
@@ -35,7 +35,7 @@ namespace AutoTestEngine
             this.Configuration = configuration;
         }
 
-        public InterceptionProcessingModel(InterceptionExceptionModel exceptionModel, EngineConfiguration configuration)
+        public InterceptionProcessingData(InterceptionExceptionModel exceptionModel, EngineConfiguration configuration)
         {
             this.BoundaryType = BoundaryType.Exception;
             this.TargetInstance = exceptionModel.TargetInstance;
@@ -44,7 +44,7 @@ namespace AutoTestEngine
             this.Configuration = configuration;
         }
 
-        public InterceptionProcessingModel(InterceptionExitModel exitModel, EngineConfiguration configuration)
+        public InterceptionProcessingData(InterceptionExitModel exitModel, EngineConfiguration configuration)
         {
             this.BoundaryType = BoundaryType.Exit;
             this.TargetInstance = this.TargetInstance;
