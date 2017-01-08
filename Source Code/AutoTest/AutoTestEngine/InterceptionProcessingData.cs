@@ -16,6 +16,9 @@ namespace AutoTestEngine
         public List<object> MethodArgs { get; set; }
         public MethodBase Method { get; set; }
         public EngineConfiguration Configuration { get; internal set; }
+        public List<Type> ClassAttributes { get; private set; }
+        public List<Type> MethodAttributes { get; private set; }
+
 
         public Type ReturnType { get
             {
@@ -33,6 +36,8 @@ namespace AutoTestEngine
             this.MethodArgs = entryModel.MethodArgs;
             this.Method = entryModel.Method;
             this.Configuration = configuration;
+
+            GetAttributesFromMethodBase(entryModel.Method);
         }
 
         public InterceptionProcessingData(InterceptionExceptionModel exceptionModel, EngineConfiguration configuration)
@@ -42,6 +47,8 @@ namespace AutoTestEngine
             this.Exception = exceptionModel.Exception;
             this.Method = exceptionModel.Method;
             this.Configuration = configuration;
+
+            GetAttributesFromMethodBase(exceptionModel.Method);
         }
 
         public InterceptionProcessingData(InterceptionExitModel exitModel, EngineConfiguration configuration)
@@ -51,6 +58,24 @@ namespace AutoTestEngine
             this.ReturnValue = exitModel.ReturnValue;
             this.Method = exitModel.Method;
             this.Configuration = configuration;
+
+            GetAttributesFromMethodBase(exitModel.Method);
+        }
+
+        private void GetAttributesFromMethodBase(MethodBase method)
+        {
+            var autoTestNamespace = typeof(AutoTestEngine.Attributes.AutoTest).Namespace;
+            this.MethodAttributes = method.CustomAttributes
+                                          .Where(x => x.AttributeType.Namespace != null)
+                                          .Where(x => x.AttributeType.Namespace.Equals(autoTestNamespace))
+                                          .Select(x => x.AttributeType)
+                                          .ToList();
+
+            this.ClassAttributes = method.DeclaringType.CustomAttributes
+                                          .Where(x => x.AttributeType.Namespace != null)
+                                          .Where(x => x.AttributeType.Namespace.Equals(autoTestNamespace))
+                                          .Select(x => x.AttributeType)
+                                          .ToList();
         }
     }
 }

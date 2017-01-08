@@ -48,8 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\AttibuteTypes.cs" />
-    <Compile Include="Attributes\AttributeGrabber.cs" />
     <Compile Include="Attributes\AutoTest.cs" />
     <Compile Include="Bindings.cs" />
     <Compile Include="BoundaryType.cs" />

@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoTestEngine;
 using System.Reflection;
-
+using AutoTestEngine.Attributes;
+using System.Diagnostics.Contracts;
 
 namespace AutoTest.Test.AutoTestEngineTests
 {
@@ -55,6 +56,85 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(procData.ReturnType != null);
             Assert.IsTrue(procData.ReturnValue != null);
             Assert.IsTrue(procData.TargetInstance == null);
+        }
+
+        [TestMethod]
+        public void Processing_Data_Test_Class_Level_Attributes()
+        {
+            var entry = new InterceptionEntryModel(new TestClass(), new List<object>(), GetAttMethodBase());
+            var processingModel = new InterceptionProcessingData(entry, new EngineConfiguration());
+
+            Assert.IsTrue(processingModel.ClassAttributes.Count == 1);
+            Assert.IsTrue(processingModel.ClassAttributes.Contains(typeof(AutoTestEngine.Attributes.AutoTest)));
+            
+        }
+
+
+        [TestMethod]
+        public void Processing_Data_Test_Class_Method_Level_Attributes()
+        {
+            var entry = new InterceptionEntryModel(new TestClass(), new List<object>(), GetAttMethodBase());
+            var processingModel = new InterceptionProcessingData(entry, new EngineConfiguration());
+
+            Assert.IsTrue(processingModel.MethodAttributes.Count == 1);
+            Assert.IsTrue(processingModel.MethodAttributes.Contains(typeof(AutoTestEngine.Attributes.AutoTest)));
+
+            entry = new InterceptionEntryModel(new TestClass(), new List<object>(), GetNonAttMethodBase());
+            processingModel = new InterceptionProcessingData(entry, new EngineConfiguration());
+
+            Assert.IsTrue(processingModel.MethodAttributes.Count == 0);
+        }
+
+        [TestMethod]
+        public void Processing_Data_Test_All_Constructors()
+        {
+            var entry = new InterceptionEntryModel(new TestClass(), new List<object>(), GetAttMethodBase());
+            var processingModel = new InterceptionProcessingData(entry, new EngineConfiguration());
+
+            Assert.IsTrue(processingModel.MethodAttributes.Count == 1);
+            Assert.IsTrue(processingModel.MethodAttributes.Contains(typeof(AutoTestEngine.Attributes.AutoTest)));
+
+
+            var exit = new InterceptionExitModel(new TestClass(), new List<object>(), GetAttMethodBase());
+            processingModel = new InterceptionProcessingData(exit, new EngineConfiguration());
+
+            Assert.IsTrue(processingModel.MethodAttributes.Count == 1);
+            Assert.IsTrue(processingModel.MethodAttributes.Contains(typeof(AutoTestEngine.Attributes.AutoTest)));
+
+            var exception = new InterceptionExceptionModel(new TestClass(), GetAttMethodBase(), new Exception());
+            processingModel = new InterceptionProcessingData(exception, new EngineConfiguration());
+        }
+
+        private MethodBase GetAttMethodBase()
+        {
+            var methodBase = typeof(TestClass).GetMethod("WithAtt");
+
+            return methodBase;
+        }
+
+        private MethodBase GetNonAttMethodBase()
+        {
+            var methodBase = typeof(TestClass).GetMethod("WithoutAtt");
+
+            return methodBase;
+        }
+
+        [Serializable]
+        [AutoTestEngine.Attributes.AutoTest]
+        class TestClass
+        {
+            [Pure]
+            [AutoTestEngine.Attributes.AutoTest]
+            public int WithAtt()
+            {
+                return 1;
+            }
+
+            [Pure]
+            public string WithoutAtt()
+            {
+                return "foo";
+            }
         }
     }
 }
