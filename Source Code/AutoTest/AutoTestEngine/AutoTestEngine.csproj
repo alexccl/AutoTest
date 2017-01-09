@@ -69,6 +69,9 @@
     <Compile Include="InterceptionProcessingData.cs" />
     <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
     <Compile Include="InterceptionVerification\Verifiers\VerifierResult.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionCache.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IThreadIdProvider.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ThreadIdProvider.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethod.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethodManager.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedSubMethod.cs" />
@@ -86,9 +89,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

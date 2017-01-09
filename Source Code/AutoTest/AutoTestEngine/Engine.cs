@@ -22,6 +22,7 @@ namespace AutoTestEngine
             throw new NotImplementedException();
         }
 
+
         public void OnException(InterceptionExceptionModel exceptionModel)
         {
             throw new NotImplementedException();
@@ -32,6 +33,9 @@ namespace AutoTestEngine
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Initializes the IOC container
+        /// </summary>
         private void IOCInit()
         {
             var settings = new NinjectSettings

@@ -65,6 +65,7 @@
     <Compile Include="AutoTestEngineTests\ProcessMultiplexerTest.cs" />
     <Compile Include="AutoTestEngineTests\RecordedMethodModelTest.cs" />
     <Compile Include="AutoTestEngineTests\TextFileDALTest.cs" />
+    <Compile Include="AutoTestEngineTests\ThreadIdProviderTest.cs" />
     <Compile Include="AutoTestEngineTests\VerificationPipelineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

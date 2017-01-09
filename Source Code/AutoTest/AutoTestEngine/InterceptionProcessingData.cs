@@ -7,13 +7,39 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine
 {
+    /// <summary>
+    /// Container for all interception data, this is what is processed in teh engine pipeline
+    /// </summary>
     internal class InterceptionProcessingData
     {
+        /// <summary>
+        /// Determines the boundary the interception occured on
+        /// </summary>
         public BoundaryType BoundaryType { get; private set; }
+
+        /// <summary>
+        /// The instance of the the intercepted class at the time of invocation
+        /// </summary>
         public object TargetInstance { get; internal set; }
+
+        /// <summary>
+        /// Return value of the invocation, can be null based on boundary context
+        /// </summary>
         public object ReturnValue { get; set; }
+
+        /// <summary>
+        /// Exception thrown by invocation, can be null based on boundary context
+        /// </summary>
         public Exception Exception { get; set; }
+
+        /// <summary>
+        /// Arguments passed to the method
+        /// </summary>
         public List<object> MethodArgs { get; set; }
+
+        /// <summary>
+        /// Method metadata of called method
+        /// </summary>
         public MethodBase Method { get; set; }
         public EngineConfiguration Configuration { get; internal set; }
         public List<Type> ClassAttributes { get; private set; }

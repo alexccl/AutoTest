@@ -6,9 +6,19 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine
 {
+    /// <summary>
+    /// Result of entry interception
+    /// </summary>
     public class EntryProcessingResult
     {
+        /// <summary>
+        /// Determines whether or not the proxy should bypass the proxied class invocation
+        /// </summary>
         public bool BypassProxiedMethod { get; set; }
+
+        /// <summary>
+        /// Determines the return value of the bapassed method
+        /// </summary>
         public bool BypassProxiedMethodValue { get; set; }
     }
 }

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine.ProcessMultiplexer
 {
+    /// <summary>
+    /// Determines which process the interception should perform and executes that process
+    /// </summary>
     internal class ProcessMultiplexer
     {
         private List<IProcess> _processes;
@@ -15,6 +18,11 @@ namespace AutoTestEngine.ProcessMultiplexer
             _processes = processes.OrderBy(x => x.ProcessPriority).ToList();
         }
 
+        /// <summary>
+        /// Process the interception data
+        /// </summary>
+        /// <param name="processingData">data from interception</param>
+        /// <returns>Result of process</returns>
         public ProcessResult Process(InterceptionProcessingData processingData)
         {
             foreach(var process in _processes)
