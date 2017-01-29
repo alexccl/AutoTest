@@ -22,6 +22,14 @@ namespace AutoTestEngine
         /// </summary>
         public object TargetInstance { get; internal set; }
 
+        public Type TargetType
+        {
+            get
+            {
+                return TargetInstance.GetType();
+            }
+        }
+
         /// <summary>
         /// Return value of the invocation, can be null based on boundary context
         /// </summary>

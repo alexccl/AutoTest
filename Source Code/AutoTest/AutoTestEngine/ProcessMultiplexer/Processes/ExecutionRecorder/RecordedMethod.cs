@@ -24,7 +24,9 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             this.InstanceAtExecutionTime = serializedTarget;
 
             this.Args = new List<TypeValModel>();
-            foreach(var arg in args)
+
+            
+            foreach(var arg in args ?? (new Object[0]))
             {
                 this.Args.Add(new TypeValModel(arg.GetType(), arg));
             }
@@ -32,11 +34,10 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             this.ReturnTypeVal = new TypeValModel() { Type = ((MethodInfo)method).ReturnType };
         }
 
-
-
         public void CloseOutMethod(Object returnVal)
         {
             this.ReturnTypeVal.Value = returnVal;
+            this.ExeuctionComplete = true;
         }
 
         public override bool Equals(object obj)

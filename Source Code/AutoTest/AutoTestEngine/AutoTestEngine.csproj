@@ -70,6 +70,7 @@
     <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
     <Compile Include="InterceptionVerification\Verifiers\VerifierResult.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionCache.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IExecutionCache.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IThreadIdProvider.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ThreadIdProvider.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethod.cs" />
