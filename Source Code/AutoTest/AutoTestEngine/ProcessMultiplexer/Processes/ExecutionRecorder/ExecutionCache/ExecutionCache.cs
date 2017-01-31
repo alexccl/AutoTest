@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,20 +13,17 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder.Executio
     internal class ExecutionCache : IExecutionCache
     {
         private Object _lockObject = new object();
-        private static Lazy<Dictionary<int, List<RecordedMethod>>> _cache = new Lazy<Dictionary<int, List<RecordedMethod>>>(() => new Dictionary<int, List<RecordedMethod>>()); 
+        private static Lazy<ConcurrentDictionary<int, List<RecordedMethod>>> _cache = new Lazy<ConcurrentDictionary<int, List<RecordedMethod>>>(() => new ConcurrentDictionary<int, List<RecordedMethod>>()); 
 
         public List<RecordedMethod> GetMethods(int threadId)
         {
-            lock (_lockObject)
+            if(!_cache.Value.ContainsKey(threadId) )
             {
-               if(!_cache.Value.ContainsKey(threadId) )
-               {
-                    var newThreadMethods = new List<RecordedMethod>();
-                    _cache.Value.Add(threadId, newThreadMethods);
-               }
-
-                return _cache.Value[threadId];
+                 var newThreadMethods = new List<RecordedMethod>();
+                 _cache.Value.TryAdd(threadId, newThreadMethods);
             }
+
+            return _cache.Value[threadId];
         }
 
         public void ClearCache()

@@ -17,7 +17,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var x = InitTestModel();
 
             Assert.IsTrue(x.InstanceAtExecutionTime == "test");
-            Assert.IsTrue(x.ExeuctionComplete == false);
+            Assert.IsTrue(x.ExecutionComplete == false);
             Assert.IsTrue(x.ReturnTypeVal.Value == null);
             Assert.IsTrue(x.ReturnTypeVal.Type == typeof(double));
             Assert.IsTrue(x.TargetType == typeof(String));

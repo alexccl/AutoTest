@@ -89,7 +89,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             executionCache.GetMethods(1).Add(method);
 
             var method2 = executionCache.GetMethods(1);
-            Assert.IsTrue(method2.FirstOrDefault().ExeuctionComplete);
+            Assert.IsTrue(method2.FirstOrDefault().ExecutionComplete);
             executionCache.ClearCache();
         }
     }

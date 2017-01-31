@@ -62,8 +62,10 @@
   <ItemGroup>
     <Compile Include="AutoTestEngineTests\DataHelper.cs" />
     <Compile Include="AutoTestEngineTests\ExecutionCacheTests.cs" />
+    <Compile Include="AutoTestEngineTests\ExecutionStackTest.cs" />
     <Compile Include="AutoTestEngineTests\ProcessingDataTests.cs" />
     <Compile Include="AutoTestEngineTests\ProcessMultiplexerTest.cs" />
+    <Compile Include="AutoTestEngineTests\RecordingMethodManagerTest.cs" />
     <Compile Include="AutoTestEngineTests\RecordedMethodModelTest.cs" />
     <Compile Include="AutoTestEngineTests\RecordedSubMethodTest.cs" />
     <Compile Include="AutoTestEngineTests\TestClass.cs" />

@@ -70,11 +70,14 @@
     <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
     <Compile Include="InterceptionVerification\Verifiers\VerifierResult.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionCache.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStack.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStackEmptyException.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IExecutionCache.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IExecutionStack.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IThreadIdProvider.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ThreadIdProvider.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethod.cs" />
-    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethodManager.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordingMethodManager.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedSubMethod.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\TypeValModel.cs" />
     <Compile Include="ProcessMultiplexer\Processes\IProcess.cs" />

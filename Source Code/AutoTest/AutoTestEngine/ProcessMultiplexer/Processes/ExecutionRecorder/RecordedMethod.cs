@@ -10,7 +10,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
     internal class RecordedMethod
     {
         public Guid Identifier { get; private set; }
-        public bool ExeuctionComplete { get; private set; }
+        public bool ExecutionComplete { get; private set; }
         public string InstanceAtExecutionTime { get; private set; }
         public TypeValModel ReturnTypeVal { get; set; }
         public Type TargetType { get; private set; }
@@ -37,7 +37,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         public void CloseOutMethod(Object returnVal)
         {
             this.ReturnTypeVal.Value = returnVal;
-            this.ExeuctionComplete = true;
+            this.ExecutionComplete = true;
         }
 
         public override bool Equals(object obj)

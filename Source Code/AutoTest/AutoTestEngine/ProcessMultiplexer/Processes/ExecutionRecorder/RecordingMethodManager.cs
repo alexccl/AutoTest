@@ -1,5 +1,6 @@
 ﻿using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder.ExecutionCache;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         /// <summary>
         /// Keeps track of the stack of method calls.  Allows manager to know which method recording to update upon interception
         /// </summary>
-        public Stack<Guid> ExecutionStack { get; private set; }
+        private static Lazy<ConcurrentDictionary<int,Stack<Guid>>> ExecutionStack { get; set; }
 
         /// <summary>
         /// Collection of all the methods that are currently being recorded
