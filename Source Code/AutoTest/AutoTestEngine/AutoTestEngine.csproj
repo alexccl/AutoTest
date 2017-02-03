@@ -58,6 +58,7 @@
     <Compile Include="Engine.cs" />
     <Compile Include="EngineConfiguration.cs" />
     <Compile Include="EntryProcessingResult.cs" />
+    <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\Serialization\SerializationException.cs" />
     <Compile Include="Helpers\Serialization\SerializationHelper.cs" />
     <Compile Include="IEngine.cs" />

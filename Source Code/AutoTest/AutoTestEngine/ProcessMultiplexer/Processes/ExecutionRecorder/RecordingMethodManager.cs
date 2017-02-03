@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,10 +54,32 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 
         public void ProcessCapture(InterceptionProcessingData processingData)
         {
+            var threadId = _threadProvider.GetThreadId();
+            var methods = _executionCache.GetMethods(threadId);
+            var executingMethodId = _executionStack.ExecutingGuid(threadId);
+        }
+
+        private void ProcessEntry(InterceptionProcessingData data, List<RecordedMethod> methods, Guid executingMethodId)
+        {
+            //add this as a sub-method if applicable
+            var executingMethod = methods.FirstOrDefault(x => x.Identifier == executingMethodId);
+            if(executingMethodId != null)
+            {
+                //var subMethod = new RecordedSubMethod()
+            }
+        }
+        private void ProcessExit(InterceptionProcessingData data, List<RecordedMethod> methods, Guid executingMethodId)
+        {
+
+        }
+        private void ProcessInterception(InterceptionProcessingData data, List<RecordedMethod> methods, Guid executingMethodId)
+        {
 
         }
 
-         
+
+
+
     }
 
     internal class MethodRecordingCompleteEventArgs : EventArgs

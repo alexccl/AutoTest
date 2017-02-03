@@ -63,6 +63,7 @@
     <Compile Include="AutoTestEngineTests\DataHelper.cs" />
     <Compile Include="AutoTestEngineTests\ExecutionCacheTests.cs" />
     <Compile Include="AutoTestEngineTests\ExecutionStackTest.cs" />
+    <Compile Include="AutoTestEngineTests\ExtensionMethodTest.cs" />
     <Compile Include="AutoTestEngineTests\ProcessingDataTests.cs" />
     <Compile Include="AutoTestEngineTests\ProcessMultiplexerTest.cs" />
     <Compile Include="AutoTestEngineTests\RecordingMethodManagerTest.cs" />

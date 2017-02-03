@@ -84,7 +84,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var entry = TestClass.Method1Entry;
             var method = new RecordedMethod(entry.TargetType, "", null, entry.Method);
-            method.CloseOutMethod("blah");
+            method.CloseOutMethodWithReturnVal("blah");
             var executionCache = new ExecutionCache();
             executionCache.GetMethods(1).Add(method);
 

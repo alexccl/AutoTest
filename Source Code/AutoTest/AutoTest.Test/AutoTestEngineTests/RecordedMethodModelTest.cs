@@ -36,8 +36,20 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void Recorded_Method_Test_Closeout()
         {
             var x = InitTestModel();
-            x.CloseOutMethod(2.2);
+            x.CloseOutMethodWithReturnVal(2.2);
             Assert.IsTrue((double)x.ReturnTypeVal.Value == 2.2);
+            Assert.IsTrue(x.ExecutionComplete == true);
+        }
+
+        [TestMethod]
+        public void Recorded_Method_Test_Exception_Closeout()
+        {
+            var x = InitTestModel();
+            x.CloseOutMethodWithException(new InvalidTimeZoneException());
+            Assert.IsTrue(x.MethodException != null);
+            Assert.IsTrue(x.ReturnTypeVal.Value == null);
+            Assert.IsTrue(typeof(InvalidTimeZoneException).Equals(x.MethodException.GetType()));
+            Assert.IsTrue(x.ExecutionComplete == true);
         }
 
         [TestMethod]
@@ -59,7 +71,7 @@ namespace AutoTest.Test.AutoTestEngineTests
 
 
             var y = x;
-            y.CloseOutMethod(new DateTime());
+            y.CloseOutMethodWithReturnVal(new DateTime());
             Assert.IsTrue(x.Equals(y));
 
             Assert.IsFalse(x.Equals(InitTestModel()));

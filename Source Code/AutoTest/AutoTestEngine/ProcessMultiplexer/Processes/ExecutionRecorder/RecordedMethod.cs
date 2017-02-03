@@ -16,6 +16,8 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         public Type TargetType { get; private set; }
         public List<TypeValModel> Args { get; set; }
         public List<RecordedSubMethod> SubMethods { get; set; }
+        public Exception MethodException { get; private set; }
+        public string MethodName { get; private set; }
 
         public RecordedMethod(Type targetType, string serializedTarget, Object[] args, MethodBase method)
         {
@@ -34,10 +36,16 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             this.ReturnTypeVal = new TypeValModel() { Type = ((MethodInfo)method).ReturnType };
         }
 
-        public void CloseOutMethod(Object returnVal)
+        public void CloseOutMethodWithReturnVal(Object returnVal)
         {
             this.ReturnTypeVal.Value = returnVal;
             this.ExecutionComplete = true;
+        }
+
+        public void CloseOutMethodWithException(Exception ex)
+        {
+            this.ExecutionComplete = true;
+            this.MethodException = ex;
         }
 
         public override bool Equals(object obj)
