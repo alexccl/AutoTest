@@ -23,22 +23,22 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         /// </summary>
         private IThreadIdProvider _threadProvider;
 
-        public RecordingMethodManager(IExecutionCache executionCache, IThreadIdProvider threadProvider)
+        /// <summary>
+        /// Keeps track of the stack of executing method's unique identifiers
+        /// </summary>
+        private IExecutionStack _executionStack;
+
+        public RecordingMethodManager(IExecutionCache executionCache, IThreadIdProvider threadProvider, IExecutionStack executionStack)
         {
             _executionCache = executionCache;
             _threadProvider = threadProvider;
+            _executionStack = executionStack;
         }
-
-
-        /// <summary>
-        /// Keeps track of the stack of method calls.  Allows manager to know which method recording to update upon interception
-        /// </summary>
-        private static Lazy<ConcurrentDictionary<int,Stack<Guid>>> ExecutionStack { get; set; }
 
         /// <summary>
         /// Collection of all the methods that are currently being recorded
         /// </summary>
-        public List<RecordedMethod> RecordingMethods { get; private set; }
+        private List<RecordedMethod> RecordingMethods { get; set; }
 
         /// <summary>
         /// Fires when a recording is complete.  Recorded method passed as event arg.  Manager releases all method recording resources after firing
