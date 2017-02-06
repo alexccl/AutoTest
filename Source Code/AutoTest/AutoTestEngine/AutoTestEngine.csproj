@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AutoTest.cs" />
+    <Compile Include="AutoTestEngineException.cs" />
     <Compile Include="Bindings.cs" />
     <Compile Include="BoundaryType.cs" />
     <Compile Include="DAL\IDAL.cs" />
@@ -58,13 +59,15 @@
     <Compile Include="Engine.cs" />
     <Compile Include="EngineConfiguration.cs" />
     <Compile Include="EntryProcessingResult.cs" />
-    <Compile Include="Helpers\ExtensionMethods.cs" />
-    <Compile Include="Helpers\Serialization\SerializationException.cs" />
+    <Compile Include="Helpers\Serialization\ExtensionMethods.cs" />
+    <Compile Include="Helpers\Serialization\ISerializationHelper.cs" />
     <Compile Include="Helpers\Serialization\SerializationHelper.cs" />
+    <Compile Include="Helpers\Serialization\SerializationResult.cs" />
     <Compile Include="IEngine.cs" />
     <Compile Include="InterceptionEntryModel.cs" />
     <Compile Include="InterceptionExceptionModel.cs" />
     <Compile Include="InterceptionExitModel.cs" />
+    <Compile Include="InterceptionVerification\VerificationFailures.cs" />
     <Compile Include="InterceptionVerification\VerificationPipeline.cs" />
     <Compile Include="InterceptionVerification\VerificationPipelineResult.cs" />
     <Compile Include="InterceptionProcessingData.cs" />
@@ -81,7 +84,7 @@
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordingMethodManager.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedSubMethod.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\TypeValModel.cs" />
-    <Compile Include="ProcessMultiplexer\Processes\IProcess.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\IProcess.cs" />
     <Compile Include="ProcessMultiplexer\ProcessMultiplexer.cs" />
     <Compile Include="ProcessMultiplexer\ProcessResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

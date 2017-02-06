@@ -27,7 +27,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void Execution_Cache_Test_Clear_Cache_Empties_Methods()
         {
             var entry = TestClass.Method1Entry;
-            var method = new RecordedMethod(entry.TargetType, "", null, entry.Method);
+            var method = new RecordingMethod(entry.TargetType, "", null, entry.Method);
             var executionCache = new ExecutionCache();
             executionCache.GetMethods(1).Add(method);
 
@@ -43,7 +43,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void Execution_Cache_Test_Get_Returns_Val_When_Exists()
         {
             var entry = TestClass.Method1Entry;
-            var method = new RecordedMethod(entry.TargetType, "", null, entry.Method);
+            var method = new RecordingMethod(entry.TargetType, "", null, entry.Method);
             var executionCache = new ExecutionCache();
             executionCache.GetMethods(1).Add(method);
 
@@ -56,7 +56,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void Execution_Cache_Test_Dif_Instance_Returns_Same_Value()
         {
             var entry = TestClass.Method1Entry;
-            var method = new RecordedMethod(entry.TargetType, "", null, entry.Method);
+            var method = new RecordingMethod(entry.TargetType, "", null, entry.Method);
             var executionCache = new ExecutionCache();
             executionCache.GetMethods(1).Add(method);
 
@@ -70,7 +70,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void Execution_Cache_Test_No_Access_To_Diff_Thread()
         {
             var entry = TestClass.Method1Entry;
-            var method = new RecordedMethod(entry.TargetType, "", null, entry.Method);
+            var method = new RecordingMethod(entry.TargetType, "", null, entry.Method);
             var executionCache = new ExecutionCache();
             executionCache.GetMethods(1).Add(method);
 
@@ -83,13 +83,13 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void Execution_Cache_Test_Modify_Method_Saves()
         {
             var entry = TestClass.Method1Entry;
-            var method = new RecordedMethod(entry.TargetType, "", null, entry.Method);
+            var method = new RecordingMethod(entry.TargetType, "", null, entry.Method);
             method.CloseOutMethodWithReturnVal("blah");
             var executionCache = new ExecutionCache();
             executionCache.GetMethods(1).Add(method);
 
             var method2 = executionCache.GetMethods(1);
-            Assert.IsTrue(method2.FirstOrDefault().ExecutionComplete);
+            Assert.IsTrue(method2.FirstOrDefault().IsExecutionComplete);
             executionCache.ClearCache();
         }
     }

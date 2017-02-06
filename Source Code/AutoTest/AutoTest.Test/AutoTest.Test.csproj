@@ -69,9 +69,11 @@
     <Compile Include="AutoTestEngineTests\RecordingMethodManagerTest.cs" />
     <Compile Include="AutoTestEngineTests\RecordedMethodModelTest.cs" />
     <Compile Include="AutoTestEngineTests\RecordedSubMethodTest.cs" />
+    <Compile Include="AutoTestEngineTests\SerializationResultTest.cs" />
     <Compile Include="AutoTestEngineTests\TestClass.cs" />
     <Compile Include="AutoTestEngineTests\TextFileDALTest.cs" />
     <Compile Include="AutoTestEngineTests\ThreadIdProviderTest.cs" />
+    <Compile Include="AutoTestEngineTests\TypeValTest.cs" />
     <Compile Include="AutoTestEngineTests\VerificationPipelineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

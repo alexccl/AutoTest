@@ -17,7 +17,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var x = InitTestModel();
 
             Assert.IsTrue(x.InstanceAtExecutionTime == "test");
-            Assert.IsTrue(x.ExecutionComplete == false);
+            Assert.IsTrue(x.IsExecutionComplete == false);
             Assert.IsTrue(x.ReturnTypeVal.Value == null);
             Assert.IsTrue(x.ReturnTypeVal.Type == typeof(double));
             Assert.IsTrue(x.TargetType == typeof(String));
@@ -38,7 +38,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var x = InitTestModel();
             x.CloseOutMethodWithReturnVal(2.2);
             Assert.IsTrue((double)x.ReturnTypeVal.Value == 2.2);
-            Assert.IsTrue(x.ExecutionComplete == true);
+            Assert.IsTrue(x.IsExecutionComplete == true);
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(x.MethodException != null);
             Assert.IsTrue(x.ReturnTypeVal.Value == null);
             Assert.IsTrue(typeof(InvalidTimeZoneException).Equals(x.MethodException.GetType()));
-            Assert.IsTrue(x.ExecutionComplete == true);
+            Assert.IsTrue(x.IsExecutionComplete == true);
         }
 
         [TestMethod]
@@ -65,21 +65,21 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void Recorded_Method_Test_Equality_Override()
         {
             var x = InitTestModel();
-            Assert.IsFalse(x.Equals(1));
-            Assert.IsFalse(x.Equals(new DateTime()));
-            Assert.IsTrue(x.Equals(x));
+            Assert.IsFalse(x.Equals(1)); //different type should not be equal
+            Assert.IsFalse(x.Equals(new DateTime())); //different type should not be equal
+            Assert.IsTrue(x.Equals(x)); 
 
 
             var y = x;
-            y.CloseOutMethodWithReturnVal(new DateTime());
+            y.CloseOutMethodWithReturnVal(2.2);
             Assert.IsTrue(x.Equals(y));
 
             Assert.IsFalse(x.Equals(InitTestModel()));
         }
 
-        private RecordedMethod InitTestModel()
+        private RecordingMethod InitTestModel()
         {
-            return new RecordedMethod(typeof(String), "test", new object[] { "arg1", 2, DateTime.Now }, DataHelper.MathPowerData.Entry.Method);
+            return new RecordingMethod(typeof(String), "test", new object[] { "arg1", 2, DateTime.Now }, DataHelper.MathPowerData.Entry.Method);
         }
 
     }

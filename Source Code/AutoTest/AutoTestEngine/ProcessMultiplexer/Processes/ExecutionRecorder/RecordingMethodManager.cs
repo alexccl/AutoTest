@@ -1,4 +1,6 @@
-﻿using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder.ExecutionCache;
+﻿using AutoTestEngine.Helpers;
+using AutoTestEngine.Helpers.Serialization;
+using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder.ExecutionCache;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 {
     /// <summary>
-    /// Acts as a cache for methods currently being recorded.
+    /// Acts as a cache for methods currently being recorded.  Manages the entering and exiting of methods and raises event when method is done with execution and all execution metadata has been collected
     /// </summary>
     internal class RecordingMethodManager
     {
@@ -29,17 +31,23 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         /// </summary>
         private IExecutionStack _executionStack;
 
-        public RecordingMethodManager(IExecutionCache executionCache, IThreadIdProvider threadProvider, IExecutionStack executionStack)
+        /// <summary>
+        /// Performs serializations
+        /// </summary>
+        private ISerializationHelper _serializationHelper;
+
+        public RecordingMethodManager(IExecutionCache executionCache, IThreadIdProvider threadProvider, IExecutionStack executionStack, ISerializationHelper serializationHelper)
         {
             _executionCache = executionCache;
             _threadProvider = threadProvider;
             _executionStack = executionStack;
+            _serializationHelper = serializationHelper;
         }
 
         /// <summary>
         /// Collection of all the methods that are currently being recorded
         /// </summary>
-        private List<RecordedMethod> RecordingMethods { get; set; }
+        private List<RecordingMethod> RecordingMethods { get; set; }
 
         /// <summary>
         /// Fires when a recording is complete.  Recorded method passed as event arg.  Manager releases all method recording resources after firing
@@ -59,20 +67,25 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             var executingMethodId = _executionStack.ExecutingGuid(threadId);
         }
 
-        private void ProcessEntry(InterceptionProcessingData data, List<RecordedMethod> methods, Guid executingMethodId)
+        private void ProcessEntry(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId)
         {
             //add this as a sub-method if applicable
             var executingMethod = methods.FirstOrDefault(x => x.Identifier == executingMethodId);
-            if(executingMethodId != null)
+            if(executingMethod != null)
             {
-                //var subMethod = new RecordedSubMethod()
+                var subMethodId = Guid.NewGuid();
+                var subMethod = new RecordedSubMethod(subMethodId, data.TargetType, data.MethodArgs.ToTypeValList(), data.ReturnType, data.Method.Name);
+                executingMethod.SubMethods.Add(subMethod);
             }
+
+            //add this as a method
+            var newExecutingMethod = new RecordedMethod(data.TargetType, data.S)
         }
-        private void ProcessExit(InterceptionProcessingData data, List<RecordedMethod> methods, Guid executingMethodId)
+        private void ProcessExit(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId)
         {
 
         }
-        private void ProcessInterception(InterceptionProcessingData data, List<RecordedMethod> methods, Guid executingMethodId)
+        private void ProcessInterception(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId)
         {
 
         }
@@ -84,6 +97,6 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 
     internal class MethodRecordingCompleteEventArgs : EventArgs
     {
-        public RecordedMethod Method { get; set; }
+        public RecordingMethod Method { get; set; }
     }
 }

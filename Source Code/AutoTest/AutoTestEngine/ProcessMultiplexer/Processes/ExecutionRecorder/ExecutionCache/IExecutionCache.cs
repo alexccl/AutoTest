@@ -4,7 +4,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder.Executio
 {
     internal interface IExecutionCache
     {
-        List<RecordedMethod> GetMethods(int threadId);
+        List<RecordingMethod> GetMethods(int threadId);
 
         void ClearCache();
     }

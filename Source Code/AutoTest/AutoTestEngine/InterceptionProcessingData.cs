@@ -53,6 +53,11 @@ namespace AutoTestEngine
         public List<Type> ClassAttributes { get; private set; }
         public List<Type> MethodAttributes { get; private set; }
 
+        /// <summary>
+        /// Contains all the verifiers this capture has failed
+        /// </summary>
+        public List<Guid> VerificationFailures { get; private set; }
+
 
         public Type ReturnType { get
             {
