@@ -53,7 +53,9 @@ namespace AutoTestEngine.DAL.TexFileImplementation
         private void WriteToStorage()
         {
             var newContents = SerializationHelper.Serialize(this.StoredObject);
-            File.WriteAllText(_storageFilePath, newContents);
+            if (!newContents.Success) throw new Exception("Could not serialize data for repository", newContents.FailureException);
+
+            File.WriteAllText(_storageFilePath, newContents.Result);
         }
     }
 }

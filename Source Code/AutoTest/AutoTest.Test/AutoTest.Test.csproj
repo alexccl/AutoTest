@@ -60,6 +60,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AutoTestEngineTests\DALHelpersTest.cs" />
     <Compile Include="AutoTestEngineTests\DataHelper.cs" />
     <Compile Include="AutoTestEngineTests\ExecutionCacheTests.cs" />
     <Compile Include="AutoTestEngineTests\ExecutionStackTest.cs" />
@@ -74,7 +75,10 @@
     <Compile Include="AutoTestEngineTests\TextFileDALTest.cs" />
     <Compile Include="AutoTestEngineTests\ThreadIdProviderTest.cs" />
     <Compile Include="AutoTestEngineTests\TypeValTest.cs" />
+    <Compile Include="AutoTestEngineTests\VerificationPipelineResultTest.cs" />
     <Compile Include="AutoTestEngineTests\VerificationPipelineTests.cs" />
+    <Compile Include="AutoTestEngineTests\VerifierResultTest.cs" />
+    <Compile Include="AutoTestEngineTests\VerifierTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

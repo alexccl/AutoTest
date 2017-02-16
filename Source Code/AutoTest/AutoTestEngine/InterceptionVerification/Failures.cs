@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine.InterceptionVerification
 {
-    internal static class VerificationFailures
+    static class Failures
     {
-        public 
+        public static Guid SerializationError
+        {
+            get { return new Guid("DEC89725-7A10-454F-987E-70EAD286A3FB"); }
+        }
     }
 }

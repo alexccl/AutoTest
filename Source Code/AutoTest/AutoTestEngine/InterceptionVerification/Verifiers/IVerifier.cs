@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoTestEngine.InterceptionVerification.VerificationResult;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,6 @@ namespace AutoTestEngine.InterceptionVerification.Verifiers
         /// Determines where this verifier is ordered in the pipeline, the lower the number the sooner it will be executed
         /// </summary>
         int VerificationPriority { get; }
-        VerifierResult Verify(InterceptionProcessingData processingData);
+        List<VerificationFailure> Verify(InterceptionProcessingData processingData);
     }
 }

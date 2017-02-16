@@ -52,7 +52,10 @@
     <Compile Include="AutoTestEngineException.cs" />
     <Compile Include="Bindings.cs" />
     <Compile Include="BoundaryType.cs" />
+    <Compile Include="DAL\Helpers\IUnserializableTypeHelper.cs" />
+    <Compile Include="DAL\Helpers\UnserializableTypeHelper.cs" />
     <Compile Include="DAL\IDAL.cs" />
+    <Compile Include="DAL\Models\UnserializableType.cs" />
     <Compile Include="DAL\TexFileImplementation\IRepository.cs" />
     <Compile Include="DAL\TexFileImplementation\Repository.cs" />
     <Compile Include="DAL\TexFileImplementation\TextFileDAL.cs" />
@@ -67,12 +70,14 @@
     <Compile Include="InterceptionEntryModel.cs" />
     <Compile Include="InterceptionExceptionModel.cs" />
     <Compile Include="InterceptionExitModel.cs" />
-    <Compile Include="InterceptionVerification\VerificationFailures.cs" />
+    <Compile Include="InterceptionVerification\Failures.cs" />
     <Compile Include="InterceptionVerification\VerificationPipeline.cs" />
     <Compile Include="InterceptionVerification\VerificationPipelineResult.cs" />
     <Compile Include="InterceptionProcessingData.cs" />
+    <Compile Include="InterceptionVerification\Verifiers\InputParameterVerifier.cs" />
     <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
-    <Compile Include="InterceptionVerification\Verifiers\VerifierResult.cs" />
+    <Compile Include="InterceptionVerification\VerificationResults\TypeSerializationFailure.cs" />
+    <Compile Include="InterceptionVerification\VerificationResults\VerificationFailure.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionCache.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStack.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStackEmptyException.cs" />

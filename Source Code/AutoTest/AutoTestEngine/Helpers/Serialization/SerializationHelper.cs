@@ -12,9 +12,19 @@ namespace AutoTestEngine.Helpers.Serialization
     /// </summary>
     internal static class SerializationHelper
     {
-        public static string Serialize(object obj)
+        public static SerializationResult Serialize(object obj)
         {
-            return JsonConvert.SerializeObject(obj, Formatting.Indented);
+            string result;
+            try
+            {
+                result = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            }
+            catch(Exception ex)
+            {
+                return SerializationResult.InitFailedSerialization(obj, ex);
+            }
+
+            return SerializationResult.InitSuccessfulSerialization(obj, result);
         }
 
         public static T Deserialize<T>(string serializedObject)

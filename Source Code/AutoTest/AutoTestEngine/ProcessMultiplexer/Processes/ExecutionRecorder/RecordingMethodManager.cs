@@ -79,7 +79,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             }
 
             //add this as a method
-            var newExecutingMethod = new RecordedMethod(data.TargetType, data.S)
+            //var newExecutingMethod = new RecordedMethod(data.TargetType, data.S)
         }
         private void ProcessExit(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId)
         {

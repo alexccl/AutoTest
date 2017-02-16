@@ -1,5 +1,6 @@
 ﻿using AutoTestEngine;
 using AutoTestEngine.InterceptionVerification;
+using AutoTestEngine.InterceptionVerification.VerificationResult;
 using AutoTestEngine.InterceptionVerification.Verifiers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -14,20 +15,34 @@ namespace AutoTest.Test.AutoTestEngineTests
     [TestClass]
     public class VerificationPipelineTests
     {
-        private VerifierResult successfulVerify = new VerifierResult(false);
-        private VerifierResult failureVerify = new VerifierResult(true);
+        private VerificationPipelineResult _successfulPipeRes;
+        private VerificationPipelineResult _failurePipeRes;
+        private List<VerificationFailure> _failureVerification;
+        private List<VerificationFailure> _successfulVerification;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _successfulPipeRes = new VerificationPipelineResult();
+            _failurePipeRes = new VerificationPipelineResult();
+            _failurePipeRes.AddFailure(new TypeSerializationFailure(typeof(double)));
+
+            _failureVerification = new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) };
+            _successfulVerification = new List<VerificationFailure>();
+        }
+
         [TestMethod]
         public void VerificationPipelineSingleFailureTest()
         {
             var mock = new Mock<IVerifier>();
             mock.Setup(x => x.VerificationPriority).Returns(1);
-            mock.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(failureVerify);
+            mock.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(_failureVerification);
 
             var verifiers = new IVerifier[] { mock.Object };
             var pipeline = new VerificationPipeline(verifiers);
 
             var res = pipeline.VerifyInterception(null);
-            Assert.IsTrue(res.VerificationFailed);
+            Assert.IsTrue(res.HasAnyFailure);
         }
 
         [TestMethod]
@@ -35,13 +50,13 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock = new Mock<IVerifier>();
             mock.Setup(x => x.VerificationPriority).Returns(1);
-            mock.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
+            mock.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(_successfulVerification);
 
             var verifiers = new IVerifier[] { mock.Object };
             var pipeline = new VerificationPipeline(verifiers);
 
             var res = pipeline.VerifyInterception(null);
-            Assert.IsFalse(res.VerificationFailed);
+            Assert.IsFalse(res.HasAnyFailure);
         }
 
         [TestMethod]
@@ -49,17 +64,17 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock1 = new Mock<IVerifier>();
             mock1.Setup(x => x.VerificationPriority).Returns(1);
-            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
+            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(_successfulVerification);
 
             var mock2 = new Mock<IVerifier>();
             mock2.Setup(x => x.VerificationPriority).Returns(2);
-            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(failureVerify);
+            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(_failureVerification);
 
             var verifiers = new IVerifier[] { mock2.Object, mock1.Object};
             var pipeline = new VerificationPipeline(verifiers);
 
             var res = pipeline.VerifyInterception(null);
-            Assert.IsTrue(res.VerificationFailed);
+            Assert.IsTrue(res.HasAnyFailure);
         }
 
         [TestMethod]
@@ -67,57 +82,44 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var mock1 = new Mock<IVerifier>();
             mock1.Setup(x => x.VerificationPriority).Returns(1);
-            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
+            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(_successfulVerification);
 
             var mock2 = new Mock<IVerifier>();
             mock2.Setup(x => x.VerificationPriority).Returns(2);
-            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
+            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(_successfulVerification);
 
             var verifiers = new IVerifier[] { mock2.Object, mock1.Object };
             var pipeline = new VerificationPipeline(verifiers);
 
             var res = pipeline.VerifyInterception(null);
-            Assert.IsFalse(res.VerificationFailed);
+            Assert.IsFalse(res.HasAnyFailure);
         }
 
         [TestMethod]
-        public void VerificationPipelineFailureBreaksVerificationChain()
+        public void VerificationPipelineMult_Critical_Failure_Test()
         {
             var mock1 = new Mock<IVerifier>();
             mock1.Setup(x => x.VerificationPriority).Returns(1);
-            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
+            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(new List<VerificationFailure>() { new CriticalFailure() });
 
             var mock2 = new Mock<IVerifier>();
             mock2.Setup(x => x.VerificationPriority).Returns(2);
-            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(failureVerify);
+            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(_successfulVerification);
 
-            var mock3 = new Mock<IVerifier>();
-            mock3.Setup(x => x.VerificationPriority).Returns(3);
-            mock3.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
-
-            var verifiers = new IVerifier[] { mock2.Object, mock1.Object, mock3.Object};
+            var verifiers = new IVerifier[] { mock2.Object, mock1.Object };
             var pipeline = new VerificationPipeline(verifiers);
 
             var res = pipeline.VerifyInterception(null);
-            mock3.Verify(x => x.Verify(It.IsAny<InterceptionProcessingData>()), Times.Never);
+            Assert.IsTrue(res.HasAnyFailure);
+            Assert.IsTrue(res.HasCriticalFailure);
+            mock2.Verify(x => x.Verify(It.IsAny<InterceptionProcessingData>()), Times.Never);
         }
 
-        [TestMethod]
-        public void VerificationPipelineVerifierOrdering()
+        private class CriticalFailure : VerificationFailure
         {
-            var mock1 = new Mock<IVerifier>();
-            mock1.Setup(x => x.VerificationPriority).Returns(2);
-            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(successfulVerify);
-
-            var mock2 = new Mock<IVerifier>();
-            mock2.Setup(x => x.VerificationPriority).Returns(1);
-            mock2.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(failureVerify);
-
-            var verifiers = new IVerifier[] { mock1.Object, mock2.Object};
-            var pipeline = new VerificationPipeline(verifiers);
-
-            var res = pipeline.VerifyInterception(null);
-            mock1.Verify(x => x.Verify(It.IsAny<InterceptionProcessingData>()), Times.Never);
+            public CriticalFailure() : base(String.Empty, Guid.NewGuid(), true)
+            {
+            }
         }
     }
 }
