@@ -75,6 +75,7 @@
     <Compile Include="InterceptionVerification\VerificationPipelineResult.cs" />
     <Compile Include="InterceptionProcessingData.cs" />
     <Compile Include="InterceptionVerification\Verifiers\InputParameterVerifier.cs" />
+    <Compile Include="InterceptionVerification\Verifiers\InstanceSerializationVerifier.cs" />
     <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
     <Compile Include="InterceptionVerification\VerificationResults\TypeSerializationFailure.cs" />
     <Compile Include="InterceptionVerification\VerificationResults\VerificationFailure.cs" />

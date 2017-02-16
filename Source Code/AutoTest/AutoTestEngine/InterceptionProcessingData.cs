@@ -93,7 +93,7 @@ namespace AutoTestEngine
         public InterceptionProcessingData(InterceptionExitModel exitModel, EngineConfiguration configuration)
         {
             this.BoundaryType = BoundaryType.Exit;
-            this.TargetInstance = this.TargetInstance;
+            this.TargetInstance = exitModel.TargetInstance;
             this.ReturnValue = exitModel.ReturnValue;
             this.Method = exitModel.Method;
             this.Configuration = configuration;

@@ -37,7 +37,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             _failSerHelper = new Mock<ISerializationHelper>();
             _failSerHelper.Setup(x => x.Serialize(It.IsAny<object>())).Returns(SerializationResult.InitFailedSerialization(new object(), new StackOverflowException()));
         }
-
+        #region Input Parameter Verifier
         [TestMethod]
         public void Input_Parameter_Verifier_Test_Exit_Data_No_Serialization_Errors()
         {
@@ -118,7 +118,89 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(res.Any());
             _successUnserializableTypehelper.Verify(x => x.AddUnserializableType(It.IsAny<Type>()), Times.Once);
         }
+        #endregion
 
+        #region Instance Serialization Verifier
+        [TestMethod]
+        public void Instance_Serialization_Verifier_Test_Exit_Data_No_Serialization_Errors()
+        {
+            var SUT = new InstanceSerializationVerifier(_successSerHelper.Object, _successUnserializableTypehelper.Object);
+            var data = new InterceptionProcessingData(DataHelper.DateTimeAddDaysData.Exit, _config);
+            var res = SUT.Verify(data);
 
+            Assert.IsTrue(!res.Any());
+        }
+
+        [TestMethod]
+        public void Instance_Serialization_Verifier_Test_Exit_Data_Serialization_Errors()
+        {
+            var SUT = new InstanceSerializationVerifier(_successSerHelper.Object, _failUnserializableTypehelper.Object);
+            var data = new InterceptionProcessingData(DataHelper.DateTimeAddDaysData.Exit, _config);
+            var res = SUT.Verify(data);
+
+            Assert.IsTrue(!res.Any());
+        }
+
+        [TestMethod]
+        public void Instance_Serialization_Verifier_Test_Exc_Data_No_Serialization_Errors()
+        {
+            var SUT = new InstanceSerializationVerifier(_successSerHelper.Object, _successUnserializableTypehelper.Object);
+            var data = new InterceptionProcessingData(DataHelper.DateTimeAddDaysData.Exception, _config);
+            var res = SUT.Verify(data);
+
+            Assert.IsTrue(!res.Any());
+        }
+
+        [TestMethod]
+        public void Instance_Serialization_Verifier_Test_Exc_Data_Serialization_Errors()
+        {
+            var SUT = new InstanceSerializationVerifier(_successSerHelper.Object, _failUnserializableTypehelper.Object);
+            var data = new InterceptionProcessingData(DataHelper.DateTimeAddDaysData.Exception, _config);
+            var res = SUT.Verify(data);
+
+            Assert.IsTrue(!res.Any());
+        }
+
+        [TestMethod]
+        public void Instance_Serialization_Verifier_Test_Ent_Data_No_Serialization_Errors()
+        {
+            var SUT = new InstanceSerializationVerifier(_successSerHelper.Object, _successUnserializableTypehelper.Object);
+            var data = new InterceptionProcessingData(DataHelper.DateTimeAddDaysData.Exception, _config);
+            var res = SUT.Verify(data);
+
+            Assert.IsTrue(!res.Any());
+        }
+
+        [TestMethod]
+        public void Instance_Serialization_Verifier_Test_Ent_Data_Serialization_Errors()
+        {
+            var SUT = new InstanceSerializationVerifier(_successSerHelper.Object, _failUnserializableTypehelper.Object);
+            var data = new InterceptionProcessingData(DataHelper.DateTimeAddDaysData.Entry, _config);
+            var res = SUT.Verify(data);
+
+            Assert.IsTrue(res.Any());
+        }
+
+        [TestMethod]
+        public void Instance_Serialization_Verifier_Test_Failed_Serialization_Fails_Verifier()
+        {
+            var SUT = new InstanceSerializationVerifier(_failSerHelper.Object, _successUnserializableTypehelper.Object);
+            var data = new InterceptionProcessingData(DataHelper.DateTimeAddDaysData.Entry, _config);
+            var res = SUT.Verify(data);
+
+            Assert.IsTrue(res.Any());
+        }
+
+        [TestMethod]
+        public void Instance_Serialization_Verifier_Test_Failed_Serialization_Adds_To_DB()
+        {
+            var SUT = new InstanceSerializationVerifier(_failSerHelper.Object, _successUnserializableTypehelper.Object);
+            var data = new InterceptionProcessingData(DataHelper.DateTimeAddDaysData.Entry, _config);
+            var res = SUT.Verify(data);
+
+            Assert.IsTrue(res.Any());
+            _successUnserializableTypehelper.Verify(x => x.AddUnserializableType(It.IsAny<Type>()), Times.Once);
+        }
+        #endregion
     }
 }
