@@ -1,4 +1,5 @@
 ﻿using AutoTestEngine.Helpers.Serialization;
+using AutoTestEngine.InterceptionVerification.VerificationResult;
 using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder;
 using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder.ExecutionCache;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,7 +18,26 @@ namespace AutoTest.Test.AutoTestEngineTests
         private bool _methodCompleteEventRaised = false;
         private MethodRecordingCompleteEventArgs _eventArgs;
 
-        private SerializationResult _serResult = SerializationResult.InitSuccessfulSerialization(null, "serialized object");
+        private SerializationResult _sucSerResult = SerializationResult.InitSuccessfulSerialization(null, "serialized object");
+
+        private Mock<IThreadIdProvider> _defaultThreadProvider;
+        private Mock<ISerializationHelper> _defaultSerializer;
+
+        private int _defaultThreadId = 35;
+
+        private Guid _emptySentinel = new Guid("4FFD2F9C-13AE-42D8-810C-C7085A856B35");
+
+        [TestInitialize]
+        public void Setup()
+        {
+            var mockThreadProvider = new Mock<IThreadIdProvider>();
+            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(_defaultThreadId);
+            _defaultThreadProvider = mockThreadProvider;
+
+            var mockSerializer = new Mock<ISerializationHelper>();
+            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_sucSerResult);
+            _defaultSerializer = mockSerializer;
+        }
 
         [TestCleanup]
         public void CleanupAfterTest()
@@ -42,58 +62,39 @@ namespace AutoTest.Test.AutoTestEngineTests
         [TestMethod]
         public void Recorded_Method_Manager_Test_Thread_Id_Is_Used_On_Execution_Cache()
         {
-            var mockThreadProvider = new Mock<IThreadIdProvider>();
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
-            var mockSerializer = new Mock<ISerializationHelper>();
 
-            var threadId = 35;
-            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(threadId);
-            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_serResult);
-
-            var SUT = new RecordingMethodManager(mockCache.Object, mockThreadProvider.Object, mockStack.Object, mockSerializer.Object);
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
 
             SUT.ProcessCapture(TestClass.Method1Entry);
-            mockCache.Verify(x => x.GetMethods(threadId), Times.Once);
+            mockCache.Verify(x => x.GetMethods(_defaultThreadId), Times.Once);
         }
 
         [TestMethod]
         public void Recorded_Method_Manager_Test_Thread_Id_Is_Used_On_Execution_Stack()
         {
-            var mockThreadProvider = new Mock<IThreadIdProvider>();
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
-            var mockSerializer = new Mock<ISerializationHelper>();
 
-            var threadId = 35;
-            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(threadId);
-            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_serResult);
-
-            var SUT = new RecordingMethodManager(mockCache.Object, mockThreadProvider.Object, mockStack.Object, mockSerializer.Object);
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
 
             SUT.ProcessCapture(TestClass.Method1Entry);
-            mockStack.Verify(x => x.ProcessEntry(threadId, It.IsAny<Guid>()), Times.Once);
+            mockStack.Verify(x => x.ProcessEntry(_defaultThreadId, It.IsAny<Guid>()), Times.Once);
         }
 
         [TestMethod]
         public void Recorded_Method_Manager_Method_Exit_Raises_Complete_Event()
         {
-            var mockThreadProvider = new Mock<IThreadIdProvider>();
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
-            var mockSerializer = new Mock<ISerializationHelper>();
 
-            var threadId = 35;
-            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(threadId);
 
             var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_serResult);
 
-            var SUT = new RecordingMethodManager(mockCache.Object, mockThreadProvider.Object, mockStack.Object, mockSerializer.Object);
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
             SUT.MethodRecordingComplete += SUT_MethodRecordingComplete;
             SUT.ProcessCapture(TestClass.Method1Exit);
 
@@ -103,20 +104,14 @@ namespace AutoTest.Test.AutoTestEngineTests
         [TestMethod]
         public void Recorded_Method_Manager_Method_Exception_Raises_Complete_Event()
         {
-            var mockThreadProvider = new Mock<IThreadIdProvider>();
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
-            var mockSerializer = new Mock<ISerializationHelper>();
-
-            var threadId = 35;
-            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(threadId);
 
             var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_serResult);
 
-            var SUT = new RecordingMethodManager(mockCache.Object, mockThreadProvider.Object, mockStack.Object, mockSerializer.Object);
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
             SUT.MethodRecordingComplete += SUT_MethodRecordingComplete;
             SUT.ProcessCapture(TestClass.Method1Exception);
 
@@ -126,20 +121,14 @@ namespace AutoTest.Test.AutoTestEngineTests
         [TestMethod]
         public void Recorded_Method_Manager_Method_Entry_Wont_Raise_Complete_Event()
         {
-            var mockThreadProvider = new Mock<IThreadIdProvider>();
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
-            var mockSerializer = new Mock<ISerializationHelper>();
-
-            var threadId = 35;
-            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(threadId);
 
             var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_serResult);
 
-            var SUT = new RecordingMethodManager(mockCache.Object, mockThreadProvider.Object, mockStack.Object, mockSerializer.Object);
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
             SUT.MethodRecordingComplete += SUT_MethodRecordingComplete;
             SUT.ProcessCapture(TestClass.Method1Entry);
 
@@ -149,20 +138,14 @@ namespace AutoTest.Test.AutoTestEngineTests
         [TestMethod]
         public void Recorded_Method_Manager_Handles_Recursion_Method_Adding()
         {
-            var mockThreadProvider = new Mock<IThreadIdProvider>();
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
-            var mockSerializer = new Mock<ISerializationHelper>();
-
-            var threadId = 35;
-            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(threadId);
 
             var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_serResult);
 
-            var SUT = new RecordingMethodManager(mockCache.Object, mockThreadProvider.Object, mockStack.Object, mockSerializer.Object);
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
             SUT.MethodRecordingComplete += SUT_MethodRecordingComplete;
             SUT.ProcessCapture(TestSubClass.Method1Entry);
 
@@ -172,21 +155,15 @@ namespace AutoTest.Test.AutoTestEngineTests
         [TestMethod]
         public void Recorded_Method_Manager_Closes_Method_With_Stack_Depth_GT_1()
         {
-            var mockThreadProvider = new Mock<IThreadIdProvider>();
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
-            var mockSerializer = new Mock<ISerializationHelper>();
-
-            var threadId = 35;
-            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(threadId);
 
             var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method),
                                                         new RecordingMethod(typeof(int), "", null, TestSubClass.Method1Entry.Method)};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[1].Identifier);
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_serResult);
 
-            var SUT = new RecordingMethodManager(mockCache.Object, mockThreadProvider.Object, mockStack.Object, mockSerializer.Object);
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
             SUT.MethodRecordingComplete += SUT_MethodRecordingComplete;
             SUT.ProcessCapture(TestSubClass.Method1Exit);
 
@@ -196,21 +173,15 @@ namespace AutoTest.Test.AutoTestEngineTests
         [TestMethod]
         public void Recorded_Method_Manager_Verify_Completed_Method_Is_Returned()
         {
-            var mockThreadProvider = new Mock<IThreadIdProvider>();
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
-            var mockSerializer = new Mock<ISerializationHelper>();
-
-            var threadId = 35;
-            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(threadId);
 
             var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method),
                                                         new RecordingMethod(typeof(int), "", null, TestSubClass.Method1Entry.Method)};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[1].Identifier);
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_serResult);
 
-            var SUT = new RecordingMethodManager(mockCache.Object, mockThreadProvider.Object, mockStack.Object, mockSerializer.Object);
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
             SUT.MethodRecordingComplete += SUT_MethodRecordingComplete;
             SUT.ProcessCapture(TestSubClass.Method1Exit);
 
@@ -220,23 +191,118 @@ namespace AutoTest.Test.AutoTestEngineTests
         [TestMethod]
         public void Recorded_Method_Manager_Verify_Execution_Stack_Is_Added_To()
         {
-            var mockThreadProvider = new Mock<IThreadIdProvider>();
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
-            var mockSerializer = new Mock<ISerializationHelper>();
-
-            var threadId = 35;
-            mockThreadProvider.Setup(x => x.GetThreadId()).Returns(threadId);
 
             var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method)};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[1].Identifier);
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_serResult);
 
-            var SUT = new RecordingMethodManager(mockCache.Object, mockThreadProvider.Object, mockStack.Object, mockSerializer.Object);
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
             SUT.ProcessCapture(TestSubClass.Method1Entry);
 
-            mockStack.Verify(x => x.ProcessEntry(threadId, It.IsAny<Guid>()), Times.Once);
+            mockStack.Verify(x => x.ProcessEntry(_defaultThreadId, It.IsAny<Guid>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void Recorded_Method_Manager_Instace_Verifier_Fail_Should_Not_Call_Serializer()
+        {
+            var mockCache = new Mock<IExecutionCache>();
+            var mockStack = new Mock<IExecutionStack>();
+
+            var _methods = new List<RecordingMethod>();
+            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
+
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
+
+            var procData = TestClass.Method1Entry;
+            procData.AddVerificationFailures(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
+            SUT.ProcessCapture(procData);
+
+            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<object>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void Recorded_Method_Manager_Return_Val_Verifier_Fail_Should_Not_Call_Serializer()
+        {
+            var mockCache = new Mock<IExecutionCache>();
+            var mockStack = new Mock<IExecutionStack>();
+
+            var _methods = new List<RecordingMethod>();
+            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
+            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_emptySentinel);
+
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
+
+            var procData = TestClass.Method1Exit;
+            procData.AddVerificationFailures(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
+            SUT.ProcessCapture(procData);
+
+            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<object>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void Recorded_Method_Manager_Instance_Verifier_Fail_Should_Not_Create_New_Exec_Method()
+        {
+            var mockCache = new Mock<IExecutionCache>();
+            var mockStack = new Mock<IExecutionStack>();
+
+            var _methods = new List<RecordingMethod>();
+            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
+            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_emptySentinel);
+
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
+
+            var procData = TestClass.Method1Exit;
+            procData.AddVerificationFailures(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
+            SUT.ProcessCapture(procData);
+
+            Assert.IsTrue(_methods.Count == 0);
+        }
+
+        [TestMethod]
+        public void Recorded_Method_Manager_Instance_Verifier_Fail_Should_Still_Add_Sub_Method()
+        {
+            var mockCache = new Mock<IExecutionCache>();
+            var mockStack = new Mock<IExecutionStack>();
+
+            var _methods = new List<RecordingMethod>();
+            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) });
+
+            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_emptySentinel);
+
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
+
+            var procData = TestSubClass.Method1Entry;
+            procData.AddVerificationFailures(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
+            SUT.ProcessCapture(procData);
+
+            Assert.IsTrue(_methods.Count == 1);
+            Assert.IsTrue(_methods[0].SubMethods.Count == 1);
+        }
+
+        [TestMethod]
+        public void Recorded_Method_Manager_Sub_Method_With_Invalid_Return_Should_Clear_From_Cache()
+        {
+            var mockCache = new Mock<IExecutionCache>();
+            var mockStack = new Mock<IExecutionStack>();
+
+            var _methods = new List<RecordingMethod>();
+
+            var recMethod = new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method);
+            var subMethodGuid = Guid.NewGuid();
+            recMethod.SubMethods.Add(new RecordedSubMethod(subMethodGuid, typeof(int), new List<TypeValModel>(), typeof(int), "blah"));
+
+            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(new List<RecordingMethod>() { recMethod });
+            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(subMethodGuid);
+
+            var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
+
+            var procData = TestSubClass.Method1Exit;
+            procData.AddVerificationFailures(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
+            SUT.ProcessCapture(procData);
+
+            Assert.IsTrue(_methods.Count == 0);
         }
 
         private void SUT_MethodRecordingComplete(object sender, MethodRecordingCompleteEventArgs e)

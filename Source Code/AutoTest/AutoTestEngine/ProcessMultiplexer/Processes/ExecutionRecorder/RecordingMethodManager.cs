@@ -1,5 +1,6 @@
 ﻿using AutoTestEngine.Helpers;
 using AutoTestEngine.Helpers.Serialization;
+using AutoTestEngine.InterceptionVerification;
 using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder.ExecutionCache;
 using System;
 using System.Collections.Concurrent;
@@ -81,6 +82,12 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             //add this as a method
             //var newExecutingMethod = new RecordedMethod(data.TargetType, data.S)
         }
+
+        private bool ValidateEntryForNewExecutingMethod(InterceptionProcessingData data)
+        {
+            return !data.VerificationFailures.Any(x => x.FailureId.Equals(Failures.SerializationError));
+        }
+
         private void ProcessExit(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId)
         {
 

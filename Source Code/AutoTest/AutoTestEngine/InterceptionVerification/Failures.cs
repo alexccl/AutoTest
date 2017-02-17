@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine.InterceptionVerification
 {
-    static class Failures
+    internal static class Failures
     {
         public static Guid SerializationError
         {
