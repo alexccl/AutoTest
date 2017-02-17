@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoTestEngine.InterceptionVerification.VerificationResult;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -56,7 +57,7 @@ namespace AutoTestEngine
         /// <summary>
         /// Contains all the verifiers this capture has failed
         /// </summary>
-        public List<Guid> VerificationFailures { get; private set; }
+        public List<VerificationFailure> VerificationFailures { get; private set; }
 
 
         public Type ReturnType { get
@@ -75,6 +76,7 @@ namespace AutoTestEngine
             this.MethodArgs = entryModel.MethodArgs;
             this.Method = entryModel.Method;
             this.Configuration = configuration;
+            this.VerificationFailures = new List<VerificationFailure>();
 
             GetAttributesFromMethodBase(entryModel.Method);
         }
@@ -86,6 +88,7 @@ namespace AutoTestEngine
             this.Exception = exceptionModel.Exception;
             this.Method = exceptionModel.Method;
             this.Configuration = configuration;
+            this.VerificationFailures = new List<VerificationFailure>();
 
             GetAttributesFromMethodBase(exceptionModel.Method);
         }
@@ -97,8 +100,14 @@ namespace AutoTestEngine
             this.ReturnValue = exitModel.ReturnValue;
             this.Method = exitModel.Method;
             this.Configuration = configuration;
+            this.VerificationFailures = new List<VerificationFailure>();
 
             GetAttributesFromMethodBase(exitModel.Method);
+        }
+
+        public void AddVerificationFailures(List<VerificationFailure> failures)
+        {
+            this.VerificationFailures.AddRange(failures);
         }
 
         private void GetAttributesFromMethodBase(MethodBase method)

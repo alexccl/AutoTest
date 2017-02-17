@@ -41,7 +41,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var verifiers = new IVerifier[] { mock.Object };
             var pipeline = new VerificationPipeline(verifiers);
 
-            var res = pipeline.VerifyInterception(null);
+            var res = pipeline.VerifyInterception(TestClass.Method1Entry);
             Assert.IsTrue(res.HasAnyFailure);
         }
 
@@ -55,7 +55,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var verifiers = new IVerifier[] { mock.Object };
             var pipeline = new VerificationPipeline(verifiers);
 
-            var res = pipeline.VerifyInterception(null);
+            var res = pipeline.VerifyInterception(TestClass.Method1Entry);
             Assert.IsFalse(res.HasAnyFailure);
         }
 
@@ -73,7 +73,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var verifiers = new IVerifier[] { mock2.Object, mock1.Object};
             var pipeline = new VerificationPipeline(verifiers);
 
-            var res = pipeline.VerifyInterception(null);
+            var res = pipeline.VerifyInterception(TestClass.Method1Entry);
             Assert.IsTrue(res.HasAnyFailure);
         }
 
@@ -91,7 +91,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var verifiers = new IVerifier[] { mock2.Object, mock1.Object };
             var pipeline = new VerificationPipeline(verifiers);
 
-            var res = pipeline.VerifyInterception(null);
+            var res = pipeline.VerifyInterception(TestClass.Method1Entry);
             Assert.IsFalse(res.HasAnyFailure);
         }
 
@@ -109,10 +109,25 @@ namespace AutoTest.Test.AutoTestEngineTests
             var verifiers = new IVerifier[] { mock2.Object, mock1.Object };
             var pipeline = new VerificationPipeline(verifiers);
 
-            var res = pipeline.VerifyInterception(null);
+            var res = pipeline.VerifyInterception(TestClass.Method1Entry);
             Assert.IsTrue(res.HasAnyFailure);
             Assert.IsTrue(res.HasCriticalFailure);
             mock2.Verify(x => x.Verify(It.IsAny<InterceptionProcessingData>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void VerificationPipelineMult_Failures_Added_To_Proc_Data()
+        {
+            var mock1 = new Mock<IVerifier>();
+            mock1.Setup(x => x.VerificationPriority).Returns(1);
+            mock1.Setup(x => x.Verify(It.IsAny<InterceptionProcessingData>())).Returns(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
+
+            var verifiers = new IVerifier[] { mock1.Object};
+            var pipeline = new VerificationPipeline(verifiers);
+
+            var interception = TestClass.Method1Entry;
+            var res = pipeline.VerifyInterception(interception);
+            Assert.IsTrue(interception.VerificationFailures.Any());
         }
 
         private class CriticalFailure : VerificationFailure

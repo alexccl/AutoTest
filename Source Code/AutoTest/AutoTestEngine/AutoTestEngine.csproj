@@ -79,6 +79,7 @@
     <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
     <Compile Include="InterceptionVerification\VerificationResults\TypeSerializationFailure.cs" />
     <Compile Include="InterceptionVerification\VerificationResults\VerificationFailure.cs" />
+    <Compile Include="InterceptionVerification\Verifiers\ReturnValVerifier.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionCache.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStack.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStackEmptyException.cs" />

@@ -31,8 +31,10 @@ namespace AutoTestEngine.InterceptionVerification
                 var verificationResult = verifier.Verify(processingData);
                 result.AddFailures(verificationResult);
 
-                if (result.HasCriticalFailure) return result;
+                if (result.HasCriticalFailure) break;
             }
+
+            processingData.AddVerificationFailures(result.Failures);
 
             return result;
         }

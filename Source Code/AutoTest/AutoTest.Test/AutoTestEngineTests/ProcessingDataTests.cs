@@ -28,6 +28,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(procData.ReturnType != null);
             Assert.IsTrue(procData.ReturnValue == null);
             Assert.IsTrue(procData.TargetInstance == null);
+            Assert.IsTrue(procData.VerificationFailures != null);
         }
 
         [TestMethod]
@@ -42,6 +43,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(procData.ReturnType != null);
             Assert.IsTrue(procData.ReturnValue == null);
             Assert.IsTrue(procData.TargetInstance == null);
+            Assert.IsTrue(procData.VerificationFailures != null);
         }
 
         [TestMethod]
@@ -56,6 +58,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(procData.ReturnType != null);
             Assert.IsTrue(procData.ReturnValue != null);
             Assert.IsTrue(procData.TargetInstance == null);
+            Assert.IsTrue(procData.VerificationFailures != null);
         }
 
         [TestMethod]
