@@ -19,9 +19,9 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         public Exception MethodException { get; private set; }
         public string MethodName { get; private set; }
 
-        public RecordingMethod(Type targetType, string serializedTarget, Object[] args, MethodBase method)
+        public RecordingMethod(Guid id, Type targetType, string serializedTarget, Object[] args, MethodBase method)
         {
-            this.Identifier = Guid.NewGuid();
+            this.Identifier = id;
             this.TargetType = targetType;
             this.InstanceAtExecutionTime = serializedTarget;
 

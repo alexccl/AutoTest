@@ -68,19 +68,27 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             var executingMethodId = _executionStack.ExecutingGuid(threadId);
         }
 
-        private void ProcessEntry(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId)
+        private void ProcessEntry(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId, int threadId)
         {
-            //add this as a sub-method if applicable
-            var executingMethod = methods.FirstOrDefault(x => x.Identifier == executingMethodId);
-            if(executingMethod != null)
+            Guid newMethodId = Guid.NewGuid();
+            //add this as a method
+            if (ValidateEntryForNewExecutingMethod(data))
             {
-                var subMethodId = Guid.NewGuid();
-                var subMethod = new RecordedSubMethod(subMethodId, data.TargetType, data.MethodArgs.ToTypeValList(), data.ReturnType, data.Method.Name);
-                executingMethod.SubMethods.Add(subMethod);
+                var serInstance = _serializationHelper.Serialize(data.TargetInstance);
+
+                if (!serInstance.Success) throw new AutoTestEngineException($"Unable to serialize type {data.TargetInstance.ToString()} despite not having a serialization failure on the processing datat context");
+
+                var newMethod = new RecordingMethod(newMethodId, data.TargetType, serInstance.Result, data.MethodArgs.ToArray(), data.Method);
+                methods.Add(newMethod);
             }
 
-            //add this as a method
-            //var newExecutingMethod = new RecordedMethod(data.TargetType, data.S)
+            //add this as a sub-method if applicable
+            var executingMethod = methods.FirstOrDefault(x => x.Identifier == executingMethodId);
+            if (executingMethod != null)
+            {
+                var subMethod = new RecordedSubMethod(newMethodId, data.TargetType, data.MethodArgs.ToTypeValList(), data.ReturnType, data.Method.Name);
+                executingMethod.SubMethods.Add(subMethod);
+            }
         }
 
         private bool ValidateEntryForNewExecutingMethod(InterceptionProcessingData data)
@@ -92,6 +100,8 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         {
 
         }
+
+
         private void ProcessInterception(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId)
         {
 
