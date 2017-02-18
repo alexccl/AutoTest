@@ -72,7 +72,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         {
             Guid newMethodId = Guid.NewGuid();
             //add this as a method
-            if (ValidateEntryForNewExecutingMethod(data))
+            if (HasSerializationErrors(data))
             {
                 var serInstance = _serializationHelper.Serialize(data.TargetInstance);
 
@@ -89,16 +89,78 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
                 var subMethod = new RecordedSubMethod(newMethodId, data.TargetType, data.MethodArgs.ToTypeValList(), data.ReturnType, data.Method.Name);
                 executingMethod.SubMethods.Add(subMethod);
             }
+
+            _executionStack.ProcessEntry(threadId, newMethodId);
         }
 
-        private bool ValidateEntryForNewExecutingMethod(InterceptionProcessingData data)
+        private bool HasSerializationErrors(InterceptionProcessingData data)
         {
             return !data.VerificationFailures.Any(x => x.FailureId.Equals(Failures.SerializationError));
         }
 
-        private void ProcessExit(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId)
+        private void ProcessExit(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId, int threadId)
         {
+            var subMethod = GetSubMethod(executingMethodId, methods);
+            var hasError = HasSerializationErrors(data);
 
+            if(subMethod != null)
+            {
+                if (hasError)
+                {
+                    ClearMethodFromSubId(executingMethodId, threadId);
+                }
+                else
+                {
+                    subMethod.CloseOutMethodWithReturnVal(data.ReturnValue);
+                }
+            }
+
+            var executingMethod = methods.FirstOrDefault(x => x.Identifier == executingMethodId);
+            if (executingMethod != null)
+            {
+                if (!hasError)
+                {
+                    executingMethod.CloseOutMethodWithReturnVal(data.ReturnValue);
+                    OnMethodRecordingComplete(new MethodRecordingCompleteEventArgs()
+                    {
+                        Method = executingMethod
+                    });
+                    ClearMethod(executingMethodId, threadId);
+                }
+                else
+                {
+                    ClearMethod(executingMethodId, threadId);
+                }
+            }
+
+            _executionStack.ProcessExit(threadId);
+        }
+
+        private void ClearMethod(Guid methodId, int threadId)
+        {
+            var methods = _executionCache.GetMethods(threadId);
+            methods.RemoveAll(x => x.Identifier == methodId);
+        }
+
+        private void ClearMethodFromSubId(Guid subMethodId, int threadId)
+        {
+            var methods = _executionCache.GetMethods(threadId);
+            var methodId = GetMethodFromSubId(subMethodId, methods).Identifier;
+            ClearMethod(methodId, threadId);
+        }
+
+        private RecordingMethod GetMethodFromSubId(Guid subMethodId, List<RecordingMethod> methods)
+        {
+            return methods.First(x => x.SubMethods.Any(y => y.Identifier == subMethodId));
+        }
+
+        private RecordedSubMethod GetSubMethod(Guid subMethodId, List<RecordingMethod> methods)
+        {
+            var method = GetMethodFromSubId(subMethodId, methods);
+
+            if (method == null) return null;
+
+            return method.SubMethods.First(x => x.Identifier == subMethodId);
         }
 
 
