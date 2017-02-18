@@ -164,9 +164,28 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         }
 
 
-        private void ProcessInterception(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId)
+        private void ProcessException(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId, int threadId)
         {
+            var subMethod = GetSubMethod(executingMethodId, methods);
 
+            if (subMethod != null)
+            {
+                subMethod.CloseOutMethodWithException(data.Exception);
+            }
+
+            var executingMethod = methods.FirstOrDefault(x => x.Identifier == executingMethodId);
+            if (executingMethod != null)
+            {
+
+                executingMethod.CloseOutMethodWithException(data.Exception);
+                OnMethodRecordingComplete(new MethodRecordingCompleteEventArgs()
+                {
+                    Method = executingMethod
+                });
+                ClearMethod(executingMethodId, threadId);
+            }
+
+            _executionStack.ProcessException(threadId);
         }
 
 

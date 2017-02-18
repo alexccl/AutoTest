@@ -53,7 +53,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             get
             {
                 return new List<RecordingMethod>() {
-                    new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method)
+                    new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method)
                 };
 
             }
@@ -90,7 +90,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockStack = new Mock<IExecutionStack>();
 
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) };
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
 
@@ -107,7 +107,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) };
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
 
@@ -124,7 +124,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) };
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
 
@@ -141,7 +141,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) };
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
 
@@ -158,8 +158,8 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method),
-                                                        new RecordingMethod(typeof(int), "", null, TestSubClass.Method1Entry.Method)};
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method),
+                                                        new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestSubClass.Method1Entry.Method)};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[1].Identifier);
 
@@ -176,8 +176,8 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method),
-                                                        new RecordingMethod(typeof(int), "", null, TestSubClass.Method1Entry.Method)};
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method),
+                                                        new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestSubClass.Method1Entry.Method)};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[1].Identifier);
 
@@ -194,7 +194,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method)};
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method)};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[1].Identifier);
 
@@ -267,7 +267,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockStack = new Mock<IExecutionStack>();
 
             var _methods = new List<RecordingMethod>();
-            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(new List<RecordingMethod>() { new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method) });
+            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) });
 
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_emptySentinel);
 
@@ -289,7 +289,8 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             var _methods = new List<RecordingMethod>();
 
-            var recMethod = new RecordingMethod(typeof(int), "", null, TestClass.Method1Entry.Method);
+            
+            var recMethod = new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method);
             var subMethodGuid = Guid.NewGuid();
             recMethod.SubMethods.Add(new RecordedSubMethod(subMethodGuid, typeof(int), new List<TypeValModel>(), typeof(int), "blah"));
 
