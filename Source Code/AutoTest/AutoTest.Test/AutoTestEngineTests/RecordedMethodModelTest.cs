@@ -21,6 +21,8 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(x.ReturnTypeVal.Value == null);
             Assert.IsTrue(x.ReturnTypeVal.Type == typeof(double));
             Assert.IsTrue(x.TargetType == typeof(String));
+            Assert.IsTrue(x.SubMethods != null);
+            Assert.IsTrue(x.SubMethods.Count == 0);
         }
 
         [TestMethod]
@@ -79,7 +81,7 @@ namespace AutoTest.Test.AutoTestEngineTests
 
         private RecordingMethod InitTestModel()
         {
-            return new RecordingMethod(typeof(String), "test", new object[] { "arg1", 2, DateTime.Now }, DataHelper.MathPowerData.Entry.Method);
+            return new RecordingMethod(Guid.NewGuid(), typeof(String), "test", new object[] { "arg1", 2, DateTime.Now }, DataHelper.MathPowerData.Entry.Method);
         }
 
     }

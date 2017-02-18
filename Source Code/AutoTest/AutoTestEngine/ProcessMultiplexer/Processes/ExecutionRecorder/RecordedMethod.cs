@@ -24,6 +24,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             this.Identifier = id;
             this.TargetType = targetType;
             this.InstanceAtExecutionTime = serializedTarget;
+            this.SubMethods = new List<RecordedSubMethod>();
 
             this.Args = new List<TypeValModel>();
 

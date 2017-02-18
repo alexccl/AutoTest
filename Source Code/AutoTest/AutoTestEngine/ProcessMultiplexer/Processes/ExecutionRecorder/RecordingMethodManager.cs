@@ -66,13 +66,26 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             var threadId = _threadProvider.GetThreadId();
             var methods = _executionCache.GetMethods(threadId);
             var executingMethodId = _executionStack.ExecutingGuid(threadId);
+
+            switch (processingData.BoundaryType)
+            {
+                case BoundaryType.Entry:
+                    ProcessEntry(processingData, methods, executingMethodId, threadId);
+                    break;
+                case BoundaryType.Exception:
+                    ProcessException(processingData, methods, executingMethodId, threadId);
+                    break;
+                case BoundaryType.Exit:
+                    ProcessExit(processingData, methods, executingMethodId, threadId);
+                    break;
+            }
         }
 
         private void ProcessEntry(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId, int threadId)
         {
             Guid newMethodId = Guid.NewGuid();
             //add this as a method
-            if (HasSerializationErrors(data))
+            if (!HasSerializationErrors(data))
             {
                 var serInstance = _serializationHelper.Serialize(data.TargetInstance);
 
@@ -95,7 +108,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 
         private bool HasSerializationErrors(InterceptionProcessingData data)
         {
-            return !data.VerificationFailures.Any(x => x.FailureId.Equals(Failures.SerializationError));
+            return data.VerificationFailures.Any(x => x.FailureId.Equals(Failures.SerializationError));
         }
 
         private void ProcessExit(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId, int threadId)
@@ -151,7 +164,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 
         private RecordingMethod GetMethodFromSubId(Guid subMethodId, List<RecordingMethod> methods)
         {
-            return methods.First(x => x.SubMethods.Any(y => y.Identifier == subMethodId));
+            return methods.FirstOrDefault(x => x.SubMethods.Any(y => y.Identifier == subMethodId));
         }
 
         private RecordedSubMethod GetSubMethod(Guid subMethodId, List<RecordingMethod> methods)
@@ -160,7 +173,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 
             if (method == null) return null;
 
-            return method.SubMethods.First(x => x.Identifier == subMethodId);
+            return method.SubMethods.FirstOrDefault(x => x.Identifier == subMethodId);
         }
 
 

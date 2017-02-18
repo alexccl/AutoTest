@@ -18,7 +18,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         private bool _methodCompleteEventRaised = false;
         private MethodRecordingCompleteEventArgs _eventArgs;
 
-        private SerializationResult _sucSerResult = SerializationResult.InitSuccessfulSerialization(null, "serialized object");
+        private SerializationResult _sucSerResult = SerializationResult.InitSuccessfulSerialization(12.0, "serialized object");
 
         private Mock<IThreadIdProvider> _defaultThreadProvider;
         private Mock<ISerializationHelper> _defaultSerializer;
@@ -65,10 +65,12 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
+            var _methods = new List<RecordingMethod>();
+            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
 
             SUT.ProcessCapture(TestClass.Method1Entry);
-            mockCache.Verify(x => x.GetMethods(_defaultThreadId), Times.Once);
+            mockCache.Verify(x => x.GetMethods(_defaultThreadId), Times.AtLeastOnce);
         }
 
         [TestMethod]
@@ -77,10 +79,12 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
+            var _methods = new List<RecordingMethod>();
+            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
 
             SUT.ProcessCapture(TestClass.Method1Entry);
-            mockStack.Verify(x => x.ProcessEntry(_defaultThreadId, It.IsAny<Guid>()), Times.Once);
+            mockStack.Verify(x => x.ProcessEntry(_defaultThreadId, It.IsAny<Guid>()), Times.AtLeastOnce);
         }
 
         [TestMethod]
@@ -179,13 +183,15 @@ namespace AutoTest.Test.AutoTestEngineTests
             var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method),
                                                         new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestSubClass.Method1Entry.Method)};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
-            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[1].Identifier);
+
+            var closeOutMethodId = _methods[1].Identifier;
+            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(closeOutMethodId);
 
             var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
             SUT.MethodRecordingComplete += SUT_MethodRecordingComplete;
             SUT.ProcessCapture(TestSubClass.Method1Exit);
 
-            Assert.IsTrue(_eventArgs.Method.Identifier == _methods[1].Identifier);
+            Assert.IsTrue(_eventArgs.Method.Identifier == closeOutMethodId);
         }
 
         [TestMethod]
@@ -196,7 +202,7 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method)};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
-            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[1].Identifier);
+            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[0].Identifier);
 
             var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
             SUT.ProcessCapture(TestSubClass.Method1Entry);
@@ -266,10 +272,10 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>();
-            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) });
 
-            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_emptySentinel);
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
+            mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
+            mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[0].Identifier);
 
             var SUT = new RecordingMethodManager(mockCache.Object, _defaultThreadProvider.Object, mockStack.Object, _defaultSerializer.Object);
 
