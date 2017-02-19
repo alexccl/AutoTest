@@ -10,9 +10,9 @@ namespace AutoTestEngine.Helpers.Serialization
     /// <summary>
     /// Wrapper around newtonsoft json to optimize for auto test application
     /// </summary>
-    internal static class SerializationHelper
+    internal class SerializationHelper : ISerializationHelper
     {
-        public static SerializationResult Serialize(object obj)
+        public SerializationResult Serialize(object obj)
         {
             string result;
             try
@@ -27,7 +27,7 @@ namespace AutoTestEngine.Helpers.Serialization
             return SerializationResult.InitSuccessfulSerialization(obj, result);
         }
 
-        public static T Deserialize<T>(string serializedObject)
+        public T Deserialize<T>(string serializedObject)
         {
             return JsonConvert.DeserializeObject<T>(serializedObject);
         }

@@ -12,10 +12,13 @@ namespace AutoTestEngine
     {
         private EngineConfiguration _configuration;
         private IEngineImplementation _engineImp;
+        private StandardKernel kernel;
+
         public Engine(EngineConfiguration configuration)
         {
             _configuration = configuration;
             IOCInit();
+            _engineImp = kernel.Get<IEngineImplementation>();
         }
 
         public EntryProcessingResult OnEntry(InterceptionEntryModel entryModel)
