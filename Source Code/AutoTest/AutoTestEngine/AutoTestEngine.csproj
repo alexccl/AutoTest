@@ -64,16 +64,19 @@
     <Compile Include="DAL\TexFileImplementation\TextFileDAL.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="EngineConfiguration.cs" />
+    <Compile Include="EngineImplementation.cs" />
     <Compile Include="EntryProcessingResult.cs" />
     <Compile Include="Helpers\Serialization\ExtensionMethods.cs" />
     <Compile Include="Helpers\Serialization\ISerializationHelper.cs" />
     <Compile Include="Helpers\Serialization\SerializationHelper.cs" />
     <Compile Include="Helpers\Serialization\SerializationResult.cs" />
     <Compile Include="IEngine.cs" />
+    <Compile Include="IEngineImplementation.cs" />
     <Compile Include="InterceptionEntryModel.cs" />
     <Compile Include="InterceptionExceptionModel.cs" />
     <Compile Include="InterceptionExitModel.cs" />
     <Compile Include="InterceptionVerification\Failures.cs" />
+    <Compile Include="InterceptionVerification\IVerificationPipeline.cs" />
     <Compile Include="InterceptionVerification\VerificationPipeline.cs" />
     <Compile Include="InterceptionVerification\VerificationPipelineResult.cs" />
     <Compile Include="InterceptionProcessingData.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="InterceptionVerification\VerificationResults\TypeSerializationFailure.cs" />
     <Compile Include="InterceptionVerification\VerificationResults\VerificationFailure.cs" />
     <Compile Include="InterceptionVerification\Verifiers\ReturnValVerifier.cs" />
+    <Compile Include="ProcessMultiplexer\IProcessMultiplexer.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionCache.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStack.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStackEmptyException.cs" />

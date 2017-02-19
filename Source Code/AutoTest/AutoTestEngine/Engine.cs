@@ -11,6 +11,7 @@ namespace AutoTestEngine
     public class Engine : IEngine
     {
         private EngineConfiguration _configuration;
+        private IEngineImplementation _engineImp;
         public Engine(EngineConfiguration configuration)
         {
             _configuration = configuration;
@@ -19,18 +20,31 @@ namespace AutoTestEngine
 
         public EntryProcessingResult OnEntry(InterceptionEntryModel entryModel)
         {
-            throw new NotImplementedException();
+            var procData = new InterceptionProcessingData(entryModel, _configuration);
+            var engineRes = _engineImp.RunEngine(procData);
+
+            var returnVal = new EntryProcessingResult();
+
+            if(engineRes.OverrideValue != null)
+            {
+                returnVal.BypassProxiedMethod = true;
+                returnVal.BypassProxiedMethodValue = engineRes.OverrideValue;
+            }
+
+            return returnVal;
         }
 
 
         public void OnException(InterceptionExceptionModel exceptionModel)
         {
-            throw new NotImplementedException();
+            var procData = new InterceptionProcessingData(exceptionModel, _configuration);
+            _engineImp.RunEngine(procData);
         }
 
         public void OnExit(InterceptionExitModel exitModel)
         {
-            throw new NotImplementedException();
+            var procData = new InterceptionProcessingData(exitModel, _configuration);
+            _engineImp.RunEngine(procData);
         }
 
         /// <summary>

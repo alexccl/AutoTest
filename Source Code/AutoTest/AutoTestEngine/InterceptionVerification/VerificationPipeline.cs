@@ -10,7 +10,7 @@ namespace AutoTestEngine.InterceptionVerification
     /// <summary>
     /// Pipeline that each interception must go through
     /// </summary>
-    internal class VerificationPipeline
+    internal class VerificationPipeline : IVerificationPipeline
     {
         private List<IVerifier> _verifiers;
         public VerificationPipeline(IVerifier[] verifiers)

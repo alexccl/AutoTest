@@ -62,6 +62,8 @@
   <ItemGroup>
     <Compile Include="AutoTestEngineTests\DALHelpersTest.cs" />
     <Compile Include="AutoTestEngineTests\DataHelper.cs" />
+    <Compile Include="AutoTestEngineTests\EngineImplementationTest.cs" />
+    <Compile Include="AutoTestEngineTests\EntryProcessingResultTest.cs" />
     <Compile Include="AutoTestEngineTests\ExecutionCacheTests.cs" />
     <Compile Include="AutoTestEngineTests\ExecutionStackTest.cs" />
     <Compile Include="AutoTestEngineTests\ExtensionMethodTest.cs" />

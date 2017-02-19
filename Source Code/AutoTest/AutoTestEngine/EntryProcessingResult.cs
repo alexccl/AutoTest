@@ -19,6 +19,6 @@ namespace AutoTestEngine
         /// <summary>
         /// Determines the return value of the bapassed method
         /// </summary>
-        public bool BypassProxiedMethodValue { get; set; }
+        public object BypassProxiedMethodValue { get; set; }
     }
 }

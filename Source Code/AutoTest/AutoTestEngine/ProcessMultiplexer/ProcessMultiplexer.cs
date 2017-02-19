@@ -10,7 +10,7 @@ namespace AutoTestEngine.ProcessMultiplexer
     /// <summary>
     /// Determines which process the interception should perform and executes that process
     /// </summary>
-    internal class ProcessMultiplexer
+    internal class ProcessMultiplexer : IProcessMultiplexer
     {
         private List<IProcess> _processes;
         public ProcessMultiplexer(IProcess[] processes)
