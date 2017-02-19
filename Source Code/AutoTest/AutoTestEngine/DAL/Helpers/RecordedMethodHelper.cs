@@ -16,16 +16,23 @@ namespace AutoTestEngine.DAL.Helpers
             _dal = dal;
         }
 
-        public void AddRecordedMethod(RecordedMethod method) { }
+        public void AddRecordedMethod(RecordedMethod method)
+        {
+            var existingMethod = GetMethodWithId(method.Identifier);
+
+            if (existingMethod != null) _dal.Remove<RecordedMethod>(existingMethod);
+
+            _dal.Create<RecordedMethod>(method);
+        }
 
         public List<RecordedMethod> GetAllRecordedMethods()
         {
-            throw new NotImplementedException();
+            return _dal.Fetch<RecordedMethod>(x => true);
         }
 
-        public RecordedMethod GetMethodWithId()
+        public RecordedMethod GetMethodWithId(Guid id)
         {
-            throw new NotImplementedException();
+            return _dal.Fetch<RecordedMethod>(x => x.Identifier.Equals(id)).FirstOrDefault();
         }
     }
 }

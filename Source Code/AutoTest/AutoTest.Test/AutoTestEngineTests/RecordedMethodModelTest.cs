@@ -42,5 +42,33 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(SUT.SubMethods != null);
             Assert.IsTrue(SUT.TargetType.Equals(targetType));
         }
+
+        [TestMethod]
+        public void Recorded_Method_Model_Test_Recording_Method_Id_Init()
+        {
+            var guid = Guid.NewGuid();
+            var recMethod = new RecordedMethod(guid);
+            Assert.IsTrue(guid == recMethod.Identifier);
+        }
+
+        [TestMethod]
+        public void Recorded_Method_Model_Test_Equality_Override()
+        {
+            var guid = Guid.NewGuid();
+            var targetType = TestClass.Method1Entry.TargetType;
+            var methodName = TestClass.Method1Entry.Method.Name;
+            var serTarget = "blah";
+            var arg = new object[] { 2.0, "blah" };
+            var methodBase = TestClass.Method1Entry.Method;
+            var returnVal = "foo";
+
+            var recordingMethod = new RecordingMethod(guid, targetType, serTarget, arg, methodBase);
+            var recordedMethod = new RecordedMethod(recordingMethod);
+
+            Assert.IsTrue(recordedMethod.Equals(recordedMethod));
+            Assert.IsFalse(recordedMethod.Equals(new RecordedMethod(Guid.NewGuid())));
+            Assert.IsTrue(recordedMethod.Equals(new RecordedMethod(guid)));
+
+        }
     }
 }

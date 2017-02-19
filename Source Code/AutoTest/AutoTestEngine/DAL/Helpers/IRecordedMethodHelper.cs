@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoTestEngine.DAL.Models;
+using System;
 
 namespace AutoTestEngine.DAL.Helpers
 {
@@ -7,6 +8,6 @@ namespace AutoTestEngine.DAL.Helpers
     {
         void AddRecordedMethod(RecordedMethod method);
         List<RecordedMethod> GetAllRecordedMethods();
-        RecordedMethod GetMethodWithId();
+        RecordedMethod GetMethodWithId(Guid id);
     }
 }

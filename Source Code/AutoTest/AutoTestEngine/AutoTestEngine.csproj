@@ -52,6 +52,7 @@
     <Compile Include="AutoTestEngineException.cs" />
     <Compile Include="Bindings.cs" />
     <Compile Include="BoundaryType.cs" />
+    <Compile Include="DAL\Helpers\IRecordedMethodHelper.cs" />
     <Compile Include="DAL\Helpers\IUnserializableTypeHelper.cs" />
     <Compile Include="DAL\Helpers\RecordedMethodHelper.cs" />
     <Compile Include="DAL\Helpers\UnserializableTypeHelper.cs" />

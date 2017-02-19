@@ -18,9 +18,9 @@ namespace AutoTestEngine.DAL.Models
         public Exception MethodException { get; set; }
         public string MethodName { get; set; }
 
-        public RecordedMethod()
+        public RecordedMethod(Guid id)
         {
-
+            this.Identifier = id;
         }
 
         public RecordedMethod(RecordingMethod finishedMethod)
@@ -33,6 +33,15 @@ namespace AutoTestEngine.DAL.Models
             this.SubMethods = finishedMethod.SubMethods;
             this.MethodException = finishedMethod.MethodException;
             this.MethodName = finishedMethod.MethodName;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is RecordedMethod)) return false;
+
+            var obj2 = obj as RecordedMethod;
+
+            return this.Identifier.Equals(obj2.Identifier);
         }
     }
 }

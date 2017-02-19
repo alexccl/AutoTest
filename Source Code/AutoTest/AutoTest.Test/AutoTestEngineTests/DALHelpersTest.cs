@@ -16,6 +16,7 @@ namespace AutoTest.Test.AutoTestEngineTests
     [TestClass]
     public class DALHelpersTest
     {
+        #region unserializable type
         [TestMethod]
         public void DAL_Helper_Test_IsUnserializable_Returns_False_When_Not_In_DB()
         {
@@ -74,6 +75,86 @@ namespace AutoTest.Test.AutoTestEngineTests
             helper.AddUnserializableType(typeof(double));
 
             mock.Verify(x => x.Create<UnserializableType>(It.IsAny<UnserializableType>()), Times.Never);
+        }
+        #endregion
+
+        [TestMethod]
+        public void DAL_Helper_Test_Adding_Method_Adds_To_DB()
+        {
+            var mock = new Mock<IDAL>();
+            mock.Setup(x => x.Fetch<RecordedMethod>(It.IsAny<Func<RecordedMethod, bool>>())).Returns(new List<RecordedMethod>());
+            var helper = new RecordedMethodHelper(mock.Object);
+            helper.AddRecordedMethod(new RecordedMethod(Guid.NewGuid()));
+            mock.Verify(x => x.Create<RecordedMethod>(It.IsAny<RecordedMethod>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void DAL_Helper_Test_All_Results_Are_Returned()
+        {
+            var mock = new Mock<IDAL>();
+            var methods = new List<RecordedMethod>() { new RecordedMethod(Guid.NewGuid()), new RecordedMethod(Guid.NewGuid()) };
+
+            mock.Setup(x => x.Fetch<RecordedMethod>(It.IsAny<Func<RecordedMethod, bool>>()))
+                .Callback((Func<RecordedMethod, bool> func) =>
+                            methods = methods.Where(func).ToList())
+                .Returns(methods);
+
+            var helper = new RecordedMethodHelper(mock.Object);
+            var res = helper.GetAllRecordedMethods();
+            Assert.IsTrue(res.Count == 2);
+        }
+
+        [TestMethod]
+        public void DAL_Helper_Test_Specific_ID_Is_Returned()
+        {
+            var mock = new Mock<IDAL>();
+            var queryId = Guid.NewGuid();
+            var methods = new List<RecordedMethod>() {
+                new RecordedMethod(queryId), new RecordedMethod(Guid.NewGuid()) };
+
+            mock.Setup(x => x.Fetch<RecordedMethod>(It.IsAny<Func<RecordedMethod, bool>>()))
+                .Callback((Func<RecordedMethod, bool> func) =>
+                            methods = methods.Where(func).ToList())
+                .Returns(methods);
+
+            var helper = new RecordedMethodHelper(mock.Object);
+            var res = helper.GetMethodWithId(queryId);
+            Assert.IsTrue(res.Identifier == queryId);
+        }
+
+        [TestMethod]
+        public void DAL_Helper_Test_No_Id_Found_Returns_Null()
+        {
+            var mock = new Mock<IDAL>();
+            var queryId = Guid.NewGuid();
+            var methods = new List<RecordedMethod>() {
+                new RecordedMethod(Guid.NewGuid()), new RecordedMethod(Guid.NewGuid()) };
+
+            mock.Setup(x => x.Fetch<RecordedMethod>(It.IsAny<Func<RecordedMethod, bool>>()))
+                .Returns(new List<RecordedMethod>());
+
+            var helper = new RecordedMethodHelper(mock.Object);
+            var res = helper.GetMethodWithId(queryId);
+            Assert.IsTrue(res == null);
+        }
+
+        [TestMethod]
+        public void DAL_Helper_Test_No_Duplicate_Id()
+        {
+            var mock = new Mock<IDAL>();
+            var queryId = Guid.NewGuid();
+            var methods = new List<RecordedMethod>() {
+                new RecordedMethod(queryId), new RecordedMethod(Guid.NewGuid()) };
+
+            mock.Setup(x => x.Fetch<RecordedMethod>(It.IsAny<Func<RecordedMethod, bool>>()))
+                .Callback((Func<RecordedMethod, bool> func) =>
+                            methods = methods.Where(func).ToList())
+                .Returns(methods);
+
+            var helper = new RecordedMethodHelper(mock.Object);
+            helper.AddRecordedMethod(new RecordedMethod(queryId));
+
+            mock.Verify(x => x.Remove<RecordedMethod>(It.IsAny<RecordedMethod>()), Times.Once);
         }
     }
 }

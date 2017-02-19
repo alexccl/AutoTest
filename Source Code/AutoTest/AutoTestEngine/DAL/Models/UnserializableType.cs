@@ -13,5 +13,16 @@ namespace AutoTestEngine.DAL.Models
         {
             this.InvalidType = type;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!obj.GetType().Equals(this.GetType()))
+            {
+                return false;
+            }
+
+            var type2 = obj as UnserializableType;
+            return type2.InvalidType.Equals(this.InvalidType);
+        }
     }
 }
