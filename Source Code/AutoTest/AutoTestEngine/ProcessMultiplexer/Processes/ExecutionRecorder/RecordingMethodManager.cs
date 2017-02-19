@@ -130,10 +130,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
                 if (!hasError)
                 {
                     executingMethod.CloseOutMethodWithReturnVal(data.ReturnValue);
-                    OnMethodRecordingComplete(new MethodRecordingCompleteEventArgs()
-                    {
-                        Method = executingMethod
-                    });
+                    OnMethodRecordingComplete(new MethodRecordingCompleteEventArgs(executingMethod));
                     ClearMethod(executingMethodId, threadId);
                 }
                 else
@@ -187,10 +184,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             {
 
                 executingMethod.CloseOutMethodWithException(data.Exception);
-                OnMethodRecordingComplete(new MethodRecordingCompleteEventArgs()
-                {
-                    Method = executingMethod
-                });
+                OnMethodRecordingComplete(new MethodRecordingCompleteEventArgs(executingMethod));
                 ClearMethod(executingMethodId, threadId);
             }
 
@@ -205,5 +199,10 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
     internal class MethodRecordingCompleteEventArgs : EventArgs
     {
         public RecordingMethod Method { get; set; }
+
+        public MethodRecordingCompleteEventArgs(RecordingMethod method)
+        {
+            this.Method = method;
+        }
     }
 }
