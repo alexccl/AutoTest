@@ -86,6 +86,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AutoTest4Unity\AutoTest4Unity.csproj">
+      <Project>{7434b808-0903-40a8-9aa4-5c51e0befb2e}</Project>
+      <Name>AutoTest4Unity</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

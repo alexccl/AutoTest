@@ -8,6 +8,7 @@ using Microsoft.Practices.Unity;
 using TestProject.DAL;
 using Microsoft.Practices.Unity.InterceptionExtension;
 using TestProject.NotificationService;
+using AutoTest4Unity;
 
 namespace TestProject
 {
@@ -17,7 +18,7 @@ namespace TestProject
         {
             var x = new Dictionary<int, int>();
             var container = new UnityContainer();
-            container.AddNewExtension<Interception>();
+            container.AddNewExtension<Interception>(new Int);
             container.RegisterType<IDAL, DAL.DAL>();
             container.RegisterType<IRepository, Repository>();
             container.RegisterType<INotificationService, NotificationService.NotificationService>();
