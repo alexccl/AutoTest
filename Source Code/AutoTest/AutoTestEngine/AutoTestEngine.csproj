@@ -53,8 +53,10 @@
     <Compile Include="Bindings.cs" />
     <Compile Include="BoundaryType.cs" />
     <Compile Include="DAL\Helpers\IUnserializableTypeHelper.cs" />
+    <Compile Include="DAL\Helpers\RecordedMethodHelper.cs" />
     <Compile Include="DAL\Helpers\UnserializableTypeHelper.cs" />
     <Compile Include="DAL\IDAL.cs" />
+    <Compile Include="DAL\Models\RecordedMethod.cs" />
     <Compile Include="DAL\Models\UnserializableType.cs" />
     <Compile Include="DAL\TexFileImplementation\IRepository.cs" />
     <Compile Include="DAL\TexFileImplementation\Repository.cs" />
@@ -87,6 +89,8 @@
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IExecutionStack.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IThreadIdProvider.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ThreadIdProvider.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionRecorderProcess.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\IRecordingMethodManager.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethod.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordingMethodManager.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedSubMethod.cs" />

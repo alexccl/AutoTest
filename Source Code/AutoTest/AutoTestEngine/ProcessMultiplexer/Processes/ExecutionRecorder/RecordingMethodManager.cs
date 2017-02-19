@@ -3,19 +3,15 @@ using AutoTestEngine.Helpers.Serialization;
 using AutoTestEngine.InterceptionVerification;
 using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder.ExecutionCache;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 {
     /// <summary>
     /// Acts as a cache for methods currently being recorded.  Manages the entering and exiting of methods and raises event when method is done with execution and all execution metadata has been collected
     /// </summary>
-    internal class RecordingMethodManager
+    internal class RecordingMethodManager : IRecordingMethodManager
     {
         /// <summary>
         /// Stores the currently recorded methods in temp memory

@@ -67,8 +67,10 @@
     <Compile Include="AutoTestEngineTests\ExtensionMethodTest.cs" />
     <Compile Include="AutoTestEngineTests\ProcessingDataTests.cs" />
     <Compile Include="AutoTestEngineTests\ProcessMultiplexerTest.cs" />
-    <Compile Include="AutoTestEngineTests\RecordingMethodManagerTest.cs" />
+    <Compile Include="AutoTestEngineTests\ProcessTest.cs" />
     <Compile Include="AutoTestEngineTests\RecordedMethodModelTest.cs" />
+    <Compile Include="AutoTestEngineTests\RecordingMethodManagerTest.cs" />
+    <Compile Include="AutoTestEngineTests\RecordingMethodModelTest.cs" />
     <Compile Include="AutoTestEngineTests\RecordedSubMethodTest.cs" />
     <Compile Include="AutoTestEngineTests\SerializationResultTest.cs" />
     <Compile Include="AutoTestEngineTests\TestClass.cs" />
