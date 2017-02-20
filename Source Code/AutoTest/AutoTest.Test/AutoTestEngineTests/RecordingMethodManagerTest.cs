@@ -35,7 +35,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             _defaultThreadProvider = mockThreadProvider;
 
             var mockSerializer = new Mock<ISerializationHelper>();
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>())).Returns(_sucSerResult);
+            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>(), It.IsAny<Type>())).Returns(_sucSerResult);
             _defaultSerializer = mockSerializer;
         }
 

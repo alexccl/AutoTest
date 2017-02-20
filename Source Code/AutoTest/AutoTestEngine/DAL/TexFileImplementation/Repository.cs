@@ -12,7 +12,7 @@ namespace AutoTestEngine.DAL.TexFileImplementation
     {
 
         public Dictionary<Type, List<object>> StoredObject {get;set;}
-        private readonly string _storageFilePath = @"Storage.txt";
+        private readonly string _storageFilePath = @"C:\Storage.txt";
         private ISerializationHelper _serializationHelper;
 
         public List<T> GetTypeRepostiory<T>()
@@ -49,16 +49,23 @@ namespace AutoTestEngine.DAL.TexFileImplementation
 
         private void RetrieveStoredContents()
         {
+            EnsureFileExistence();
             var contents = File.ReadAllText(_storageFilePath);
-            this.StoredObject = _serializationHelper.Deserialize<Dictionary<Type, List<object>>>(contents);
+            this.StoredObject = _serializationHelper.Deserialize<Dictionary<Type, List<object>>>(contents) ?? new Dictionary<Type, List<object>>();
         }
 
         private void WriteToStorage()
         {
-            var newContents = _serializationHelper.Serialize(this.StoredObject);
+            EnsureFileExistence();
+            var newContents = _serializationHelper.Serialize(this.StoredObject, typeof(Dictionary<Type, List<object>>));
             if (!newContents.Success) throw new Exception("Could not serialize data for repository", newContents.FailureException);
 
             File.WriteAllText(_storageFilePath, newContents.Result);
+        }
+
+        private void EnsureFileExistence()
+        {
+            if (!File.Exists(_storageFilePath)) File.Create(_storageFilePath);
         }
     }
 }

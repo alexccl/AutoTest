@@ -41,7 +41,9 @@ namespace AutoTestEngine.InterceptionVerification.Verifiers
             }
             else
             {
-                var serResult = _serializer.Serialize(processingData.TargetInstance);
+                var resType = processingData.TargetInstance == null ? typeof(object) : processingData.TargetInstance.GetType();
+                var serResult = _serializer.Serialize(processingData.TargetInstance, resType
+                    );
                 if (!serResult.Success)
                 {
                     _helper.AddUnserializableType(instanceType);

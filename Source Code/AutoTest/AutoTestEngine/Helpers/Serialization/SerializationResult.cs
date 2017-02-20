@@ -13,9 +13,9 @@ namespace AutoTestEngine.Helpers.Serialization
         public Type SerializedType { get; private set; }
         public string Result { get; private set; }
 
-        public static SerializationResult InitSuccessfulSerialization(object originalObject, string result)
+        public static SerializationResult InitSuccessfulSerialization(object originalObject, string result, Type t)
         {
-            return new SerializationResult(originalObject, result);
+            return new SerializationResult(originalObject, result, t);
         }
 
         public static SerializationResult InitFailedSerialization(object originalObject, Exception ex)
@@ -28,11 +28,11 @@ namespace AutoTestEngine.Helpers.Serialization
         /// </summary>
         /// <param name="originalObject">the object that was serialized</param>
         /// <param name="result">the result of the serialization</param>
-        private SerializationResult(object originalObject, string result)
+        private SerializationResult(object originalObject, string result, Type t)
         {
             this.Success = true;
             this.FailureException = null;
-            this.SerializedType = originalObject.GetType();
+            this.SerializedType = t;
             this.Result = result;
         }
 

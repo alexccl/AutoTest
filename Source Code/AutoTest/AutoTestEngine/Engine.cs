@@ -12,13 +12,13 @@ namespace AutoTestEngine
     {
         private EngineConfiguration _configuration;
         private IEngineImplementation _engineImp;
-        private StandardKernel kernel;
+        private StandardKernel _kernel;
 
         public Engine(EngineConfiguration configuration)
         {
             _configuration = configuration;
             IOCInit();
-            _engineImp = kernel.Get<IEngineImplementation>();
+            _engineImp = _kernel.Get<IEngineImplementation>();
         }
 
         public EntryProcessingResult OnEntry(InterceptionEntryModel entryModel)
@@ -59,8 +59,8 @@ namespace AutoTestEngine
             {
                 InjectNonPublic = true
             };
-            var kernel = new StandardKernel(settings);
-            kernel.Load(Assembly.GetExecutingAssembly());
+            _kernel = new StandardKernel(settings);
+            _kernel.Load(Assembly.GetExecutingAssembly());
         }
     }
 }

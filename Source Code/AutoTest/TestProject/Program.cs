@@ -18,11 +18,11 @@ namespace TestProject
         {
             var x = new Dictionary<int, int>();
             var container = new UnityContainer();
-            container.AddNewExtension<Interception>(new Int);
-            container.RegisterType<IDAL, DAL.DAL>();
-            container.RegisterType<IRepository, Repository>();
-            container.RegisterType<INotificationService, NotificationService.NotificationService>();
-            container.RegisterType<IApplication, Application.Application>();
+            container.AddNewExtension<Interception>();
+            container.RegisterType<IDAL, DAL.DAL>(new Interceptor<InterfaceInterceptor>(), new InterceptionBehavior<AutoTestBehavior>());
+            container.RegisterType<IRepository, Repository>(new Interceptor<InterfaceInterceptor>(), new InterceptionBehavior<AutoTestBehavior>());
+            container.RegisterType<INotificationService, NotificationService.NotificationService>(new Interceptor<InterfaceInterceptor>(), new InterceptionBehavior<AutoTestBehavior>());
+            container.RegisterType<IApplication, Application.Application>(new Interceptor<InterfaceInterceptor>(), new InterceptionBehavior<AutoTestBehavior>());
             var app = container.Resolve<IApplication>();
             var invoice = new InvoiceModel()
             {

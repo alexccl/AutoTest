@@ -12,7 +12,7 @@ namespace AutoTestEngine.Helpers.Serialization
     /// </summary>
     internal class SerializationHelper : ISerializationHelper
     {
-        public SerializationResult Serialize(object obj)
+        public SerializationResult Serialize(object obj, Type t)
         {
             string result;
             try
@@ -24,7 +24,7 @@ namespace AutoTestEngine.Helpers.Serialization
                 return SerializationResult.InitFailedSerialization(obj, ex);
             }
 
-            return SerializationResult.InitSuccessfulSerialization(obj, result);
+            return SerializationResult.InitSuccessfulSerialization(obj, result, t);
         }
 
         public T Deserialize<T>(string serializedObject)

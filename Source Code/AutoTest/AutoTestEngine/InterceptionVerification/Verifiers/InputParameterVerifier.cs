@@ -52,7 +52,8 @@ namespace AutoTestEngine.InterceptionVerification.Verifiers
             }
             else
             {
-                var serResult = _serializer.Serialize(res);
+                var resType = res == null ? typeof(object) : res.GetType();
+                var serResult = _serializer.Serialize(res, resTypes);
                 if (!serResult.Success)
                 {
                     _dalHelper.AddUnserializableType(argType);
