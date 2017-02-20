@@ -16,6 +16,18 @@ namespace AutoTest.Test.AutoTestEngineTests
     public class ProcessingDataTests
     {
         private EngineConfiguration _config = new EngineConfiguration();
+        private TypeValModel _instance;
+        private TypeValModel _returnVal;
+        private List<TypeValModel> _args;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _instance = new TypeValModel(typeof(TestClass), new TestClass());
+            _args = new List<TypeValModel>();
+            _returnVal = new TypeValModel(typeof(int), 1);
+        }
+
         [TestMethod]
         public void ProcessingDataEntryInitTest()
         {
@@ -27,7 +39,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(procData.Method != null);
             Assert.IsTrue(procData.ReturnType != null);
             Assert.IsTrue(procData.ReturnValue == null);
-            Assert.IsTrue(procData.TargetInstance == null);
+            Assert.IsTrue(procData.TargetInstance.Value == null);
             Assert.IsTrue(procData.VerificationFailures != null);
         }
 
@@ -57,14 +69,14 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(procData.Method != null);
             Assert.IsTrue(procData.ReturnType != null);
             Assert.IsTrue(procData.ReturnValue != null);
-            Assert.IsTrue(procData.TargetInstance == null);
+            Assert.IsTrue(procData.TargetInstance.Value == null);
             Assert.IsTrue(procData.VerificationFailures != null);
         }
 
         [TestMethod]
         public void Processing_Data_Test_Class_Level_Attributes()
         {
-            var entry = new InterceptionEntryModel(new TestClass(), new List<object>(), GetAttMethodBase());
+            var entry = new InterceptionEntryModel(_instance, _args, GetAttMethodBase());
             var processingModel = new InterceptionProcessingData(entry, new EngineConfiguration());
 
             Assert.IsTrue(processingModel.ClassAttributes.Count == 1);
@@ -76,13 +88,13 @@ namespace AutoTest.Test.AutoTestEngineTests
         [TestMethod]
         public void Processing_Data_Test_Class_Method_Level_Attributes()
         {
-            var entry = new InterceptionEntryModel(new TestClass(), new List<object>(), GetAttMethodBase());
+            var entry = new InterceptionEntryModel(_instance, _args, GetAttMethodBase());
             var processingModel = new InterceptionProcessingData(entry, new EngineConfiguration());
 
             Assert.IsTrue(processingModel.MethodAttributes.Count == 1);
             Assert.IsTrue(processingModel.MethodAttributes.Contains(typeof(AutoTestEngine.Attributes.AutoTest)));
 
-            entry = new InterceptionEntryModel(new TestClass(), new List<object>(), GetNonAttMethodBase());
+            entry = new InterceptionEntryModel(_instance, _args, GetNonAttMethodBase());
             processingModel = new InterceptionProcessingData(entry, new EngineConfiguration());
 
             Assert.IsTrue(processingModel.MethodAttributes.Count == 0);
@@ -91,20 +103,20 @@ namespace AutoTest.Test.AutoTestEngineTests
         [TestMethod]
         public void Processing_Data_Test_All_Constructors()
         {
-            var entry = new InterceptionEntryModel(new TestClass(), new List<object>(), GetAttMethodBase());
+            var entry = new InterceptionEntryModel(_instance, _args, GetAttMethodBase());
             var processingModel = new InterceptionProcessingData(entry, new EngineConfiguration());
 
             Assert.IsTrue(processingModel.MethodAttributes.Count == 1);
             Assert.IsTrue(processingModel.MethodAttributes.Contains(typeof(AutoTestEngine.Attributes.AutoTest)));
 
 
-            var exit = new InterceptionExitModel(new TestClass(), new List<object>(), GetAttMethodBase());
+            var exit = new InterceptionExitModel(_instance, _returnVal, GetAttMethodBase());
             processingModel = new InterceptionProcessingData(exit, new EngineConfiguration());
 
             Assert.IsTrue(processingModel.MethodAttributes.Count == 1);
             Assert.IsTrue(processingModel.MethodAttributes.Contains(typeof(AutoTestEngine.Attributes.AutoTest)));
 
-            var exception = new InterceptionExceptionModel(new TestClass(), GetAttMethodBase(), new Exception());
+            var exception = new InterceptionExceptionModel(_instance, GetAttMethodBase(), new Exception());
             processingModel = new InterceptionProcessingData(exception, new EngineConfiguration());
         }
 

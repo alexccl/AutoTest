@@ -1,4 +1,6 @@
-﻿using AutoTestEngine.DAL.Models;
+﻿using AutoTestEngine;
+using AutoTestEngine.DAL.Models;
+using AutoTestEngine.Helpers.Serialization;
 using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -19,11 +21,15 @@ namespace AutoTest.Test.AutoTestEngineTests
             var targetType = TestClass.Method1Entry.TargetType;
             var methodName = TestClass.Method1Entry.Method.Name;
             var serTarget = "blah";
-            var arg = new object[] { 2.0, "blah" };
+            var arg = new List<TypeValModel>() {
+               new TypeValModel(typeof(double), 2.0),
+               new TypeValModel(typeof(string), "blah")
+            };
             var methodBase = TestClass.Method1Entry.Method;
             var returnVal = "foo";
+            var serValue = new SerializedValue(targetType, serTarget);
 
-            var recordingMethod = new RecordingMethod(guid, targetType, serTarget, arg, methodBase);
+            var recordingMethod = new RecordingMethod(guid, serValue, arg, methodBase);
 
             recordingMethod.CloseOutMethodWithReturnVal(returnVal);
 
@@ -31,10 +37,10 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             for(int i = 0; i < SUT.Args.Count; i++)
             {
-                Assert.IsTrue(SUT.Args[i].Value.Equals(arg[i]));
+                Assert.IsTrue(SUT.Args[i].Value.Equals(arg[i].Value));
             }
             Assert.IsTrue(SUT.Identifier.Equals(guid));
-            Assert.IsTrue(SUT.InstanceAtExecutionTime.Equals(serTarget));
+            Assert.IsTrue(SUT.InstanceAtExecutionTime.Value.Equals(serTarget));
             Assert.IsTrue(SUT.MethodException == null);
             Assert.IsTrue(SUT.MethodName == methodName);
             Assert.IsTrue(SUT.ReturnTypeVal.Type.Equals( returnVal.GetType()));
@@ -58,11 +64,15 @@ namespace AutoTest.Test.AutoTestEngineTests
             var targetType = TestClass.Method1Entry.TargetType;
             var methodName = TestClass.Method1Entry.Method.Name;
             var serTarget = "blah";
-            var arg = new object[] { 2.0, "blah" };
+            var arg = new List<TypeValModel>() {
+               new TypeValModel(typeof(double), 2.0),
+               new TypeValModel(typeof(string), "blah")
+            };
             var methodBase = TestClass.Method1Entry.Method;
             var returnVal = "foo";
+            var serValue = new SerializedValue(targetType, serTarget);
 
-            var recordingMethod = new RecordingMethod(guid, targetType, serTarget, arg, methodBase);
+            var recordingMethod = new RecordingMethod(guid, serValue, arg, methodBase);
             var recordedMethod = new RecordedMethod(recordingMethod);
 
             Assert.IsTrue(recordedMethod.Equals(recordedMethod));

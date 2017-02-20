@@ -12,12 +12,12 @@ namespace AutoTestEngine
         /// <summary>
         /// Instance of the object from which the method is called, can be null for static methods
         /// </summary>
-        public object TargetInstance { get; set; }
+        public TypeValModel TargetInstance { get; set; }
 
         /// <summary>
         /// The value being returned by the proxied class invocation
         /// </summary>
-        public object ReturnValue { get; set; }
+        public TypeValModel ReturnValue { get; set; }
 
         /// <summary>
         /// Method metadata of called method
@@ -30,7 +30,7 @@ namespace AutoTestEngine
         /// <param name="targetInstance">Instance of the object from which the method is called, can be null for static methods</param>
         /// <param name="returnValue">The value being returned by the proxied class invocation</param>
         /// <param name="method">Method metadata of called method</param>
-        public InterceptionExitModel(object targetInstance, object returnValue, MethodBase method)
+        public InterceptionExitModel(TypeValModel targetInstance, TypeValModel returnValue, MethodBase method)
         {
             this.TargetInstance = targetInstance;
             this.ReturnValue = returnValue;

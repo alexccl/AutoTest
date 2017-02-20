@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
+namespace AutoTestEngine
 {
-    class TypeValModel
+    public class TypeValModel
     {
         private Type _type;
         public Type Type {
@@ -35,12 +35,11 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             }
         }
 
-        public TypeValModel(Type type, Object value) : this()
+        public TypeValModel(Type type, Object value)
         {
             this.Type = type;
             this.Value = value;
         }
-
         public TypeValModel()
         {
 

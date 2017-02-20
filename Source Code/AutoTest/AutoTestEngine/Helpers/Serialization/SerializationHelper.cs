@@ -12,19 +12,19 @@ namespace AutoTestEngine.Helpers.Serialization
     /// </summary>
     internal class SerializationHelper : ISerializationHelper
     {
-        public SerializationResult Serialize(object obj, Type t)
+        public SerializationResult Serialize(TypeValModel val)
         {
             string result;
             try
             {
-                result = JsonConvert.SerializeObject(obj, Formatting.Indented);
+                result = JsonConvert.SerializeObject(val.Value, Formatting.Indented);
             }
             catch(Exception ex)
             {
-                return SerializationResult.InitFailedSerialization(obj, ex);
+                return SerializationResult.InitFailedSerialization(val.Value, ex, val.Type);
             }
 
-            return SerializationResult.InitSuccessfulSerialization(obj, result, t);
+            return SerializationResult.InitSuccessfulSerialization(val.Value, result, val.Type);
         }
 
         public T Deserialize<T>(string serializedObject)

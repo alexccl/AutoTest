@@ -57,10 +57,11 @@ namespace AutoTestEngine.DAL.TexFileImplementation
         private void WriteToStorage()
         {
             EnsureFileExistence();
-            var newContents = _serializationHelper.Serialize(this.StoredObject, typeof(Dictionary<Type, List<object>>));
+            var typeVal = new TypeValModel(typeof(Dictionary<Type, List<object>>), this.StoredObject);
+            var newContents = _serializationHelper.Serialize(typeVal);
             if (!newContents.Success) throw new Exception("Could not serialize data for repository", newContents.FailureException);
 
-            File.WriteAllText(_storageFilePath, newContents.Result);
+            File.WriteAllText(_storageFilePath, newContents.SerializedValue.Value);
         }
 
         private void EnsureFileExistence()

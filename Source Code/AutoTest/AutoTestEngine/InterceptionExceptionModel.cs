@@ -12,7 +12,7 @@ namespace AutoTestEngine
         /// <summary>
         /// Instance of the object from which the method is called, can be null for static methods
         /// </summary>
-        public object TargetInstance { get; set; }
+        public TypeValModel TargetInstance { get; set; }
 
         /// <summary>
         /// Method metadata of called method
@@ -30,7 +30,7 @@ namespace AutoTestEngine
         /// <param name="targetInstance">Instance of the object from which the method is called, can be null for static methods</param>
         /// <param name="method">Method metadata of called method</param>
         /// <param name="exception">Instance of the exception being thrown</param>
-        public InterceptionExceptionModel(object targetInstance, MethodBase method, Exception exception)
+        public InterceptionExceptionModel(TypeValModel targetInstance, MethodBase method, Exception exception)
         {
             this.TargetInstance = targetInstance;
             this.Method = method;

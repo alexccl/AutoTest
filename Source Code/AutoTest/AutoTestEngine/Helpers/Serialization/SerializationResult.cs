@@ -10,17 +10,16 @@ namespace AutoTestEngine.Helpers.Serialization
     {
         public bool Success { get; private set; }
         public Exception FailureException { get; private set; }
-        public Type SerializedType { get; private set; }
-        public string Result { get; private set; }
+        public SerializedValue SerializedValue { get; private set; }
 
         public static SerializationResult InitSuccessfulSerialization(object originalObject, string result, Type t)
         {
             return new SerializationResult(originalObject, result, t);
         }
 
-        public static SerializationResult InitFailedSerialization(object originalObject, Exception ex)
+        public static SerializationResult InitFailedSerialization(object originalObject, Exception ex, Type t)
         {
-            return new SerializationResult(originalObject, ex);
+            return new SerializationResult(originalObject, ex, t);
         }
 
         /// <summary>
@@ -32,21 +31,19 @@ namespace AutoTestEngine.Helpers.Serialization
         {
             this.Success = true;
             this.FailureException = null;
-            this.SerializedType = t;
-            this.Result = result;
+            this.SerializedValue = new SerializedValue(t, result);
         }
 
         /// <summary>
         /// Initializes a failure result
         /// </summary>
         /// <param name="originalObject">the object that tried to be serialized</param>
-        /// <param name="ex">the exception thrown during serialization</param>
-        private SerializationResult(object originalObject, Exception ex)
+        /// <param name="ex">the exception thrown during serialization</para>
+        private SerializationResult(object originalObject, Exception ex, Type t)
         {
             this.Success = false;
             this.FailureException = ex;
-            this.SerializedType = originalObject.GetType();
-            this.Result = null;
+            this.SerializedValue = new SerializedValue(t, String.Empty);
         }
     }
 }

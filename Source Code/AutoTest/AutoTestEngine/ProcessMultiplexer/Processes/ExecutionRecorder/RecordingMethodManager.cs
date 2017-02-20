@@ -87,7 +87,9 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 
                 if (!serInstance.Success) throw new AutoTestEngineException($"Unable to serialize type {data.TargetInstance.ToString()} despite not having a serialization failure on the processing datat context");
 
-                var newMethod = new RecordingMethod(newMethodId, data.TargetType, serInstance.Result, data.MethodArgs.ToArray(), data.Method);
+
+
+                var newMethod = new RecordingMethod(newMethodId, serInstance.SerializedValue, data.MethodArgs, data.Method);
                 methods.Add(newMethod);
             }
 
@@ -95,7 +97,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             var executingMethod = methods.FirstOrDefault(x => x.Identifier == executingMethodId);
             if (executingMethod != null)
             {
-                var subMethod = new RecordedSubMethod(newMethodId, data.TargetType, data.MethodArgs.ToTypeValList(), data.ReturnType, data.Method.Name);
+                var subMethod = new RecordedSubMethod(newMethodId, data.TargetType, data.MethodArgs, data.ReturnType, data.Method.Name);
                 executingMethod.SubMethods.Add(subMethod);
             }
 
@@ -129,7 +131,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             {
                 if (!hasError)
                 {
-                    executingMethod.CloseOutMethodWithReturnVal(data.ReturnValue);
+                    executingMethod.CloseOutMethodWithReturnVal(data.ReturnValue.Value);
                     OnMethodRecordingComplete(new MethodRecordingCompleteEventArgs(executingMethod));
                     ClearMethod(executingMethodId, threadId);
                 }

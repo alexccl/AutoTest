@@ -17,7 +17,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var entry = TestClass.Method1Entry;
             var guid = Guid.NewGuid();
-            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs.ToTypeValList(), entry.ReturnType, entry.Method.Name);
+            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method.Name);
             Assert.IsTrue(subMethod.Identifier.Equals(guid));
         }
 
@@ -26,7 +26,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var entry = TestClass.Method1Entry;
             var guid = Guid.NewGuid();
-            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs.ToTypeValList(), entry.ReturnType, entry.Method.Name);
+            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method.Name);
 
             //target type
             Assert.IsTrue(subMethod.TargetType.Equals(entry.TargetType));
@@ -37,7 +37,7 @@ namespace AutoTest.Test.AutoTestEngineTests
                 var typeVal = subMethod.Args[i];
                 var arg = entry.MethodArgs[i];
 
-                Assert.IsTrue(typeVal.Type.Equals(arg.GetType()));
+                Assert.IsTrue(typeVal.Type.Equals(arg.Type));
                 //would test equality, but could be complex type without overloaded equality operator
             }
 
@@ -61,7 +61,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var entry = TestClass.Method1Entry;
             var guid = Guid.NewGuid();
-            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs.ToTypeValList(), entry.ReturnType, entry.Method.Name);
+            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method.Name);
 
             var returnVal = "Return Value";
             subMethod.CloseOutMethodWithReturnVal(returnVal);
@@ -76,7 +76,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var entry = TestClass.Method1Entry;
             var guid = Guid.NewGuid();
-            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs.ToTypeValList(), entry.ReturnType, entry.Method.Name);
+            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method.Name);
 
             var returnVal = "Return Value";
             subMethod.CloseOutMethodWithException(new DivideByZeroException());

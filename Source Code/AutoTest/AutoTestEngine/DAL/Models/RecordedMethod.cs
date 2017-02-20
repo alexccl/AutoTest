@@ -1,4 +1,5 @@
-﻿using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder;
+﻿using AutoTestEngine.Helpers.Serialization;
+using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace AutoTestEngine.DAL.Models
     internal class RecordedMethod
     {
         public Guid Identifier { get; set; }
-        public string InstanceAtExecutionTime { get; set; }
+        public SerializedValue InstanceAtExecutionTime { get; set; }
         public TypeValModel ReturnTypeVal { get; set; }
         public Type TargetType { get; private set; }
         public List<TypeValModel> Args { get; set; }

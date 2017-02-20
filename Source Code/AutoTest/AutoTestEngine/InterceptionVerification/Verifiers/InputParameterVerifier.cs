@@ -42,7 +42,7 @@ namespace AutoTestEngine.InterceptionVerification.Verifiers
             return res;
         }
 
-        private List<VerificationFailure> ProcessArg(object arg)
+        private List<VerificationFailure> ProcessArg(TypeValModel arg)
         {
             var res = new List<VerificationFailure>();
             var argType = arg.GetType();
@@ -51,9 +51,8 @@ namespace AutoTestEngine.InterceptionVerification.Verifiers
                 res.Add(new TypeSerializationFailure(argType));
             }
             else
-            {
-                var resType = res == null ? typeof(object) : res.GetType();
-                var serResult = _serializer.Serialize(res, resTypes);
+            {;
+                var serResult = _serializer.Serialize(arg);
                 if (!serResult.Success)
                 {
                     _dalHelper.AddUnserializableType(argType);

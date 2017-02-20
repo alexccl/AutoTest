@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoTestEngine.Helpers.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,7 +12,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
     {
         public Guid Identifier { get; private set; }
         public bool IsExecutionComplete { get; private set; }
-        public string InstanceAtExecutionTime { get; private set; }
+        public SerializedValue InstanceAtExecutionTime { get; private set; }
         public TypeValModel ReturnTypeVal { get; set; }
         public Type TargetType { get; private set; }
         public List<TypeValModel> Args { get; set; }
@@ -19,21 +20,15 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         public Exception MethodException { get; private set; }
         public string MethodName { get; private set; }
 
-        public RecordingMethod(Guid id, Type targetType, string serializedTarget, Object[] args, MethodBase method)
+        public RecordingMethod(Guid id, SerializedValue serializedTarget, List<TypeValModel> args, MethodBase method)
         {
             this.Identifier = id;
-            this.TargetType = targetType;
+            this.TargetType = serializedTarget.Type;
             this.InstanceAtExecutionTime = serializedTarget;
             this.SubMethods = new List<RecordedSubMethod>();
             this.MethodName = method.Name;
 
-            this.Args = new List<TypeValModel>();
-
-            
-            foreach(var arg in args ?? (new Object[0]))
-            {
-                this.Args.Add(new TypeValModel(arg.GetType(), arg));
-            }
+            this.Args = args;
 
             this.ReturnTypeVal = new TypeValModel() { Type = ((MethodInfo)method).ReturnType };
         }

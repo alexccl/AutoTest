@@ -1,4 +1,5 @@
-﻿using AutoTestEngine.Helpers.Serialization;
+﻿using AutoTestEngine;
+using AutoTestEngine.Helpers.Serialization;
 using AutoTestEngine.InterceptionVerification.VerificationResult;
 using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder;
 using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder.ExecutionCache;
@@ -18,7 +19,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         private bool _methodCompleteEventRaised = false;
         private MethodRecordingCompleteEventArgs _eventArgs;
 
-        private SerializationResult _sucSerResult = SerializationResult.InitSuccessfulSerialization(12.0, "serialized object");
+        private SerializationResult _sucSerResult = SerializationResult.InitSuccessfulSerialization(12.0, "serialized object", typeof(double));
 
         private Mock<IThreadIdProvider> _defaultThreadProvider;
         private Mock<ISerializationHelper> _defaultSerializer;
@@ -35,7 +36,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             _defaultThreadProvider = mockThreadProvider;
 
             var mockSerializer = new Mock<ISerializationHelper>();
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<Object>(), It.IsAny<Type>())).Returns(_sucSerResult);
+            mockSerializer.Setup(x => x.Serialize(It.IsAny<TypeValModel>())).Returns(_sucSerResult);
             _defaultSerializer = mockSerializer;
         }
 
@@ -52,8 +53,10 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
+                var serTarget = new SerializedValue(typeof(int), "1");
+                var args = new List<TypeValModel>();
                 return new List<RecordingMethod>() {
-                    new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method)
+                    new RecordingMethod(Guid.NewGuid(), serTarget, args, TestClass.Method1Entry.Method)
                 };
 
             }
@@ -94,7 +97,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockStack = new Mock<IExecutionStack>();
 
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
+            var _methods = new List<RecordingMethod>() { TestClass.Method1EntryRecording };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
 
@@ -111,7 +114,9 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
+            var serTarget = new SerializedValue(typeof(int), "1");
+            var args = new List<TypeValModel>();
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), serTarget, args, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
 
@@ -128,7 +133,8 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
+            var instanceSer = new SerializedValue(typeof(int), "1");
+            var _methods = new List<RecordingMethod>() { TestClass.Method1EntryRecording };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
 
@@ -145,7 +151,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
+            var _methods = new List<RecordingMethod>() { TestClass.Method1EntryRecording };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
 
@@ -162,8 +168,8 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method),
-                                                        new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestSubClass.Method1Entry.Method)};
+            var _methods = new List<RecordingMethod>() { TestClass.Method1EntryRecording,
+                                                        TestSubClass.Method1EntryRecording};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[1].Identifier);
 
@@ -180,8 +186,8 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method),
-                                                        new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestSubClass.Method1Entry.Method)};
+            var _methods = new List<RecordingMethod>() { TestClass.Method1EntryRecording,
+                                                        TestSubClass.Method1EntryRecording};
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
 
             var closeOutMethodId = _methods[1].Identifier;
@@ -200,7 +206,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method)};
+            var _methods = new List<RecordingMethod>() { TestClass.Method1EntryRecording };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[0].Identifier);
 
@@ -225,7 +231,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             procData.AddVerificationFailures(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
             SUT.ProcessCapture(procData);
 
-            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<object>()), Times.Never);
+            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<TypeValModel>()), Times.Never);
         }
 
         [TestMethod]
@@ -244,7 +250,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             procData.AddVerificationFailures(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
             SUT.ProcessCapture(procData);
 
-            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<object>()), Times.Never);
+            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<TypeValModel>()), Times.Never);
         }
 
         [TestMethod]
@@ -272,8 +278,9 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockCache = new Mock<IExecutionCache>();
             var mockStack = new Mock<IExecutionStack>();
 
-
-            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method) };
+            var serTarget = new SerializedValue(typeof(int), "1");
+            var args = new List<TypeValModel>();
+            var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), serTarget, args, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[0].Identifier);
 
@@ -295,8 +302,9 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             var _methods = new List<RecordingMethod>();
 
-            
-            var recMethod = new RecordingMethod(Guid.NewGuid(), typeof(int), "", null, TestClass.Method1Entry.Method);
+            var serTarget = new SerializedValue(typeof(int), "1");
+            var args = new List<TypeValModel>();
+            var recMethod = new RecordingMethod(Guid.NewGuid(), serTarget, args, TestClass.Method1Entry.Method);
             var subMethodGuid = Guid.NewGuid();
             recMethod.SubMethods.Add(new RecordedSubMethod(subMethodGuid, typeof(int), new List<TypeValModel>(), typeof(int), "blah"));
 

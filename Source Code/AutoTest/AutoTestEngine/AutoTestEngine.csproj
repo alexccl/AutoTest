@@ -70,6 +70,7 @@
     <Compile Include="Helpers\Serialization\ISerializationHelper.cs" />
     <Compile Include="Helpers\Serialization\SerializationHelper.cs" />
     <Compile Include="Helpers\Serialization\SerializationResult.cs" />
+    <Compile Include="Helpers\Serialization\SerializedValue.cs" />
     <Compile Include="IEngine.cs" />
     <Compile Include="IEngineImplementation.cs" />
     <Compile Include="InterceptionEntryModel.cs" />
@@ -99,7 +100,7 @@
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethod.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordingMethodManager.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedSubMethod.cs" />
-    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\TypeValModel.cs" />
+    <Compile Include="TypeValModel.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\IProcess.cs" />
     <Compile Include="ProcessMultiplexer\ProcessMultiplexer.cs" />
     <Compile Include="ProcessMultiplexer\ProcessResult.cs" />

@@ -21,7 +21,7 @@ namespace AutoTestEngine
         /// <summary>
         /// The instance of the the intercepted class at the time of invocation
         /// </summary>
-        public object TargetInstance { get; internal set; }
+        public TypeValModel TargetInstance { get; internal set; }
 
         public Type TargetType
         {
@@ -34,7 +34,7 @@ namespace AutoTestEngine
         /// <summary>
         /// Return value of the invocation, can be null based on boundary context
         /// </summary>
-        public object ReturnValue { get; set; }
+        public TypeValModel ReturnValue { get; set; }
 
         /// <summary>
         /// Exception thrown by invocation, can be null based on boundary context
@@ -44,7 +44,7 @@ namespace AutoTestEngine
         /// <summary>
         /// Arguments passed to the method
         /// </summary>
-        public List<object> MethodArgs { get; set; }
+        public List<TypeValModel> MethodArgs { get; set; }
 
         /// <summary>
         /// Method metadata of called method

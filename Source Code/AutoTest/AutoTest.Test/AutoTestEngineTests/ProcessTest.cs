@@ -1,6 +1,7 @@
 ﻿using AutoTestEngine;
 using AutoTestEngine.DAL.Helpers;
 using AutoTestEngine.DAL.Models;
+using AutoTestEngine.Helpers.Serialization;
 using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -76,9 +77,10 @@ namespace AutoTest.Test.AutoTestEngineTests
             var _manager = new Mock<IRecordingMethodManager>();
 
             var entry = TestClass.Method1Entry;
+            var serVal = new SerializedValue(entry.TargetType, "");
 
-            var recMethod = new RecordingMethod(Guid.NewGuid(), entry.TargetType, "", entry.MethodArgs.ToArray(), entry.Method);
-            recMethod.CloseOutMethodWithReturnVal(TestClass.Method1Exit.ReturnValue);
+            var recMethod = new RecordingMethod(Guid.NewGuid(), serVal, entry.MethodArgs, entry.Method);
+            recMethod.CloseOutMethodWithReturnVal(TestClass.Method1Exit.ReturnValue.Value);
 
             _manager.Setup(x => x.ProcessCapture(It.IsAny<InterceptionProcessingData>())).Raises(f => f.MethodRecordingComplete += null, new MethodRecordingCompleteEventArgs(recMethod));
 

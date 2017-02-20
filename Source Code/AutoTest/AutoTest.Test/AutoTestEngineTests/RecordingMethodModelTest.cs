@@ -1,4 +1,6 @@
-﻿using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder;
+﻿using AutoTestEngine;
+using AutoTestEngine.Helpers.Serialization;
+using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -16,7 +18,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var x = InitTestModel();
 
-            Assert.IsTrue(x.InstanceAtExecutionTime == "test");
+            Assert.IsTrue(x.InstanceAtExecutionTime.Value == "test");
             Assert.IsTrue(x.IsExecutionComplete == false);
             Assert.IsTrue(x.ReturnTypeVal.Value == null);
             Assert.IsTrue(x.ReturnTypeVal.Type == typeof(double));
@@ -81,7 +83,15 @@ namespace AutoTest.Test.AutoTestEngineTests
 
         private RecordingMethod InitTestModel()
         {
-            return new RecordingMethod(Guid.NewGuid(), typeof(String), "test", new object[] { "arg1", 2, DateTime.Now }, DataHelper.MathPowerData.Entry.Method);
+            var instance = new SerializedValue(typeof(string), "test");
+            var args = new List<TypeValModel>()
+            {
+                new TypeValModel(typeof(string), "arg1"),
+                new TypeValModel(typeof(int), 2),
+                new TypeValModel(typeof(DateTime), DateTime.Now)
+            };
+
+            return new RecordingMethod(Guid.NewGuid(), instance, args, DataHelper.MathPowerData.Entry.Method);
         }
 
     }

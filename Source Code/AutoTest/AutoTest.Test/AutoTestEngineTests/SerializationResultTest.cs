@@ -16,10 +16,11 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var originalObject = "Test";
             var serializedObject = "Serialized Object";
-            var SUT = SerializationResult.InitSuccessfulSerialization(originalObject, serializedObject);
+
+            var SUT = SerializationResult.InitSuccessfulSerialization(originalObject, serializedObject, typeof(string));
             Assert.IsTrue(SUT.FailureException == null);
-            Assert.IsTrue(SUT.Result == serializedObject);
-            Assert.IsTrue(SUT.SerializedType.Equals(originalObject.GetType()));
+            Assert.IsTrue(SUT.SerializedValue.Value == serializedObject);
+            Assert.IsTrue(SUT.SerializedValue.Type.Equals(originalObject.GetType()));
             Assert.IsTrue(SUT.Success == true);
         }
 
@@ -28,10 +29,10 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void Serialization_Result_Test_Test_Failure_Initialization()
         {
             var originalObject = "Test";
-            var SUT = SerializationResult.InitFailedSerialization(originalObject, new Exception());
+            var SUT = SerializationResult.InitFailedSerialization(originalObject, new Exception(), typeof(string));
             Assert.IsTrue(SUT.FailureException != null);
-            Assert.IsTrue(SUT.Result == null);
-            Assert.IsTrue(SUT.SerializedType.Equals(originalObject.GetType()));
+            Assert.IsTrue(SUT.SerializedValue.Value == string.Empty);
+            Assert.IsTrue(SUT.SerializedValue.Type.Equals(originalObject.GetType()));
             Assert.IsTrue(SUT.Success == false);
         }
     }

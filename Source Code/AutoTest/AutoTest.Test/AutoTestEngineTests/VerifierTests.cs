@@ -32,10 +32,10 @@ namespace AutoTest.Test.AutoTestEngineTests
             _failUnserializableTypehelper.Setup(x => x.IsUnserializable(It.IsAny<Type>())).Returns(true);
 
             _successSerHelper = new Mock<ISerializationHelper>();
-            _successSerHelper.Setup(x => x.Serialize(It.IsAny<object>(), It.IsAny<Type>())).Returns(SerializationResult.InitSuccessfulSerialization(new object(), String.Empty, typeof(object)));
+            _successSerHelper.Setup(x => x.Serialize(It.IsAny<TypeValModel>())).Returns(SerializationResult.InitSuccessfulSerialization(new object(), String.Empty, typeof(object)));
 
             _failSerHelper = new Mock<ISerializationHelper>();
-            _failSerHelper.Setup(x => x.Serialize(It.IsAny<object>(), It.IsAny<Type>())).Returns(SerializationResult.InitFailedSerialization(new object(), new StackOverflowException()));
+            _failSerHelper.Setup(x => x.Serialize(It.IsAny<TypeValModel>())).Returns(SerializationResult.InitFailedSerialization(new object(), new StackOverflowException(), typeof(object)));
         }
         #region Input Parameter Verifier
         [TestMethod]
