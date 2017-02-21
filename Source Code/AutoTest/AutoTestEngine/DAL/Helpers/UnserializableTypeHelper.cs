@@ -17,7 +17,11 @@ namespace AutoTestEngine.DAL.Helpers
         public void AddUnserializableType(Type t)
         {
             if (!IsUnserializable(t))
+            {
                 _dal.Create<UnserializableType>(new UnserializableType(t));
+                _dal.CommitChanges();
+            }
+                
         }
 
         public bool IsUnserializable(Type t)

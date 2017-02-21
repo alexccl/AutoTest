@@ -47,9 +47,41 @@ namespace AutoTestEngine
 
         private bool IsValidSet(Type type, Object val)
         {
+            return true;
             if (type == null || val == null) return true;
+            var valType = val.GetType();
 
-            return (val.GetType().Equals(type));
+            return (IsTypeEqual(type, valType) ||
+                    AreEqualThroughInheritance(type, valType) ||
+                    AreGenericsEqual(type, valType));
+
+        }
+
+        private bool IsTypeEqual(Type t1, Type t2)
+        {
+            return t1.Equals(t2);
+        }
+
+        private bool AreEqualThroughInheritance(Type baseType, Type derivedType)
+        {
+            if (IsTypeEqual(baseType, derivedType)) return true;
+            return baseType.IsAssignableFrom(derivedType);
+        }
+
+
+        private bool AreGenericsEqual(Type baseType, Type derivedType)
+        {
+            if (!baseType.IsGenericType || !derivedType.IsGenericType) return false;
+
+            var baseGeneric = baseType.GetGenericTypeDefinition();
+            var derivedGeneric = derivedType.GetGenericTypeDefinition();
+
+            if (!AreEqualThroughInheritance(baseGeneric, derivedGeneric)) return false;
+
+            var baseGenericParam = baseType.GenericTypeArguments[0];
+            var derivedGenericParam = baseType.GenericTypeArguments[0];
+
+            return AreEqualThroughInheritance(baseGenericParam, derivedGenericParam);
         }
     }
 }

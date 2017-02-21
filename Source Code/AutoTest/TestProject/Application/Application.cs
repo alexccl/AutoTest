@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TestProject.DAL;
@@ -13,11 +14,13 @@ namespace TestProject.Application
 
         private INotificationService _notificationService;
         private IDAL _dal;
+        public Func<int, bool> ex;
 
         public Application(INotificationService notificationService, IDAL dal)
         {
             _notificationService = notificationService;
             _dal = dal;
+            ex = (x => x < 2);
         }
 
         public InvoiceModel SendInvoice(InvoiceModel invoice)

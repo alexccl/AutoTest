@@ -10,22 +10,33 @@ namespace AutoTestEngine.DAL.TexFileImplementation
 {
     internal class Repository : IRepository
     {
-
-        public Dictionary<Type, List<object>> StoredObject {get;set;}
+        private static Dictionary<Type, List<object>> _storedObjectBacking;
+        public static Dictionary<Type, List<object>> StoredObject
+        {
+            get
+            {
+                if (_storedObjectBacking == null) _storedObjectBacking = new Dictionary<Type, List<object>>();
+                return _storedObjectBacking;
+            }
+            set
+            {
+                _storedObjectBacking = value;
+            }
+        }
         private readonly string _storageFilePath = @"C:\Storage.txt";
         private ISerializationHelper _serializationHelper;
 
         public List<T> GetTypeRepostiory<T>()
         {
-            if (StoredObject.ContainsKey(typeof(T)))
+            if (!StoredObject.ContainsKey(typeof(T))) StoredObject.Add(typeof(T), new List<object>());
+
+            //if it's empty, it may need to sync up with storage
+            if(!StoredObject[typeof(T)].Any())
             {
-                var typeRep = StoredObject[typeof(T)];
-                return typeRep.Select(x => (T)x).ToList();
+                StoredObject[typeof(T)] = RetrieveStoredContents<T>().Select(x => (object)x).ToList();
             }
-            else
-            {
-                return new List<T>();
-            }
+
+            return StoredObject[typeof(T)].Select(x => (T)x).ToList();
         }
 
         public void SetTypeRepository<T>(List<T> newRepository)
@@ -39,7 +50,7 @@ namespace AutoTestEngine.DAL.TexFileImplementation
         public Repository(ISerializationHelper serializationHelper)
         {
             _serializationHelper = serializationHelper;
-            RetrieveStoredContents();
+            
         }
 
         public void CommitChanges()
@@ -47,17 +58,33 @@ namespace AutoTestEngine.DAL.TexFileImplementation
             WriteToStorage();
         }
 
-        private void RetrieveStoredContents()
+        private List<T> RetrieveStoredContents<T>()
         {
             EnsureFileExistence();
             var contents = File.ReadAllText(_storageFilePath);
-            this.StoredObject = _serializationHelper.Deserialize<Dictionary<Type, List<object>>>(contents) ?? new Dictionary<Type, List<object>>();
+            var serVals = _serializationHelper.Deserialize<Dictionary<Type, string>>(contents) ?? new Dictionary<Type, string>();
+
+            if (!serVals.ContainsKey(typeof(T))) return new List<T>();
+
+            var stringVal = serVals[typeof(T)];
+            var listVal = _serializationHelper.Deserialize<List<T>>(stringVal);
+            return listVal;
+
         }
 
         private void WriteToStorage()
         {
             EnsureFileExistence();
-            var typeVal = new TypeValModel(typeof(Dictionary<Type, List<object>>), this.StoredObject);
+            var serVals = new Dictionary<Type, string>();
+            foreach(var entry in StoredObject)
+            {
+                var genericListType = typeof(List<>).MakeGenericType(entry.Key);
+                var tv = new TypeValModel(genericListType, entry.Value);
+                var serVal = _serializationHelper.Serialize(tv);
+                serVals.Add(entry.Key, serVal.SerializedValue.Value);
+            }
+
+            var typeVal = new TypeValModel(typeof(Dictionary<Type, string>), serVals);
             var newContents = _serializationHelper.Serialize(typeVal);
             if (!newContents.Success) throw new Exception("Could not serialize data for repository", newContents.FailureException);
 

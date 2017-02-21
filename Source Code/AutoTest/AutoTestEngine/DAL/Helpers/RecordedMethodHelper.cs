@@ -23,6 +23,7 @@ namespace AutoTestEngine.DAL.Helpers
             if (existingMethod != null) _dal.Remove<RecordedMethod>(existingMethod);
 
             _dal.Create<RecordedMethod>(method);
+            _dal.CommitChanges();
         }
 
         public List<RecordedMethod> GetAllRecordedMethods()

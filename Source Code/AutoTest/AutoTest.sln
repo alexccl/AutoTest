@@ -8,6 +8,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTest.Test", "AutoTest.Test\AutoTest.Test.csproj", "{5A2FBAC7-F211-47F7-A08F-45243D4E3E73}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{AFE3DE81-DB1E-4640-9BE5-ED4D84F3F4BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7434B808-0903-40A8-9AA4-5C51E0BEFB2E} = {7434B808-0903-40A8-9AA4-5C51E0BEFB2E}
+		{ACCCC4EB-79D1-4390-A2E2-0DE5341E2A57} = {ACCCC4EB-79D1-4390-A2E2-0DE5341E2A57}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTest4Unity", "AutoTest4Unity\AutoTest4Unity.csproj", "{7434B808-0903-40A8-9AA4-5C51E0BEFB2E}"
 EndProject

@@ -11,5 +11,7 @@ namespace AutoTestEngine.Helpers.Serialization
         SerializationResult Serialize(TypeValModel value);
 
         T Deserialize<T>(string serializedObject);
+
+        object Desierialize(Type objectType, string serializedObject);
     }
 }

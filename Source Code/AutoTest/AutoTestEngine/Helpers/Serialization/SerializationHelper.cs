@@ -31,5 +31,10 @@ namespace AutoTestEngine.Helpers.Serialization
         {
             return JsonConvert.DeserializeObject<T>(serializedObject);
         }
+
+        public object Desierialize(Type objectType, string serializedObject)
+        {
+           return JsonConvert.DeserializeObject(serializedObject);
+        }
     }
 }

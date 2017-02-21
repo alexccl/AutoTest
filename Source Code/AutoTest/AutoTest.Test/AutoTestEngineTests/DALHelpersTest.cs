@@ -76,6 +76,22 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             mock.Verify(x => x.Create<UnserializableType>(It.IsAny<UnserializableType>()), Times.Never);
         }
+
+        [TestMethod]
+        public void DAL_Helper_Adding_Type_Commits_Changes()
+        {
+            var mock = new Mock<IDAL>();
+
+            mock.Setup(x => x.Fetch<UnserializableType>(It.IsAny<Func<UnserializableType, bool>>()))
+                .Returns(new List<UnserializableType>());
+
+
+            var helper = new UnserializableTypeHelper(mock.Object);
+
+            helper.AddUnserializableType(typeof(double));
+
+            mock.Verify(x => x.CommitChanges(), Times.AtLeastOnce);
+        }
         #endregion
 
         [TestMethod]
@@ -155,6 +171,22 @@ namespace AutoTest.Test.AutoTestEngineTests
             helper.AddRecordedMethod(new RecordedMethod(queryId));
 
             mock.Verify(x => x.Remove<RecordedMethod>(It.IsAny<RecordedMethod>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void DAL_Helper_Add_Method_Commits_Changes()
+        {
+            var mock = new Mock<IDAL>();
+            var queryId = Guid.NewGuid();
+            var methods = new List<RecordedMethod>();
+
+            mock.Setup(x => x.Fetch<RecordedMethod>(It.IsAny<Func<RecordedMethod, bool>>()))
+                .Returns(methods);
+
+            var helper = new RecordedMethodHelper(mock.Object);
+            helper.AddRecordedMethod(new RecordedMethod(queryId));
+
+            mock.Verify(x => x.CommitChanges(), Times.AtLeastOnce);
         }
     }
 }

@@ -24,6 +24,8 @@ namespace AutoTestEngine.DAL.Models
             this.Identifier = id;
         }
 
+        public RecordedMethod() { }
+
         public RecordedMethod(RecordingMethod finishedMethod)
         {
             this.Identifier = finishedMethod.Identifier;
