@@ -9,7 +9,7 @@ using TestProject.NotificationService;
 
 namespace TestProject.Application
 {
-    class Application : IApplication
+    public class Application : IApplication
     {
 
         private INotificationService _notificationService;

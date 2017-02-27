@@ -39,7 +39,7 @@ using KellermanSoftware.CompareNetObjects;
 					variableList += ", It.IsAny<" + method.MethodArgs[i].GetFriendlyName() + ">()";
 				}
 #>
-			<#=mockVarName#>.Setup(x => x.<#=method.MethodName#>(<#=variableList#>))<#
+			<#=mockVarName#>.Setup(x => x.<#=method.MethodData.GetFriendlyName()#>(<#=variableList#>))<#
 				foreach(var retVal in method.MethodCallReturs)
 				{
 					if(retVal.ExceptionThrown)
@@ -59,7 +59,7 @@ using KellermanSoftware.CompareNetObjects;
 <#		}#>
 <#		foreach(var arg in test.Args)
 		{#>
-			<#=arg.Type.GetFriendlyName()#> <#=arg.GeneratedArgName#> = (<#=arg.Type.GetFriendlyName()#>)DeserializeObject(<#=arg.Type.GetFriendlyName()#>,"<#=arg.SerializedArgInstance.Replace("\"", "\\\"")#>");
+			<#=arg.Type.GetFriendlyName()#> <#=arg.GeneratedArgName#> = (<#=arg.Type.GetFriendlyName()#>)DeserializeObject(typeof(<#=arg.Type.GetFriendlyName()#>),"<#=arg.SerializedArgInstance.Replace("\"", "\\\"")#>");
 <#		}
 		if(test.WasExceptionThrown)
 		{#>
@@ -68,10 +68,10 @@ using KellermanSoftware.CompareNetObjects;
 			{
 <#			if(test.Args.Count == 0)
 			{
-#>				var testResult = instance.<#=test.MethodName#>();
+#>				var testResult = instance.<#=test.MethodData.GetFriendlyName()#>();
 			<#}
 			else{
-#>				var testResult = instance.<#=test.MethodName#>(<#=test.Args[0].GeneratedArgName#><#
+#>				var testResult = instance.<#=test.MethodData.GetFriendlyName()#>(<#=test.Args[0].GeneratedArgName#><#
 				for(int i = 1; i < test.Args.Count; i++)
 			    {
 					#>, <#=test.Args[i].GeneratedArgName#><#
@@ -87,11 +87,11 @@ using KellermanSoftware.CompareNetObjects;
 		{
 			if(test.Args.Count == 0)
 			{
-#>			var testResult = instance.<#=test.MethodName#>();
+#>			var testResult = instance.<#=test.MethodData.GetFriendlyName()#>();
 <#			}
 			else
 			{
-#>			var testResult = instance.<#=test.MethodName#>(<#=test.Args[0].GeneratedArgName#><#
+#>			var testResult = instance.<#=test.MethodData.GetFriendlyName()#>(<#=test.Args[0].GeneratedArgName#><#
 				for(int i = 1; i < test.Args.Count; i++)
 			    {
 					#>, <#=test.Args[i].GeneratedArgName#><#
@@ -101,10 +101,10 @@ using KellermanSoftware.CompareNetObjects;
 		if(test.WasExceptionThrown)
 		{#>
 			Assert.IsTrue(thrownException != null,
-						<#=test.TestName#> + " failed to throw a " + <#=test.ThrownException.GetType().GetFriendlyName()#> + " exception.");
+						"<#=test.TestName#> failed to throw a " + <#=test.ThrownException.GetType().GetFriendlyName()#> + " exception.");
 
 			Assert.IsTrue(thrownException.GetType().Equals(typeof(<#=test.ThrownException.GetType().GetFriendlyName()#>)),
-						<#=test.TestName#> + " was expected to throw an exception of type " + <#=test.ThrownException.GetType().GetFriendlyName()#> + " but instead through an exception of type " + thrownException.GetType().GetFriendlyName());
+						"<#=test.TestName#> was expected to throw an exception of type " + <#=test.ThrownException.GetType().GetFriendlyName()#> + " but instead through an exception of type " + thrownException.GetType().GetFriendlyName());
 <#		}
 		else
 		{#>
@@ -113,15 +113,15 @@ using KellermanSoftware.CompareNetObjects;
 			var expectedReturnVal = (<#=test.ReturnVal.Type.GetFriendlyName()#>)DeserializeObject(typeof(<#=test.ReturnVal.Type.GetFriendlyName()#>), "<#=test.SerializedReturnVal.Replace("\"", "\\\"")#>");
 			var equalityResult = Compare(testResult, expectedReturnVal);
 			Assert.IsTrue(equalityResult.AreEqual, 
-						<#=test.TestName#> + " failed testing equality with the message: " + res.DifferencesString);
+						"<#=test.TestName#> failed testing equality with the message: " + equalityResult.DifferencesString);
 <#		}#>
 	}
 <#}#>
 	
-		private string ComparisonResult Compare(object obj1, object obj2)
+		private ComparisonResult Compare(object obj1, object obj2)
 		{
 			CompareLogic compareLogic = new CompareLogic();
-	        return compareLogic.Compare()
+	        return compareLogic.Compare(obj1, obj2);
 		}
 	
 		private object SetPropertyOnType(Type classType, object classInstance, Type propertyType, object propertyInstance)
@@ -140,7 +140,6 @@ using KellermanSoftware.CompareNetObjects;
 		
 		private object DeserializeObject(Type t, string obj)
 		{
-			var method = typeof(JsonConvert).GetMethod("DeserializeObject").MakeGenericMethod(t);
-			return method.Invoke(null, obj);
+			return JsonConvert.DeserializeObject(obj, t);
 		}
 	}

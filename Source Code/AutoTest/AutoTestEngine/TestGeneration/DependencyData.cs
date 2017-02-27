@@ -21,7 +21,7 @@ namespace AutoTestEngine.TestGeneration
         {
             this.Methods = new List<DependencyMethodData>();
             //group methods by method name
-            var groupings = subMethods.GroupBy(x => x.MethodName);
+            var groupings = subMethods.GroupBy(x => x.MethodData.MethodName);
 
             foreach(var group in groupings)
             {
@@ -29,7 +29,7 @@ namespace AutoTestEngine.TestGeneration
                 Methods.Add(methodData);
             }
 
-            var distinctMethod = Methods.Select(x => x.MethodName);
+            var distinctMethod = Methods.Select(x => x.MethodData.MethodName);
             var parentInterfaces = subMethods.FirstOrDefault().TargetType.GetInterfaces();
             foreach(var iFace in parentInterfaces)
             {

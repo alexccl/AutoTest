@@ -21,16 +21,16 @@ namespace AutoTest.Test.AutoTestEngineTests
                 var recordingMethod = TestClass.Method1EntryRecording;
                 var subEntry = TestSubClass.Method1Entry;
 
-                var subMethod = new RecordedSubMethod(Guid.NewGuid(), subEntry.TargetType, subEntry.MethodArgs, subEntry.ReturnType, subEntry.Method.Name);
+                var subMethod = new RecordedSubMethod(Guid.NewGuid(), subEntry.TargetType, subEntry.MethodArgs, subEntry.ReturnType, subEntry.Method);
                 subMethod.CloseOutMethodWithReturnVal(1);
                 recordingMethod.SubMethods.Add(subMethod);
 
-                subMethod = new RecordedSubMethod(Guid.NewGuid(), subEntry.TargetType, subEntry.MethodArgs, subEntry.ReturnType, subEntry.Method.Name);
+                subMethod = new RecordedSubMethod(Guid.NewGuid(), subEntry.TargetType, subEntry.MethodArgs, subEntry.ReturnType, subEntry.Method);
                 subMethod.CloseOutMethodWithException(new NotImplementedException());
                 recordingMethod.SubMethods.Add(subMethod);
 
                 var subEntry2 = TestSubClass2.Method1Entry;
-                var subMethod2 = new RecordedSubMethod(Guid.NewGuid(), subEntry2.TargetType, subEntry2.MethodArgs, subEntry2.ReturnType, subEntry2.Method.Name);
+                var subMethod2 = new RecordedSubMethod(Guid.NewGuid(), subEntry2.TargetType, subEntry2.MethodArgs, subEntry2.ReturnType, subEntry2.Method);
                 subMethod2.CloseOutMethodWithReturnVal(2);
                 recordingMethod.SubMethods.Add(subMethod2);
 

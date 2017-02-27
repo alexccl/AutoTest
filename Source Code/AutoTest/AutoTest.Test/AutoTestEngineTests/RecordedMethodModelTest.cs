@@ -42,7 +42,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(SUT.Identifier.Equals(guid));
             Assert.IsTrue(SUT.InstanceAtExecutionTime.Value.Equals(serTarget));
             Assert.IsTrue(SUT.MethodException == null);
-            Assert.IsTrue(SUT.MethodName == methodName);
+            Assert.IsTrue(SUT.MethodData.MethodName == methodName);
             Assert.IsTrue(SUT.ReturnTypeVal.Type.Equals( returnVal.GetType()));
             Assert.IsTrue(SUT.ReturnTypeVal.Value.Equals(returnVal));
             Assert.IsTrue(SUT.SubMethods != null);

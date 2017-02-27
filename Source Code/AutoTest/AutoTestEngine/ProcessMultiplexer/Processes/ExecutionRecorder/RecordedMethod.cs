@@ -19,6 +19,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         public List<RecordedSubMethod> SubMethods { get; set; }
         public Exception MethodException { get; private set; }
         public string MethodName { get; private set; }
+        public MethodBase Method { get; private set; }
 
         public RecordingMethod(Guid id, SerializedValue serializedTarget, List<TypeValModel> args, MethodBase method)
         {
@@ -27,6 +28,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             this.InstanceAtExecutionTime = serializedTarget;
             this.SubMethods = new List<RecordedSubMethod>();
             this.MethodName = method.Name;
+            this.Method = method;
 
             this.Args = args;
 

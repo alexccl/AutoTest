@@ -26,7 +26,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(genData.ThrownException == null);
             Assert.IsTrue(genData.ReturnVal.Type.Equals(typeof(string)));
             Assert.IsTrue(genData.ReturnVal.Value.Equals("blah"));
-            Assert.IsTrue(genData.MethodName == TestClass.Method1Entry.Method.Name);
+            Assert.IsTrue(genData.MethodData.MethodName == TestClass.Method1Entry.Method.Name);
             Assert.IsTrue(genData.SerializedReturnVal != null);
 
             var arg = genData.Args[0];
@@ -46,7 +46,7 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             var method = dep.Methods[0];
             Assert.IsTrue(method.MethodArgs.Count == 1);
-            Assert.IsTrue(method.MethodName == "Method1");
+            Assert.IsTrue(method.MethodData.MethodName == "Method1");
             Assert.IsTrue(method.MethodCallReturs.Count == 2);
 
             var methodCall = method.MethodCallReturs[0];
@@ -67,7 +67,7 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             method = dep.Methods[0];
             Assert.IsTrue(method.MethodArgs.Count == 1);
-            Assert.IsTrue(method.MethodName == "Method1");
+            Assert.IsTrue(method.MethodData.MethodName == "Method1");
             Assert.IsTrue(method.MethodCallReturs.Count == 1);
 
             methodCall = method.MethodCallReturs[0];

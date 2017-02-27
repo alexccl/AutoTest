@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TestProject.DAL
 {
-    class DAL : IDAL
+    public class DAL : IDAL
     {
         private IRepository _repository;
         public DAL(IRepository repository)

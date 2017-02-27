@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestProject.DAL
 {
-    class Repository : IRepository
+    public class Repository : IRepository
     {
         private Dictionary<Type, object> _dict = new Dictionary<Type, object>();
         public Repository()

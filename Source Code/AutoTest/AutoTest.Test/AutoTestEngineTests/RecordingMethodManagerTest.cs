@@ -306,7 +306,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var args = new List<TypeValModel>();
             var recMethod = new RecordingMethod(Guid.NewGuid(), serTarget, args, TestClass.Method1Entry.Method);
             var subMethodGuid = Guid.NewGuid();
-            recMethod.SubMethods.Add(new RecordedSubMethod(subMethodGuid, typeof(int), new List<TypeValModel>(), typeof(int), "blah"));
+            recMethod.SubMethods.Add(new RecordedSubMethod(subMethodGuid, typeof(int), new List<TypeValModel>(), typeof(int), TestClass.Method1Entry.Method));
 
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(new List<RecordingMethod>() { recMethod });
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(subMethodGuid);

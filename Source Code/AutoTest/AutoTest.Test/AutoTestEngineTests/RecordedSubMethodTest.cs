@@ -17,7 +17,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var entry = TestClass.Method1Entry;
             var guid = Guid.NewGuid();
-            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method.Name);
+            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method);
             Assert.IsTrue(subMethod.Identifier.Equals(guid));
         }
 
@@ -26,7 +26,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var entry = TestClass.Method1Entry;
             var guid = Guid.NewGuid();
-            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method.Name);
+            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method);
 
             //target type
             Assert.IsTrue(subMethod.TargetType.Equals(entry.TargetType));
@@ -42,7 +42,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             }
 
             //method name
-            Assert.IsTrue(subMethod.MethodName == entry.Method.Name);
+            Assert.IsTrue(subMethod.MethodData.MethodName == entry.Method.Name);
 
             //execution complete
             Assert.IsTrue(subMethod.ExecutionComplete == false);
@@ -61,7 +61,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var entry = TestClass.Method1Entry;
             var guid = Guid.NewGuid();
-            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method.Name);
+            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method);
 
             var returnVal = "Return Value";
             subMethod.CloseOutMethodWithReturnVal(returnVal);
@@ -76,7 +76,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var entry = TestClass.Method1Entry;
             var guid = Guid.NewGuid();
-            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method.Name);
+            var subMethod = new RecordedSubMethod(guid, entry.TargetType, entry.MethodArgs, entry.ReturnType, entry.Method);
 
             var returnVal = "Return Value";
             subMethod.CloseOutMethodWithException(new DivideByZeroException());

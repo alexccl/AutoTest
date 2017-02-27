@@ -126,7 +126,7 @@ namespace AutoTestEngine.TestGeneration.Generation
             this.Write(".Setup(x => x.");
             
             #line 42 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(method.MethodName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(method.MethodData.GetFriendlyName()));
             
             #line default
             #line hidden
@@ -277,14 +277,14 @@ namespace AutoTestEngine.TestGeneration.Generation
             
             #line default
             #line hidden
-            this.Write(")DeserializeObject(");
+            this.Write(")DeserializeObject(typeof(");
             
             #line 62 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(arg.Type.GetFriendlyName()));
             
             #line default
             #line hidden
-            this.Write(",\"");
+            this.Write("),\"");
             
             #line 62 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(arg.SerializedArgInstance.Replace("\"", "\\\"")));
@@ -312,7 +312,7 @@ namespace AutoTestEngine.TestGeneration.Generation
             this.Write("\t\t\t\tvar testResult = instance.");
             
             #line 71 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(test.MethodName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(test.MethodData.GetFriendlyName()));
             
             #line default
             #line hidden
@@ -328,7 +328,7 @@ namespace AutoTestEngine.TestGeneration.Generation
             this.Write("\t\t\t\tvar testResult = instance.");
             
             #line 74 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(test.MethodName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(test.MethodData.GetFriendlyName()));
             
             #line default
             #line hidden
@@ -385,7 +385,7 @@ namespace AutoTestEngine.TestGeneration.Generation
             this.Write("\t\t\tvar testResult = instance.");
             
             #line 90 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(test.MethodName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(test.MethodData.GetFriendlyName()));
             
             #line default
             #line hidden
@@ -402,7 +402,7 @@ namespace AutoTestEngine.TestGeneration.Generation
             this.Write("\t\t\tvar testResult = instance.");
             
             #line 94 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(test.MethodName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(test.MethodData.GetFriendlyName()));
             
             #line default
             #line hidden
@@ -447,14 +447,14 @@ namespace AutoTestEngine.TestGeneration.Generation
             
             #line default
             #line hidden
-            this.Write("\t\t\tAssert.IsTrue(thrownException != null,\r\n\t\t\t\t\t\t");
+            this.Write("\t\t\tAssert.IsTrue(thrownException != null,\r\n\t\t\t\t\t\t\"");
             
             #line 104 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(test.TestName));
             
             #line default
             #line hidden
-            this.Write(" + \" failed to throw a \" + ");
+            this.Write(" failed to throw a \" + ");
             
             #line 104 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(test.ThrownException.GetType().GetFriendlyName()));
@@ -468,14 +468,14 @@ namespace AutoTestEngine.TestGeneration.Generation
             
             #line default
             #line hidden
-            this.Write(")),\r\n\t\t\t\t\t\t");
+            this.Write(")),\r\n\t\t\t\t\t\t\"");
             
             #line 107 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(test.TestName));
             
             #line default
             #line hidden
-            this.Write(" + \" was expected to throw an exception of type \" + ");
+            this.Write(" was expected to throw an exception of type \" + ");
             
             #line 107 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(test.ThrownException.GetType().GetFriendlyName()));
@@ -514,14 +514,15 @@ namespace AutoTestEngine.TestGeneration.Generation
             #line default
             #line hidden
             this.Write("\");\r\n\t\t\tvar equalityResult = Compare(testResult, expectedReturnVal);\r\n\t\t\tAssert.I" +
-                    "sTrue(equalityResult.AreEqual, \r\n\t\t\t\t\t\t");
+                    "sTrue(equalityResult.AreEqual, \r\n\t\t\t\t\t\t\"");
             
             #line 116 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(test.TestName));
             
             #line default
             #line hidden
-            this.Write(" + \" failed testing equality with the message: \" + res.DifferencesString);\r\n");
+            this.Write(" failed testing equality with the message: \" + equalityResult.DifferencesString);" +
+                    "\r\n");
             
             #line 117 "C:\Users\Alex.Luebbehusen\Documents\Visual Studio 2015\Projects\at-gh\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
 		}
@@ -536,10 +537,10 @@ namespace AutoTestEngine.TestGeneration.Generation
             #line default
             #line hidden
             this.Write(@"	
-		private string ComparisonResult Compare(object obj1, object obj2)
+		private ComparisonResult Compare(object obj1, object obj2)
 		{
 			CompareLogic compareLogic = new CompareLogic();
-	        return compareLogic.Compare()
+	        return compareLogic.Compare(obj1, obj2);
 		}
 	
 		private object SetPropertyOnType(Type classType, object classInstance, Type propertyType, object propertyInstance)
@@ -558,8 +559,7 @@ namespace AutoTestEngine.TestGeneration.Generation
 		
 		private object DeserializeObject(Type t, string obj)
 		{
-			var method = typeof(JsonConvert).GetMethod(""DeserializeObject"").MakeGenericMethod(t);
-			return method.Invoke(null, obj);
+			return JsonConvert.DeserializeObject(obj, t);
 		}
 	}");
             return this.GenerationEnvironment.ToString();

@@ -9,7 +9,7 @@ namespace AutoTestEngine.TestGeneration
 {
     class DependencyMethodData
     {
-        public string MethodName { get; set; }
+        public MethodMetaData MethodData { get; set; }
         public List<Type> MethodArgs { get; set; }
         
         public List<MethodCallReturnData> MethodCallReturs { get; set; }
@@ -20,7 +20,7 @@ namespace AutoTestEngine.TestGeneration
         /// <param name="subMethods">Must be same methods on same type</param>
         public DependencyMethodData(List<RecordedSubMethod> subMethods)
         {
-            this.MethodName = subMethods.FirstOrDefault().MethodName;
+            this.MethodData = subMethods.FirstOrDefault().MethodData;
             this.MethodArgs = subMethods.FirstOrDefault().Args.Select(x => x.Type).ToList();
 
             this.MethodCallReturs = new List<MethodCallReturnData>();

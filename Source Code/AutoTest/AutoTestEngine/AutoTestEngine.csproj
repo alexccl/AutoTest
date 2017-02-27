@@ -101,6 +101,7 @@
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ThreadIdProvider.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionRecorderProcess.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\IRecordingMethodManager.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\MethodMetaData.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethod.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordingMethodManager.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedSubMethod.cs" />

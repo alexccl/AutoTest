@@ -1,4 +1,5 @@
 ﻿using AutoTestEngine.DAL.Models;
+using AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder;
 using KellermanSoftware.CompareNetObjects;
 using Newtonsoft.Json;
 using System;
@@ -16,7 +17,7 @@ namespace AutoTestEngine.TestGeneration
         public Type InstanceType { get; set; }
         public List<DependencyData> Dependencies { get; set; }
         public List<SerializedArg> Args { get; private set; }
-        public string MethodName { get; private set; }
+        public MethodMetaData MethodData { get; private set; }
         public bool WasExceptionThrown {
             get
             {
@@ -36,12 +37,12 @@ namespace AutoTestEngine.TestGeneration
         }
         public SingleTest(RecordedMethod method) : this()
         {
-            this.TestName = $"{method.TargetType.Name}_{method.MethodName}_{this.GenRandIntString()}";
+            this.TestName = $"{method.TargetType.Name}_{method.MethodData.MethodName}_{this.GenRandIntString()}";
             this.ObjectInstance = method.InstanceAtExecutionTime.Value;
             this.InstanceType = method.InstanceAtExecutionTime.Type;
             this.ThrownException = method.MethodException;
             this.ReturnVal = method.ReturnTypeVal;
-            this.MethodName = method.MethodName;
+            this.MethodData = method.MethodData;
 
             if (!this.WasExceptionThrown)
             {

@@ -97,7 +97,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             var executingMethod = methods.FirstOrDefault(x => x.Identifier == executingMethodId);
             if (executingMethod != null)
             {
-                var subMethod = new RecordedSubMethod(newMethodId, data.TargetType, data.MethodArgs, data.ReturnType, data.Method.Name);
+                var subMethod = new RecordedSubMethod(newMethodId, data.TargetType, data.MethodArgs, data.ReturnType, data.Method);
                 executingMethod.SubMethods.Add(subMethod);
             }
 

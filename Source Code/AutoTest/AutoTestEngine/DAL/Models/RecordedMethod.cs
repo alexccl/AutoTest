@@ -17,7 +17,7 @@ namespace AutoTestEngine.DAL.Models
         public List<TypeValModel> Args { get; set; }
         public List<RecordedSubMethod> SubMethods { get; set; }
         public Exception MethodException { get; set; }
-        public string MethodName { get; set; }
+        public MethodMetaData MethodData { get; set; }
 
         public RecordedMethod(Guid id)
         {
@@ -35,7 +35,7 @@ namespace AutoTestEngine.DAL.Models
             this.Args = finishedMethod.Args;
             this.SubMethods = finishedMethod.SubMethods;
             this.MethodException = finishedMethod.MethodException;
-            this.MethodName = finishedMethod.MethodName;
+            this.MethodData = new MethodMetaData(finishedMethod.Method);
         }
 
         public override bool Equals(object obj)

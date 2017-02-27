@@ -31,7 +31,7 @@ namespace AutoTest4Unity
             ProcessContextEntry();
             var engine = new Engine(new EngineConfiguration());
 
-            var targetType = input.MethodBase.DeclaringType;
+            var targetType = input.Target.GetType() ?? input.MethodBase.DeclaringType;
             var targetVal = input.Target;
             var targetTypeVal = new TypeValModel(targetType, targetVal);
 
