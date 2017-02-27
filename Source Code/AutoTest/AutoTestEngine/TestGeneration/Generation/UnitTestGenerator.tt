@@ -1,0 +1,146 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="AutoTestEngine.Helpers" #>
+<#@ parameter name="data" type="AutoTestEngine.TestGeneration.TestData" #>
+using System.Reflection;
+using Newtonsoft.Json;
+using Moq;
+using KellermanSoftware.CompareNetObjects;
+
+	[TestClass]
+	public class AutoTest_Generated_Tests
+	{
+<# foreach(var test in data.Tests) 
+{#>
+		[TestMethod]
+		public void <#=test.TestName#>()
+		{
+			var instance = (<#=test.InstanceType.GetFriendlyName()#>)DeserializeObject(typeof(<#=test.InstanceType.GetFriendlyName()#>), "<#=test.ObjectInstance.Replace("\"", "\\\"")#>");
+
+<#		foreach(var dep in test.Dependencies)
+		{
+		var mockVarName = "mock_" + dep.MemberType.GetFriendlyName();
+		#>
+			var <#=mockVarName#> = new Mock<<#=dep.MemberType.GetFriendlyName()#>>();
+<#			foreach(var method in dep.Methods)
+			{
+		#>
+<#
+				// mock param setup
+				var variableList = "";
+				if(method.MethodArgs.Count > 0)
+				{
+					variableList = "It.IsAny<" + method.MethodArgs[0].GetFriendlyName() + ">()";
+				}
+				for(int i = 1; i < method.MethodArgs.Count; i++){
+					variableList += ", It.IsAny<" + method.MethodArgs[i].GetFriendlyName() + ">()";
+				}
+#>
+			<#=mockVarName#>.Setup(x => x.<#=method.MethodName#>(<#=variableList#>))<#
+				foreach(var retVal in method.MethodCallReturs)
+				{
+					if(retVal.ExceptionThrown)
+					{    #>
+						
+							.Throws((<#=retVal.ExceptionType.GetFriendlyName()#>)DeserializeObject(typeof(<#=retVal.ExceptionType.GetFriendlyName()#>), "<#=retVal.SerializedException.Replace("\"", "\\\"")#>"))<#
+					}
+					else{#>
+						
+							.Returns((<#=retVal.ReturnVal.Type.GetFriendlyName()#>)DeserializeObject(typeof(<#=retVal.ReturnVal.Type.GetFriendlyName()#>), "<#=retVal.SerializedValue.Replace("\"", "\\\"")#>"))<#
+					}
+				}#>;
+
+			instance = (<#=test.InstanceType.GetFriendlyName()#>)SetPropertyOnType(typeof(<#=test.InstanceType.GetFriendlyName()#>), instance, typeof(<#=dep.MemberType.GetFriendlyName()#>), <#=mockVarName#>.Object);
+
+<#			}#>
+<#		}#>
+<#		foreach(var arg in test.Args)
+		{#>
+			<#=arg.Type.GetFriendlyName()#> <#=arg.GeneratedArgName#> = (<#=arg.Type.GetFriendlyName()#>)DeserializeObject(<#=arg.Type.GetFriendlyName()#>,"<#=arg.SerializedArgInstance.Replace("\"", "\\\"")#>");
+<#		}
+		if(test.WasExceptionThrown)
+		{#>
+			var thrownException = null;
+			try
+			{
+<#			if(test.Args.Count == 0)
+			{
+#>				var testResult = instance.<#=test.MethodName#>();
+			<#}
+			else{
+#>				var testResult = instance.<#=test.MethodName#>(<#=test.Args[0].GeneratedArgName#><#
+				for(int i = 1; i < test.Args.Count; i++)
+			    {
+					#>, <#=test.Args[i].GeneratedArgName#><#
+			    }#>);<#
+			}#>
+			}
+			catch(Exception ex)
+			{
+				thrownException = ex;
+			}
+<#		}
+		else
+		{
+			if(test.Args.Count == 0)
+			{
+#>			var testResult = instance.<#=test.MethodName#>();
+<#			}
+			else
+			{
+#>			var testResult = instance.<#=test.MethodName#>(<#=test.Args[0].GeneratedArgName#><#
+				for(int i = 1; i < test.Args.Count; i++)
+			    {
+					#>, <#=test.Args[i].GeneratedArgName#><#
+			    }#>);<#
+			}
+        }
+		if(test.WasExceptionThrown)
+		{#>
+			Assert.IsTrue(thrownException != null,
+						<#=test.TestName#> + " failed to throw a " + <#=test.ThrownException.GetType().GetFriendlyName()#> + " exception.");
+
+			Assert.IsTrue(thrownException.GetType().Equals(typeof(<#=test.ThrownException.GetType().GetFriendlyName()#>)),
+						<#=test.TestName#> + " was expected to throw an exception of type " + <#=test.ThrownException.GetType().GetFriendlyName()#> + " but instead through an exception of type " + thrownException.GetType().GetFriendlyName());
+<#		}
+		else
+		{#>
+
+
+			var expectedReturnVal = (<#=test.ReturnVal.Type.GetFriendlyName()#>)DeserializeObject(typeof(<#=test.ReturnVal.Type.GetFriendlyName()#>), "<#=test.SerializedReturnVal.Replace("\"", "\\\"")#>");
+			var equalityResult = Compare(testResult, expectedReturnVal);
+			Assert.IsTrue(equalityResult.AreEqual, 
+						<#=test.TestName#> + " failed testing equality with the message: " + res.DifferencesString);
+<#		}#>
+	}
+<#}#>
+	
+		private string ComparisonResult Compare(object obj1, object obj2)
+		{
+			CompareLogic compareLogic = new CompareLogic();
+	        return compareLogic.Compare()
+		}
+	
+		private object SetPropertyOnType(Type classType, object classInstance, Type propertyType, object propertyInstance)
+		{
+			var props = classType.GetProperties();
+			foreach(var prop in props)
+			{
+				if(prop.PropertyType != propertyType) continue;
+	
+				prop.SetValue(classInstance, propertyInstance);
+				return classInstance;
+			}
+	
+			throw new Exception("Could not find type: " + propertyType.Name + " on type: " + classType.Name);
+		}
+		
+		private object DeserializeObject(Type t, string obj)
+		{
+			var method = typeof(JsonConvert).GetMethod("DeserializeObject").MakeGenericMethod(t);
+			return method.Invoke(null, obj);
+		}
+	}

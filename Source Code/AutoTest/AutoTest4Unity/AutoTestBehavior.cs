@@ -11,6 +11,7 @@ namespace AutoTest4Unity
 {
     public class AutoTestBehavior : IInterceptionBehavior
     {
+        private static int _stackDepth = 0;
         bool IInterceptionBehavior.WillExecute
         {
             get
@@ -26,6 +27,8 @@ namespace AutoTest4Unity
 
         IMethodReturn IInterceptionBehavior.Invoke(IMethodInvocation input, GetNextInterceptionBehaviorDelegate getNext)
         {
+
+            ProcessContextEntry();
             var engine = new Engine(new EngineConfiguration());
 
             var targetType = input.MethodBase.DeclaringType;
@@ -59,8 +62,23 @@ namespace AutoTest4Unity
                 var exitModel = new InterceptionExitModel(targetTypeVal, returnTypeVal, input.MethodBase);
                 engine.OnExit(exitModel);
             }
+            ProcessContextExit();
 
             return result;
+        }
+
+        private void ProcessContextExit()
+        {
+            _stackDepth--;
+            if(_stackDepth == 0)
+            {
+                (new Engine(new EngineConfiguration())).GenerateTests();
+            }
+        }
+
+        private void ProcessContextEntry()
+        {
+            _stackDepth++;
         }
     }
 }

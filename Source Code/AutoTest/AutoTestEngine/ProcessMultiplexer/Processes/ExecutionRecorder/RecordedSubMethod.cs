@@ -12,6 +12,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         public bool ExecutionComplete { get; private set; }
         public TypeValModel ReturnTypeVal { get; private set; }
         public Type TargetType { get; private set; }
+
         public List<TypeValModel> Args { get; private set; }
         public string MethodName { get; private set; }
         public Exception MethodException { get; private set; }
@@ -24,7 +25,6 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             this.TargetType = targetType;
             this.Args = args;
             this.MethodName = methodName;
-
             this.ReturnTypeVal = new TypeValModel();
             this.ReturnTypeVal.Type = returnType;
 

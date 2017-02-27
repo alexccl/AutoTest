@@ -27,7 +27,7 @@ namespace AutoTestEngine
         {
             get
             {
-                return TargetInstance.GetType();
+                return TargetInstance.Type;
             }
         }
 

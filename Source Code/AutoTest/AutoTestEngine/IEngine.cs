@@ -25,5 +25,10 @@ namespace AutoTestEngine
         /// Method to be called after proxied class/method invocation and return to caller
         /// </summary>
         void OnExit(InterceptionExitModel exitModel);
+
+        /// <summary>
+        /// Generates new suite of tests with the stored execution recordings
+        /// </summary>
+        void GenerateTests();
     }
 }

@@ -14,13 +14,13 @@ namespace TestProject.Application
 
         private INotificationService _notificationService;
         private IDAL _dal;
-        public Func<int, bool> ex;
+        //public Func<int, bool> ex;
 
         public Application(INotificationService notificationService, IDAL dal)
         {
             _notificationService = notificationService;
             _dal = dal;
-            ex = (x => x < 2);
+           // ex = (x => x < 2);
         }
 
         public InvoiceModel SendInvoice(InvoiceModel invoice)

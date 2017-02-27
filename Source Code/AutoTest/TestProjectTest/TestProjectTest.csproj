@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5A2FBAC7-F211-47F7-A08F-45243D4E3E73}</ProjectGuid>
+    <ProjectGuid>{5CE9A33C-7464-4505-9174-3F19CE2A83F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutoTest.Test</RootNamespace>
-    <AssemblyName>AutoTest.Test</AssemblyName>
+    <RootNamespace>TestProjectTest</RootNamespace>
+    <AssemblyName>TestProjectTest</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,8 +39,16 @@
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.6.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompareNETObjects.3.06.0.0\lib\net452\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.5.29.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.29\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,48 +61,23 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AutoTestEngineTests\DALHelpersTest.cs" />
-    <Compile Include="AutoTestEngineTests\DataHelper.cs" />
-    <Compile Include="AutoTestEngineTests\EngineImplementationTest.cs" />
-    <Compile Include="AutoTestEngineTests\EntryProcessingResultTest.cs" />
-    <Compile Include="AutoTestEngineTests\ExecutionCacheTests.cs" />
-    <Compile Include="AutoTestEngineTests\ExecutionStackTest.cs" />
-    <Compile Include="AutoTestEngineTests\ExtensionMethodTest.cs" />
-    <Compile Include="AutoTestEngineTests\GenerationDataTest.cs" />
-    <Compile Include="AutoTestEngineTests\ProcessingDataTests.cs" />
-    <Compile Include="AutoTestEngineTests\ProcessMultiplexerTest.cs" />
-    <Compile Include="AutoTestEngineTests\ProcessTest.cs" />
-    <Compile Include="AutoTestEngineTests\RecordedMethodModelTest.cs" />
-    <Compile Include="AutoTestEngineTests\RecordingMethodManagerTest.cs" />
-    <Compile Include="AutoTestEngineTests\RecordingMethodModelTest.cs" />
-    <Compile Include="AutoTestEngineTests\RecordedSubMethodTest.cs" />
-    <Compile Include="AutoTestEngineTests\SerializationResultTest.cs" />
-    <Compile Include="AutoTestEngineTests\TestClass.cs" />
-    <Compile Include="AutoTestEngineTests\TextFileDALTest.cs" />
-    <Compile Include="AutoTestEngineTests\ThreadIdProviderTest.cs" />
-    <Compile Include="AutoTestEngineTests\TypeValTest.cs" />
-    <Compile Include="AutoTestEngineTests\UnserializableTypeTest.cs" />
-    <Compile Include="AutoTestEngineTests\VerificationPipelineResultTest.cs" />
-    <Compile Include="AutoTestEngineTests\VerificationPipelineTests.cs" />
-    <Compile Include="AutoTestEngineTests\VerifierResultTest.cs" />
-    <Compile Include="AutoTestEngineTests\VerifierTests.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AutoTestEngine\AutoTestEngine.csproj">
-      <Project>{ACCCC4EB-79D1-4390-A2E2-0DE5341E2A57}</Project>
-      <Name>AutoTestEngine</Name>
-    </ProjectReference>
+    <None Include="AppReadme\Compare-NET-Objects-Help.chm" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\TestProject\TestProject.csproj">
+      <Project>{afe3de81-db1e-4640-9be5-ed4d84f3f4be}</Project>
+      <Name>TestProject</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
