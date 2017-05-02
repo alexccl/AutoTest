@@ -49,7 +49,7 @@ using KellermanSoftware.CompareNetObjects;
 					}
 					else{#>
 						
-							.Returns((<#=retVal.ReturnVal.Type.GetFriendlyName()#>)DeserializeObject(typeof(<#=retVal.ReturnVal.Type.GetFriendlyName()#>), "<#=retVal.SerializedValue.Replace("\"", "\\\"")#>"))<#
+							.Returns((<#=retVal.ReturnVal?.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=retVal.ReturnVal?.GetType().GetFriendlyName()#>), "<#=retVal.SerializedValue.Replace("\"", "\\\"")#>"))<#
 					}
 				}#>;
 
@@ -59,7 +59,7 @@ using KellermanSoftware.CompareNetObjects;
 <#		}#>
 <#		foreach(var arg in test.Args)
 		{#>
-			<#=arg.Type.GetFriendlyName()#> <#=arg.GeneratedArgName#> = (<#=arg.Type.GetFriendlyName()#>)DeserializeObject(typeof(<#=arg.Type.GetFriendlyName()#>),"<#=arg.SerializedArgInstance.Replace("\"", "\\\"")#>");
+			<#=arg?.GetType().GetFriendlyName()#> <#=arg.GeneratedArgName#> = (<#=arg?.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=arg?.GetType().GetFriendlyName()#>),"<#=arg.SerializedArgInstance.Replace("\"", "\\\"")#>");
 <#		}
 		if(test.WasExceptionThrown)
 		{#>
@@ -110,7 +110,7 @@ using KellermanSoftware.CompareNetObjects;
 		{#>
 
 
-			var expectedReturnVal = (<#=test.ReturnVal.Type.GetFriendlyName()#>)DeserializeObject(typeof(<#=test.ReturnVal.Type.GetFriendlyName()#>), "<#=test.SerializedReturnVal.Replace("\"", "\\\"")#>");
+			var expectedReturnVal = (<#=test.ReturnVal?.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=test.ReturnVal?.GetType().GetFriendlyName()#>), "<#=test.SerializedReturnVal.Replace("\"", "\\\"")#>");
 			var equalityResult = Compare(testResult, expectedReturnVal);
 			Assert.IsTrue(equalityResult.AreEqual, 
 						"<#=test.TestName#> failed testing equality with the message: " + equalityResult.DifferencesString);
@@ -140,6 +140,21 @@ using KellermanSoftware.CompareNetObjects;
 		
 		private object DeserializeObject(Type t, string obj)
 		{
-			return JsonConvert.DeserializeObject(obj, t);
+			var settings = new JsonSerializerSettings() { ContractResolver = new MyContractResolver() };
+			return JsonConvert.DeserializeObject(obj, t, settings);
+		}
+
+		public class MyContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver
+		{
+			protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+			{
+			    var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+			                    .Select(p => base.CreateProperty(p, memberSerialization))
+			                .Union(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+			                           .Select(f => base.CreateProperty(f, memberSerialization)))
+			                .ToList();
+			    props.ForEach(p => { p.Writable = true; p.Readable = true; });
+			    return props;
+			}
 		}
 	}

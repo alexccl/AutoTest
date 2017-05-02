@@ -80,7 +80,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var serVal = new SerializedValue(entry.TargetType, "");
 
             var recMethod = new RecordingMethod(Guid.NewGuid(), serVal, entry.MethodArgs, entry.Method);
-            recMethod.CloseOutMethodWithReturnVal(TestClass.Method1Exit.ReturnValue.Value);
+            recMethod.CloseOutMethodWithReturnVal(TestClass.Method1Exit.ReturnValue);
 
             _manager.Setup(x => x.ProcessCapture(It.IsAny<InterceptionProcessingData>())).Raises(f => f.MethodRecordingComplete += null, new MethodRecordingCompleteEventArgs(recMethod));
 

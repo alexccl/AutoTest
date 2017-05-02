@@ -20,8 +20,7 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             Assert.IsTrue(x.InstanceAtExecutionTime.Value == "test");
             Assert.IsTrue(x.IsExecutionComplete == false);
-            Assert.IsTrue(x.ReturnTypeVal.Value == null);
-            Assert.IsTrue(x.ReturnTypeVal.Type == typeof(double));
+            Assert.IsTrue(x.ReturnTypeVal == null);
             Assert.IsTrue(x.TargetType == typeof(String));
             Assert.IsTrue(x.SubMethods != null);
             Assert.IsTrue(x.SubMethods.Count == 0);
@@ -31,9 +30,9 @@ namespace AutoTest.Test.AutoTestEngineTests
         public void Recording_Method_Ensure_Args_Maintain_Order()
         {
             var x = InitTestModel();
-            Assert.IsTrue(x.Args[0].Type == typeof(String));
-            Assert.IsTrue(x.Args[1].Type == typeof(int));
-            Assert.IsTrue(x.Args[2].Type == typeof(DateTime));
+            Assert.IsTrue(x.Args[0].GetType() == typeof(String));
+            Assert.IsTrue(x.Args[1].GetType() == typeof(int));
+            Assert.IsTrue(x.Args[2].GetType() == typeof(DateTime));
         }
 
         [TestMethod]
@@ -41,7 +40,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var x = InitTestModel();
             x.CloseOutMethodWithReturnVal(2.2);
-            Assert.IsTrue((double)x.ReturnTypeVal.Value == 2.2);
+            Assert.IsTrue((double)x.ReturnTypeVal == 2.2);
             Assert.IsTrue(x.IsExecutionComplete == true);
         }
 
@@ -51,7 +50,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var x = InitTestModel();
             x.CloseOutMethodWithException(new InvalidTimeZoneException());
             Assert.IsTrue(x.MethodException != null);
-            Assert.IsTrue(x.ReturnTypeVal.Value == null);
+            Assert.IsTrue(x.ReturnTypeVal == null);
             Assert.IsTrue(typeof(InvalidTimeZoneException).Equals(x.MethodException.GetType()));
             Assert.IsTrue(x.IsExecutionComplete == true);
         }
@@ -84,11 +83,11 @@ namespace AutoTest.Test.AutoTestEngineTests
         private RecordingMethod InitTestModel()
         {
             var instance = new SerializedValue(typeof(string), "test");
-            var args = new List<TypeValModel>()
+            var args = new List<object>()
             {
-                new TypeValModel(typeof(string), "arg1"),
-                new TypeValModel(typeof(int), 2),
-                new TypeValModel(typeof(DateTime), DateTime.Now)
+                "arg1",
+                2,
+                DateTime.Now
             };
 
             return new RecordingMethod(Guid.NewGuid(), instance, args, DataHelper.MathPowerData.Entry.Method);

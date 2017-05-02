@@ -13,15 +13,15 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         public Guid Identifier { get; private set; }
         public bool IsExecutionComplete { get; private set; }
         public SerializedValue InstanceAtExecutionTime { get; private set; }
-        public TypeValModel ReturnTypeVal { get; set; }
+        public object ReturnTypeVal { get; set; }
         public Type TargetType { get; private set; }
-        public List<TypeValModel> Args { get; set; }
+        public List<object> Args { get; set; }
         public List<RecordedSubMethod> SubMethods { get; set; }
         public Exception MethodException { get; private set; }
         public string MethodName { get; private set; }
         public MethodBase Method { get; private set; }
 
-        public RecordingMethod(Guid id, SerializedValue serializedTarget, List<TypeValModel> args, MethodBase method)
+        public RecordingMethod(Guid id, SerializedValue serializedTarget, List<object> args, MethodBase method)
         {
             this.Identifier = id;
             this.TargetType = serializedTarget.Type;
@@ -32,12 +32,11 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 
             this.Args = args;
 
-            this.ReturnTypeVal = new TypeValModel() { Type = ((MethodInfo)method).ReturnType };
         }
 
-        public void CloseOutMethodWithReturnVal(Object returnVal)
+        public void CloseOutMethodWithReturnVal(object returnVal)
         {
-            this.ReturnTypeVal.Value = returnVal;
+            this.ReturnTypeVal = returnVal;
             this.IsExecutionComplete = true;
         }
 

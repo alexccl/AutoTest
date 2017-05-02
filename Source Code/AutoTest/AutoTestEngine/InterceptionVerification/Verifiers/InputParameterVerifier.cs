@@ -42,7 +42,7 @@ namespace AutoTestEngine.InterceptionVerification.Verifiers
             return res;
         }
 
-        private List<VerificationFailure> ProcessArg(TypeValModel arg)
+        private List<VerificationFailure> ProcessArg(object arg)
         {
             var res = new List<VerificationFailure>();
             var argType = arg.GetType();

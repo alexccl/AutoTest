@@ -36,7 +36,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             _defaultThreadProvider = mockThreadProvider;
 
             var mockSerializer = new Mock<ISerializationHelper>();
-            mockSerializer.Setup(x => x.Serialize(It.IsAny<TypeValModel>())).Returns(_sucSerResult);
+            mockSerializer.Setup(x => x.Serialize(It.IsAny<object>())).Returns(_sucSerResult);
             _defaultSerializer = mockSerializer;
         }
 
@@ -54,7 +54,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             get
             {
                 var serTarget = new SerializedValue(typeof(int), "1");
-                var args = new List<TypeValModel>();
+                var args = new List<object>();
                 return new List<RecordingMethod>() {
                     new RecordingMethod(Guid.NewGuid(), serTarget, args, TestClass.Method1Entry.Method)
                 };
@@ -115,7 +115,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockStack = new Mock<IExecutionStack>();
 
             var serTarget = new SerializedValue(typeof(int), "1");
-            var args = new List<TypeValModel>();
+            var args = new List<object>();
             var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), serTarget, args, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods.FirstOrDefault().Identifier);
@@ -231,7 +231,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             procData.AddVerificationFailures(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
             SUT.ProcessCapture(procData);
 
-            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<TypeValModel>()), Times.Never);
+            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<object>()), Times.Never);
         }
 
         [TestMethod]
@@ -250,7 +250,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             procData.AddVerificationFailures(new List<VerificationFailure>() { new TypeSerializationFailure(typeof(double)) });
             SUT.ProcessCapture(procData);
 
-            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<TypeValModel>()), Times.Never);
+            _defaultSerializer.Verify(x => x.Serialize(It.IsAny<object>()), Times.Never);
         }
 
         [TestMethod]
@@ -279,7 +279,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             var mockStack = new Mock<IExecutionStack>();
 
             var serTarget = new SerializedValue(typeof(int), "1");
-            var args = new List<TypeValModel>();
+            var args = new List<object>();
             var _methods = new List<RecordingMethod>() { new RecordingMethod(Guid.NewGuid(), serTarget, args, TestClass.Method1Entry.Method) };
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(_methods);
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(_methods[0].Identifier);
@@ -303,10 +303,10 @@ namespace AutoTest.Test.AutoTestEngineTests
             var _methods = new List<RecordingMethod>();
 
             var serTarget = new SerializedValue(typeof(int), "1");
-            var args = new List<TypeValModel>();
+            var args = new List<object>();
             var recMethod = new RecordingMethod(Guid.NewGuid(), serTarget, args, TestClass.Method1Entry.Method);
             var subMethodGuid = Guid.NewGuid();
-            recMethod.SubMethods.Add(new RecordedSubMethod(subMethodGuid, typeof(int), new List<TypeValModel>(), typeof(int), TestClass.Method1Entry.Method));
+            recMethod.SubMethods.Add(new RecordedSubMethod(subMethodGuid, typeof(int), new List<object>(), typeof(int), TestClass.Method1Entry.Method));
 
             mockCache.Setup(x => x.GetMethods(It.IsAny<int>())).Returns(new List<RecordingMethod>() { recMethod });
             mockStack.Setup(x => x.ExecutingGuid(It.IsAny<int>())).Returns(subMethodGuid);

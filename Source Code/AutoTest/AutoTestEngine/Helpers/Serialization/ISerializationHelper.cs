@@ -8,7 +8,7 @@ namespace AutoTestEngine.Helpers.Serialization
 {
     internal interface ISerializationHelper
     {
-        SerializationResult Serialize(TypeValModel value);
+        SerializationResult Serialize(object value);
 
         T Deserialize<T>(string serializedObject);
 

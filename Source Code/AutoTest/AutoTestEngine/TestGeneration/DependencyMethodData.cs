@@ -21,7 +21,7 @@ namespace AutoTestEngine.TestGeneration
         public DependencyMethodData(List<RecordedSubMethod> subMethods)
         {
             this.MethodData = subMethods.FirstOrDefault().MethodData;
-            this.MethodArgs = subMethods.FirstOrDefault().Args.Select(x => x.Type).ToList();
+            this.MethodArgs = subMethods.FirstOrDefault().Args.Select(x => x?.GetType()).ToList();
 
             this.MethodCallReturs = new List<MethodCallReturnData>();
             foreach(var subMethod in subMethods)
@@ -33,7 +33,7 @@ namespace AutoTestEngine.TestGeneration
                 }
                 else
                 {
-                    retData = new MethodCallReturnData(subMethod.ReturnTypeVal);
+                    retData = new MethodCallReturnData(subMethod.ReturnVal);
                 }
 
                 this.MethodCallReturs.Add(retData);

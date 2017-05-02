@@ -37,7 +37,7 @@ namespace AutoTest.Test.AutoTestEngineTests
                 var typeVal = subMethod.Args[i];
                 var arg = entry.MethodArgs[i];
 
-                Assert.IsTrue(typeVal.Type.Equals(arg.Type));
+                Assert.IsTrue(typeVal.GetType().Equals(arg.GetType()));
                 //would test equality, but could be complex type without overloaded equality operator
             }
 
@@ -51,9 +51,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(subMethod.MethodException == null);
 
             //return val
-            Assert.IsTrue(subMethod.ReturnTypeVal != null);
-            Assert.IsTrue(subMethod.ReturnTypeVal.Type.Equals(entry.ReturnType));
-            Assert.IsTrue(subMethod.ReturnTypeVal.Value == null);
+            Assert.IsTrue(subMethod.ReturnVal == null);
         }
 
         [TestMethod]
@@ -67,7 +65,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             subMethod.CloseOutMethodWithReturnVal(returnVal);
 
             Assert.IsTrue(subMethod.ExecutionComplete == true);
-            Assert.IsTrue(((string)subMethod.ReturnTypeVal.Value) == returnVal);
+            Assert.IsTrue(((string)subMethod.ReturnVal) == returnVal);
             Assert.IsTrue(subMethod.MethodException == null);
         }
 
@@ -82,7 +80,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             subMethod.CloseOutMethodWithException(new DivideByZeroException());
 
             Assert.IsTrue(subMethod.ExecutionComplete == true);
-            Assert.IsTrue(subMethod.ReturnTypeVal.Value == null);
+            Assert.IsTrue(subMethod.ReturnVal == null);
             Assert.IsTrue(subMethod.MethodException != null);
             Assert.IsTrue(subMethod.MethodException.GetType().Equals(typeof(DivideByZeroException)));
         }

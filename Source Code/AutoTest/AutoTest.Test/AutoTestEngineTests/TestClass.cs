@@ -70,10 +70,10 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
-                var instance = new TypeValModel(typeof(TestClass), new TestClass());
-                var args = new List<TypeValModel>() {
-                    new TypeValModel(typeof(int), 1),
-                    new TypeValModel(typeof(DateTime), DateTime.Now)
+                var instance = new TestClass();
+                var args = new List<object>() {
+                    1,
+                    DateTime.Now
                 };
 
                 var entryModel = new InterceptionEntryModel(instance, args, TestClass.GetMethod1Base);
@@ -94,8 +94,8 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
-                var instance = new TypeValModel(typeof(TestClass), new TestClass());
-                var returnVal = new TypeValModel(typeof(string), "blah");
+                var instance =  new TestClass();
+                var returnVal = "blah";
                 var exitModel = new InterceptionExitModel(instance, returnVal, TestClass.GetMethod1Base);
                 return new InterceptionProcessingData(exitModel, new EngineConfiguration() { IsUnitTesting = false });
             }
@@ -105,7 +105,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
-                var instance = new TypeValModel(typeof(TestClass), new TestClass());
+                var instance = new TestClass();
                 var exceptionModel = new InterceptionExceptionModel(instance, TestClass.GetMethod1Base, new Exception());
                 return new InterceptionProcessingData(exceptionModel, new EngineConfiguration() { IsUnitTesting = false });
             }
@@ -136,9 +136,9 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
-                var instance = new TypeValModel(typeof(TestSubClass), new TestSubClass());
-                var args = new List<TypeValModel>() {
-                    new TypeValModel(typeof(double), 1.0),
+                var instance = new TestSubClass();
+                var args = new List<object>() {
+                     1.0
                 };
                 var entryModel = new InterceptionEntryModel(instance, args, TestSubClass.GetMethod1Base);
                 return new InterceptionProcessingData(entryModel, new EngineConfiguration() { IsUnitTesting = false });
@@ -158,8 +158,8 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
-                var instance = new TypeValModel(typeof(TestSubClass), new TestSubClass());
-                var returnVal = new TypeValModel(typeof(int), 1);
+                var instance = new TestSubClass();
+                var returnVal = 1;
                 var exitModel = new InterceptionExitModel(instance, returnVal, TestSubClass.GetMethod1Base);
                 return new InterceptionProcessingData(exitModel, new EngineConfiguration() { IsUnitTesting = false });
             }
@@ -169,7 +169,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
-                var instance = new TypeValModel(typeof(TestSubClass), new TestSubClass());
+                var instance = new TestSubClass();
                 var exceptionModel = new InterceptionExceptionModel(instance, TestSubClass.GetMethod1Base, new Exception());
                 return new InterceptionProcessingData(exceptionModel, new EngineConfiguration() { IsUnitTesting = false });
             }
@@ -210,9 +210,9 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
-                var instance = new TypeValModel(typeof(TestSubClass2), new TestSubClass2());
-                var args = new List<TypeValModel>() {
-                    new TypeValModel(typeof(double), 1.0),
+                var instance = new TestSubClass2();
+                var args = new List<object>() {
+                   1.0,
                 };
                 var entryModel = new InterceptionEntryModel(instance, args, TestSubClass2.GetMethod1Base);
                 return new InterceptionProcessingData(entryModel, new EngineConfiguration() { IsUnitTesting = false });
@@ -232,8 +232,8 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
-                var instance = new TypeValModel(typeof(TestSubClass), new TestSubClass());
-                var returnVal = new TypeValModel(typeof(int), 1);
+                var instance = new TestSubClass();
+                var returnVal = 1;
                 var exitModel = new InterceptionExitModel(instance, returnVal, TestSubClass2.GetMethod1Base);
                 return new InterceptionProcessingData(exitModel, new EngineConfiguration() { IsUnitTesting = false });
             }
@@ -243,7 +243,7 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             get
             {
-                var instance = new TypeValModel(typeof(TestSubClass), new TestSubClass());
+                var instance = new TestSubClass();
                 var exceptionModel = new InterceptionExceptionModel(instance, TestSubClass2.GetMethod1Base, new Exception());
                 return new InterceptionProcessingData(exceptionModel, new EngineConfiguration() { IsUnitTesting = false });
             }

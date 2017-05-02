@@ -27,7 +27,7 @@ namespace AutoTestEngine.TestGeneration
         }
         public Exception ThrownException { get; private set; }
 
-        public TypeValModel ReturnVal{ get; private set; }
+        public object ReturnVal{ get; private set; }
         public string SerializedReturnVal { get; private set; }
 
         private Random _rand;
@@ -41,21 +41,21 @@ namespace AutoTestEngine.TestGeneration
             this.ObjectInstance = method.InstanceAtExecutionTime.Value;
             this.InstanceType = method.InstanceAtExecutionTime.Type;
             this.ThrownException = method.MethodException;
-            this.ReturnVal = method.ReturnTypeVal;
+            this.ReturnVal = method.ReturnVal;
             this.MethodData = method.MethodData;
 
             if (!this.WasExceptionThrown)
             {
-                this.SerializedReturnVal = JsonConvert.SerializeObject(method.ReturnTypeVal.Value);
+                this.SerializedReturnVal = JsonConvert.SerializeObject(method.ReturnVal);
             }
 
             this.Args = new List<SerializedArg>();
             for(int i = 0; i < method.Args.Count; i++)
             {
                 var arg = method.Args[i];
-                var name = $"arg_{arg.Type.Name}_{i}";
-                var serVal = JsonConvert.SerializeObject(arg.Value);
-                this.Args.Add(new SerializedArg(arg.Type, name, serVal));
+                var name = $"arg_{arg?.GetType().Name}_{i}";
+                var serVal = JsonConvert.SerializeObject(arg);
+                this.Args.Add(new SerializedArg(arg?.GetType(), name, serVal));
             }
 
             this.Dependencies = new List<DependencyData>();

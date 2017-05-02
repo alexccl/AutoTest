@@ -12,9 +12,9 @@ namespace AutoTestEngine.DAL.Models
     {
         public Guid Identifier { get; set; }
         public SerializedValue InstanceAtExecutionTime { get; set; }
-        public TypeValModel ReturnTypeVal { get; set; }
+        public object ReturnVal { get; set; }
         public Type TargetType { get; private set; }
-        public List<TypeValModel> Args { get; set; }
+        public List<object> Args { get; set; }
         public List<RecordedSubMethod> SubMethods { get; set; }
         public Exception MethodException { get; set; }
         public MethodMetaData MethodData { get; set; }
@@ -30,7 +30,7 @@ namespace AutoTestEngine.DAL.Models
         {
             this.Identifier = finishedMethod.Identifier;
             this.InstanceAtExecutionTime = finishedMethod.InstanceAtExecutionTime;
-            this.ReturnTypeVal = finishedMethod.ReturnTypeVal;
+            this.ReturnVal = finishedMethod.ReturnTypeVal;
             this.TargetType = finishedMethod.TargetType;
             this.Args = finishedMethod.Args;
             this.SubMethods = finishedMethod.SubMethods;

@@ -33,33 +33,26 @@ namespace AutoTest4Unity
 
             var targetType = input.Target.GetType() ?? input.MethodBase.DeclaringType;
             var targetVal = input.Target;
-            var targetTypeVal = new TypeValModel(targetType, targetVal);
 
-            var args = new List<TypeValModel>();
+            var args = new List<object>();
             for(int i = 0; i < input.Arguments.Count; i++)
             {
-                var type = input.Arguments.GetParameterInfo(i).ParameterType;
-                var val = input.Arguments[i];
-                args.Add(new TypeValModel(type, val));
+                args.Add(input.Arguments[i]);
             }
 
-            var entryModel = new InterceptionEntryModel(targetTypeVal, args, input.MethodBase);
+            var entryModel = new InterceptionEntryModel(targetVal, args, input.MethodBase);
             engine.OnEntry(entryModel);
             IMethodReturn result = getNext()(input, getNext);
 
             targetVal = input.Target;
-            targetTypeVal = new TypeValModel(targetType, targetVal);
             if (result.Exception != null)
             {
-                var exceptionModel = new InterceptionExceptionModel(targetTypeVal, input.MethodBase, result.Exception);
+                var exceptionModel = new InterceptionExceptionModel(targetVal, input.MethodBase, result.Exception);
                 engine.OnException(exceptionModel);
             }
             else
             {
-                var returnType = ((MethodInfo)input.MethodBase).ReturnType;
-                var returnVal = result.ReturnValue;
-                var returnTypeVal = new TypeValModel(returnType, returnVal);
-                var exitModel = new InterceptionExitModel(targetTypeVal, returnTypeVal, input.MethodBase);
+                var exitModel = new InterceptionExitModel(targetVal, result, input.MethodBase);
                 engine.OnExit(exitModel);
             }
             ProcessContextExit();

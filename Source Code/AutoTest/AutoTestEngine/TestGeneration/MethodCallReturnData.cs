@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AutoTestEngine.Helpers.Serialization;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,19 @@ namespace AutoTestEngine.TestGeneration
 {
     internal class MethodCallReturnData
     {
+        private ISerializationHelper _serialier = new SerializationHelper();
         public bool ExceptionThrown { get
             {
                 return this.Exception != null;
             } }
         public Exception Exception { get; set; }
-        public TypeValModel ReturnVal { get; set; }
+        public object ReturnVal { get; set; }
 
         public string SerializedValue
         {
             get
             {
-                return JsonConvert.SerializeObject(ReturnVal.Value);
+                return _serialier.Serialize(this.ReturnVal).SerializedValue.Value;
             }
         }
 
@@ -28,7 +30,7 @@ namespace AutoTestEngine.TestGeneration
         {
             get
             {
-                var ex = JsonConvert.SerializeObject(this.Exception);
+                var ex = _serialier.Serialize(this.Exception).SerializedValue.Value;
                 return ex;
             }
         }
@@ -43,7 +45,7 @@ namespace AutoTestEngine.TestGeneration
 
         public MethodCallReturnData() { }
 
-        public MethodCallReturnData(TypeValModel returnVal)
+        public MethodCallReturnData(object returnVal)
         {
             this.ReturnVal = returnVal;
         }

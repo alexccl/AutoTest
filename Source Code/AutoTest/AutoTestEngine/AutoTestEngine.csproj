@@ -118,7 +118,6 @@
     <Compile Include="TestGeneration\TestData.cs" />
     <Compile Include="TestGeneration\TestGenerationData.cs" />
     <Compile Include="TestGeneration\UnitTestGenerator.cs" />
-    <Compile Include="TypeValModel.cs" />
     <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\IProcess.cs" />
     <Compile Include="ProcessMultiplexer\ProcessMultiplexer.cs" />
     <Compile Include="ProcessMultiplexer\ProcessResult.cs" />

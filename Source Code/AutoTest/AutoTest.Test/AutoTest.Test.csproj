@@ -79,7 +79,6 @@
     <Compile Include="AutoTestEngineTests\TestClass.cs" />
     <Compile Include="AutoTestEngineTests\TextFileDALTest.cs" />
     <Compile Include="AutoTestEngineTests\ThreadIdProviderTest.cs" />
-    <Compile Include="AutoTestEngineTests\TypeValTest.cs" />
     <Compile Include="AutoTestEngineTests\UnserializableTypeTest.cs" />
     <Compile Include="AutoTestEngineTests\VerificationPipelineResultTest.cs" />
     <Compile Include="AutoTestEngineTests\VerificationPipelineTests.cs" />

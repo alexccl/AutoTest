@@ -21,9 +21,9 @@ namespace AutoTest.Test.AutoTestEngineTests
             var targetType = TestClass.Method1Entry.TargetType;
             var methodName = TestClass.Method1Entry.Method.Name;
             var serTarget = "blah";
-            var arg = new List<TypeValModel>() {
-               new TypeValModel(typeof(double), 2.0),
-               new TypeValModel(typeof(string), "blah")
+            var arg = new List<object>() {
+               2.0,
+               "blah"
             };
             var methodBase = TestClass.Method1Entry.Method;
             var returnVal = "foo";
@@ -37,14 +37,14 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             for(int i = 0; i < SUT.Args.Count; i++)
             {
-                Assert.IsTrue(SUT.Args[i].Value.Equals(arg[i].Value));
+                Assert.IsTrue(SUT.Args[i].Equals(arg[i]));
             }
             Assert.IsTrue(SUT.Identifier.Equals(guid));
             Assert.IsTrue(SUT.InstanceAtExecutionTime.Value.Equals(serTarget));
             Assert.IsTrue(SUT.MethodException == null);
             Assert.IsTrue(SUT.MethodData.MethodName == methodName);
-            Assert.IsTrue(SUT.ReturnTypeVal.Type.Equals( returnVal.GetType()));
-            Assert.IsTrue(SUT.ReturnTypeVal.Value.Equals(returnVal));
+            Assert.IsTrue(SUT.ReturnVal.GetType().Equals( returnVal.GetType()));
+            Assert.IsTrue(SUT.ReturnVal.Equals(returnVal));
             Assert.IsTrue(SUT.SubMethods != null);
             Assert.IsTrue(SUT.TargetType.Equals(targetType));
         }
@@ -64,9 +64,9 @@ namespace AutoTest.Test.AutoTestEngineTests
             var targetType = TestClass.Method1Entry.TargetType;
             var methodName = TestClass.Method1Entry.Method.Name;
             var serTarget = "blah";
-            var arg = new List<TypeValModel>() {
-               new TypeValModel(typeof(double), 2.0),
-               new TypeValModel(typeof(string), "blah")
+            var arg = new List<object>() {
+               2.0,
+               "blah"
             };
             var methodBase = TestClass.Method1Entry.Method;
             var returnVal = "foo";

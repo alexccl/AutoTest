@@ -16,8 +16,8 @@ namespace AutoTest.Test.AutoTestEngineTests
             {
                 get
                 {
-                    var instanceTypeVal = new TypeValModel(typeof(DateTime), DateTime.Now);
-                    var argsTypeVal = new List<TypeValModel>() { new TypeValModel(typeof(double), 2.0) };
+                    var instanceTypeVal = DateTime.Now;
+                    var argsTypeVal = new List<object>() { 2.0 };
                     var entryModel = new InterceptionEntryModel(instanceTypeVal, argsTypeVal, GetMethodBase());
                     return entryModel;
                 }
@@ -27,9 +27,9 @@ namespace AutoTest.Test.AutoTestEngineTests
             {
                 get
                 {
-                    var instanceTypeVal = new TypeValModel(typeof(DateTime), DateTime.Now);
-                    var retTypeVal = new TypeValModel(typeof(double), 9.0);
-                    var exitModel = new InterceptionExitModel(instanceTypeVal, retTypeVal, GetMethodBase());
+                    var instance =  DateTime.Now;
+                    var returnVal = 9.0;
+                    var exitModel = new InterceptionExitModel(instance, returnVal, GetMethodBase());
                     return exitModel;
                 }
             }
@@ -38,8 +38,8 @@ namespace AutoTest.Test.AutoTestEngineTests
             {
                 get
                 {
-                    var instanceTypeVal = new TypeValModel(typeof(DateTime), DateTime.Now);
-                    var exceptionModel = new InterceptionExceptionModel(instanceTypeVal, GetMethodBase(), new ArgumentNullException());
+                    var instance = DateTime.Now;
+                    var exceptionModel = new InterceptionExceptionModel(instance, GetMethodBase(), new ArgumentNullException());
                     return exceptionModel;
                 }
             }
@@ -56,9 +56,9 @@ namespace AutoTest.Test.AutoTestEngineTests
             {
                 get
                 {
-                    var instanceTypeVal = new TypeValModel(typeof(Math), null);
-                    var argsTypeVal = new List<TypeValModel>() { new TypeValModel(typeof(double), 3.0), new TypeValModel(typeof(double), 2.0) };
-                    var entryModel = new InterceptionEntryModel(instanceTypeVal, argsTypeVal, GetMethodBase());
+                    object instance = null;
+                    var args = new List<object>() { 3.0,2.0 };
+                    var entryModel = new InterceptionEntryModel(instance, args, GetMethodBase());
                     return entryModel;
                 }
             }
@@ -67,9 +67,9 @@ namespace AutoTest.Test.AutoTestEngineTests
             {
                 get
                 {
-                    var instanceTypeVal = new TypeValModel(typeof(Math), null);
-                    var retTypeVal = new TypeValModel(typeof(double), 9.0);
-                    var exitModel = new InterceptionExitModel(instanceTypeVal, retTypeVal, GetMethodBase());
+                    object instance = null;
+                    var returnVal =  9.0;
+                    var exitModel = new InterceptionExitModel(instance, returnVal, GetMethodBase());
                     return exitModel;
                 }
             }

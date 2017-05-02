@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Reflection;
 
 namespace AutoTestEngine.Helpers.Serialization
 {
@@ -12,29 +14,58 @@ namespace AutoTestEngine.Helpers.Serialization
     /// </summary>
     internal class SerializationHelper : ISerializationHelper
     {
-        public SerializationResult Serialize(TypeValModel val)
+        public SerializationResult Serialize(object val)
         {
             string result;
             try
             {
-                result = JsonConvert.SerializeObject(val.Value, Formatting.Indented);
+                result = JsonConvert.SerializeObject(val, this.Settings);
+
+               // result = JsonConvert.SerializeObject(val.Value);
             }
             catch(Exception ex)
             {
-                return SerializationResult.InitFailedSerialization(val.Value, ex, val.Type);
+                return SerializationResult.InitFailedSerialization(val, ex, val?.GetType());
             }
 
-            return SerializationResult.InitSuccessfulSerialization(val.Value, result, val.Type);
+            return SerializationResult.InitSuccessfulSerialization(val, result, val?.GetType());
         }
 
         public T Deserialize<T>(string serializedObject)
         {
-            return JsonConvert.DeserializeObject<T>(serializedObject);
+            var x = typeof(T);
+            return JsonConvert.DeserializeObject<T>(serializedObject, this.Settings);
         }
 
         public object Desierialize(Type objectType, string serializedObject)
         {
-           return JsonConvert.DeserializeObject(serializedObject);
+            return JsonConvert.DeserializeObject(serializedObject, this.Settings);
+        }
+
+        private JsonSerializerSettings Settings
+        {
+            get
+            {
+                return new JsonSerializerSettings()
+                {
+                    ContractResolver = new MyContractResolver(),
+                    TypeNameHandling = TypeNameHandling.Objects
+                };
+            }
+        }
+    }
+
+    public class MyContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver
+    {
+        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        {
+            var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                            .Select(p => base.CreateProperty(p, memberSerialization))
+                        .Union(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                   .Select(f => base.CreateProperty(f, memberSerialization)))
+                        .ToList();
+            props.ForEach(p => { p.Writable = true; p.Readable = true; });
+            return props;
         }
     }
 }

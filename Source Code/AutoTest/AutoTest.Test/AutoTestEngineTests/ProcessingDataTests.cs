@@ -16,16 +16,16 @@ namespace AutoTest.Test.AutoTestEngineTests
     public class ProcessingDataTests
     {
         private EngineConfiguration _config = new EngineConfiguration();
-        private TypeValModel _instance;
-        private TypeValModel _returnVal;
-        private List<TypeValModel> _args;
+        private object _instance;
+        private object _returnVal;
+        private List<object> _args;
 
         [TestInitialize]
         public void Setup()
         {
-            _instance = new TypeValModel(typeof(TestClass), new TestClass());
-            _args = new List<TypeValModel>();
-            _returnVal = new TypeValModel(typeof(int), 1);
+            _instance = new TestClass();
+            _args = new List<object>();
+            _returnVal = 1;
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(procData.Method != null);
             Assert.IsTrue(procData.ReturnType != null);
             Assert.IsTrue(procData.ReturnValue == null);
-            Assert.IsTrue(procData.TargetInstance.Value == null);
+            Assert.IsTrue(procData.TargetInstance == null);
             Assert.IsTrue(procData.VerificationFailures != null);
         }
 
@@ -69,7 +69,7 @@ namespace AutoTest.Test.AutoTestEngineTests
             Assert.IsTrue(procData.Method != null);
             Assert.IsTrue(procData.ReturnType != null);
             Assert.IsTrue(procData.ReturnValue != null);
-            Assert.IsTrue(procData.TargetInstance.Value == null);
+            Assert.IsTrue(procData.TargetInstance == null);
             Assert.IsTrue(procData.VerificationFailures != null);
         }
 

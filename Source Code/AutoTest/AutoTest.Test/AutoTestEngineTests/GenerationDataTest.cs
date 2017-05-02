@@ -18,14 +18,14 @@ namespace AutoTest.Test.AutoTestEngineTests
         {
             var genData = new SingleTest(TestRecordedMethod.Method1);
 
-            Assert.IsTrue(genData.InstanceType == TestClass.Method1Entry.TargetInstance.Type);
+            Assert.IsTrue(genData.InstanceType == TestClass.Method1Entry.TargetType);
             Assert.IsTrue(genData.ObjectInstance == TestClass.Method1EntryRecording.InstanceAtExecutionTime.Value);
             Assert.IsTrue(genData.TestName != null);
             Assert.IsTrue(genData.Dependencies.Count == 2);
             Assert.IsTrue(genData.WasExceptionThrown == false);
             Assert.IsTrue(genData.ThrownException == null);
-            Assert.IsTrue(genData.ReturnVal.Type.Equals(typeof(string)));
-            Assert.IsTrue(genData.ReturnVal.Value.Equals("blah"));
+            Assert.IsTrue(genData.ReturnVal.GetType().Equals(typeof(string)));
+            Assert.IsTrue(genData.ReturnVal.Equals("blah"));
             Assert.IsTrue(genData.MethodData.MethodName == TestClass.Method1Entry.Method.Name);
             Assert.IsTrue(genData.SerializedReturnVal != null);
 
@@ -51,8 +51,8 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             var methodCall = method.MethodCallReturs[0];
             Assert.IsTrue(methodCall.ExceptionThrown == false);
-            Assert.IsTrue(methodCall.ReturnVal.Type == typeof(int));
-            Assert.IsTrue(methodCall.ReturnVal.Value.Equals(1));
+            Assert.IsTrue(methodCall.ReturnVal.GetType() == typeof(int));
+            Assert.IsTrue(methodCall.ReturnVal.Equals(1));
             Assert.IsTrue(methodCall.Exception == null);
 
             methodCall = method.MethodCallReturs[1];
@@ -72,8 +72,8 @@ namespace AutoTest.Test.AutoTestEngineTests
 
             methodCall = method.MethodCallReturs[0];
             Assert.IsTrue(methodCall.ExceptionThrown == false);
-            Assert.IsTrue(methodCall.ReturnVal.Type == typeof(int));
-            Assert.IsTrue(methodCall.ReturnVal.Value.Equals(2));
+            Assert.IsTrue(methodCall.ReturnVal.GetType() == typeof(int));
+            Assert.IsTrue(methodCall.ReturnVal.Equals(2));
             Assert.IsTrue(methodCall.Exception == null);
 
         }

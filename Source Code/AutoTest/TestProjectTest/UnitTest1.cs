@@ -9,6 +9,8 @@ using TestProject.Application;
 using System.Collections.Generic;
 using System.Collections;
 using TestProject.NotificationService;
+using Newtonsoft.Json.Serialization;
+using System.Linq;
 
 namespace TestProjectTest
 {
@@ -16,17 +18,17 @@ namespace TestProjectTest
     public class AutoTest_Generated_Tests
     {
         [TestMethod]
-        public void Repository_GetTypeRepository_1504430674()
+        public void Repository_GetTypeRepository_2032353863()
         {
-            var instance = (Repository)DeserializeObject(typeof(Repository), "{}");
+            var instance = (Repository)DeserializeObject(typeof(Repository), "{\"_dict\":{\"TestProject.Application.InvoiceModel, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\":[{\"InvoiceId\":\"ca77a961-b89b-4ca6-87c3-281b1e05c17d\",\"IsProcessed\":true,\"<InvoiceId>k__BackingField\":\"ca77a961-b89b-4ca6-87c3-281b1e05c17d\",\"<IsProcessed>k__BackingField\":true}]}}");
 
             var testResult = instance.GetTypeRepository<InvoiceModel>();
 
 
-            var expectedReturnVal = (List<InvoiceModel>)DeserializeObject(typeof(List<InvoiceModel>), "[{\"InvoiceId\":\"4c2d27fc-9549-43df-91bd-f9fb57a1034e\",\"IsProcessed\":true},{\"InvoiceId\":\"4c2d27fc-9549-43df-91bd-f9fb57a1034e\",\"IsProcessed\":true}]");
+            var expectedReturnVal = (List<InvoiceModel>)DeserializeObject(typeof(List<InvoiceModel>), "[{\"InvoiceId\":\"ca77a961-b89b-4ca6-87c3-281b1e05c17d\",\"IsProcessed\":true},{\"InvoiceId\":\"ca77a961-b89b-4ca6-87c3-281b1e05c17d\",\"IsProcessed\":true}]");
             var equalityResult = Compare(testResult, expectedReturnVal);
             Assert.IsTrue(equalityResult.AreEqual,
-                        "Repository_GetTypeRepository_1504430674 failed testing equality with the message: " + equalityResult.DifferencesString);
+                        "Repository_GetTypeRepository_2032353863 failed testing equality with the message: " + equalityResult.DifferencesString);
         }
         //[TestMethod]
         //public void DAL_Create_478846846()
@@ -116,7 +118,22 @@ namespace TestProjectTest
 
         private object DeserializeObject(Type t, string obj)
         {
-            return JsonConvert.DeserializeObject(obj, t);
+            var settings = new JsonSerializerSettings() { ContractResolver = new MyContractResolver() };
+            return JsonConvert.DeserializeObject(obj, t, settings);
+        }
+    }
+
+    public class MyContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver
+    {
+        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        {
+            var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                            .Select(p => base.CreateProperty(p, memberSerialization))
+                        .Union(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                   .Select(f => base.CreateProperty(f, memberSerialization)))
+                        .ToList();
+            props.ForEach(p => { p.Writable = true; p.Readable = true; });
+            return props;
         }
     }
 }

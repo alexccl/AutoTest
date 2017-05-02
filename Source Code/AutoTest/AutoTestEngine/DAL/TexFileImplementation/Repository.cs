@@ -78,14 +78,11 @@ namespace AutoTestEngine.DAL.TexFileImplementation
             var serVals = new Dictionary<Type, string>();
             foreach(var entry in StoredObject)
             {
-                var genericListType = typeof(List<>).MakeGenericType(entry.Key);
-                var tv = new TypeValModel(genericListType, entry.Value);
-                var serVal = _serializationHelper.Serialize(tv);
+                var serVal = _serializationHelper.Serialize(entry.Value);
                 serVals.Add(entry.Key, serVal.SerializedValue.Value);
             }
 
-            var typeVal = new TypeValModel(typeof(Dictionary<Type, string>), serVals);
-            var newContents = _serializationHelper.Serialize(typeVal);
+            var newContents = _serializationHelper.Serialize(serVals);
             if (!newContents.Success) throw new Exception("Could not serialize data for repository", newContents.FailureException);
 
             File.WriteAllText(_storageFilePath, newContents.SerializedValue.Value);

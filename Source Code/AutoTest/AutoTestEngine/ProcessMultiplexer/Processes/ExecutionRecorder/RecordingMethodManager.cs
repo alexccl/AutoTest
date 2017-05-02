@@ -131,7 +131,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             {
                 if (!hasError)
                 {
-                    executingMethod.CloseOutMethodWithReturnVal(data.ReturnValue.Value);
+                    executingMethod.CloseOutMethodWithReturnVal(data.ReturnValue);
                     OnMethodRecordingComplete(new MethodRecordingCompleteEventArgs(executingMethod));
                     ClearMethod(executingMethodId, threadId);
                 }

@@ -39,8 +39,7 @@ namespace AutoTestEngine.InterceptionVerification.Verifiers
             }
             else
             {
-                var returnTypeVal = new TypeValModel(processingData.ReturnType, processingData.ReturnValue);
-                var res = _serializer.Serialize(returnTypeVal);
+                var res = _serializer.Serialize(processingData.ReturnValue);
                 if (!res.Success)
                 {
                     _helper.AddUnserializableType(processingData.ReturnType);
