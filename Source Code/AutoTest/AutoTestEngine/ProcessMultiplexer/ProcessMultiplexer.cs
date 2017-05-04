@@ -1,4 +1,5 @@
-﻿using AutoTestEngine.ProcessMultiplexer.Processes;
+﻿using AutoTestEngine.DAL.TexFileImplementation;
+using AutoTestEngine.ProcessMultiplexer.Processes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace AutoTestEngine.ProcessMultiplexer
                     return process.ExecuteProcess(processingData);
                 }
             }
-
+            var x = Repository.StoredObject;
             return new ProcessResult();
         }
     }

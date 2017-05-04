@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine.Helpers.Serialization
 {
-    internal class SerializationResult
+    public class SerializationResult
     {
         public bool Success { get; private set; }
         public Exception FailureException { get; private set; }

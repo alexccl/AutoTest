@@ -509,7 +509,7 @@ namespace AutoTestEngine.TestGeneration.Generation
             this.Write("), \"");
             
             #line 113 "C:\Users\Alex\Documents\at-github\Source Code\AutoTest\AutoTestEngine\TestGeneration\Generation\UnitTestGenerator.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(test.SerializedReturnVal.Replace("\"", "\\\"")));
+            this.Write(this.ToStringHelper.ToStringWithCulture(test.SerializedReturnVal?.Replace("\"", "\\\"")));
             
             #line default
             #line hidden
@@ -545,18 +545,18 @@ namespace AutoTestEngine.TestGeneration.Generation
                     "Instance);\r\n\t\t\t\treturn classInstance;\r\n\t\t\t}\r\n\t\r\n\t\t\tthrow new Exception(\"Could no" +
                     "t find type: \" + propertyType.Name + \" on type: \" + classType.Name);\r\n\t\t}\r\n\t\t\r\n\t" +
                     "\tprivate object DeserializeObject(Type t, string obj)\r\n\t\t{\r\n\t\t\tvar settings = ne" +
-                    "w JsonSerializerSettings() { ContractResolver = new MyContractResolver() };\r\n\t\t\t" +
-                    "return JsonConvert.DeserializeObject(obj, t, settings);\r\n\t\t}\r\n\r\n\t\tpublic class M" +
-                    "yContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver\r\n\t\t{\r\n" +
-                    "\t\t\tprotected override IList<JsonProperty> CreateProperties(Type type, MemberSeri" +
-                    "alization memberSerialization)\r\n\t\t\t{\r\n\t\t\t    var props = type.GetProperties(Bind" +
-                    "ingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)\r\n\t\t\t          " +
-                    "          .Select(p => base.CreateProperty(p, memberSerialization))\r\n\t\t\t        " +
-                    "        .Union(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | Bin" +
-                    "dingFlags.Instance)\r\n\t\t\t                           .Select(f => base.CreatePrope" +
-                    "rty(f, memberSerialization)))\r\n\t\t\t                .ToList();\r\n\t\t\t    props.ForEa" +
-                    "ch(p => { p.Writable = true; p.Readable = true; });\r\n\t\t\t    return props;\r\n\t\t\t}\r" +
-                    "\n\t\t}\r\n\t}");
+                    "w JsonSerializerSettings() { ContractResolver = new MyContractResolver() , TypeN" +
+                    "ameHandling = TypeNameHandling.Objects};\r\n\t\t\treturn JsonConvert.DeserializeObjec" +
+                    "t(obj, t, settings);\r\n\t\t}\r\n\r\n\t\tpublic class MyContractResolver : Newtonsoft.Json" +
+                    ".Serialization.DefaultContractResolver\r\n\t\t{\r\n\t\t\tprotected override IList<JsonPro" +
+                    "perty> CreateProperties(Type type, MemberSerialization memberSerialization)\r\n\t\t\t" +
+                    "{\r\n\t\t\t    var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonP" +
+                    "ublic | BindingFlags.Instance)\r\n\t\t\t                    .Select(p => base.CreateP" +
+                    "roperty(p, memberSerialization))\r\n\t\t\t                .Union(type.GetFields(Bindi" +
+                    "ngFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)\r\n\t\t\t           " +
+                    "                .Select(f => base.CreateProperty(f, memberSerialization)))\r\n\t\t\t " +
+                    "               .ToList();\r\n\t\t\t    props.ForEach(p => { p.Writable = true; p.Read" +
+                    "able = true; });\r\n\t\t\t    return props;\r\n\t\t\t}\r\n\t\t}\r\n\t}");
             return this.GenerationEnvironment.ToString();
         }
         

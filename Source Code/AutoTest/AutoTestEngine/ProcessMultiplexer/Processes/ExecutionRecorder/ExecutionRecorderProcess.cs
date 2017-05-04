@@ -1,6 +1,7 @@
 ﻿using AutoTestEngine.DAL;
 using AutoTestEngine.DAL.Helpers;
 using AutoTestEngine.DAL.Models;
+using AutoTestEngine.DAL.TexFileImplementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,8 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         {
             _methodManager.ProcessCapture(processingData);
             return new ProcessResult();
+
+            var x = Repository.StoredObject;
         }
 
         public bool ShouldExecuteProcess(InterceptionProcessingData processingData)

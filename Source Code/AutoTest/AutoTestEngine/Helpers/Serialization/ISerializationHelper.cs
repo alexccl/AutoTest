@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine.Helpers.Serialization
 {
-    internal interface ISerializationHelper
+    public interface ISerializationHelper
     {
         SerializationResult Serialize(object value);
 

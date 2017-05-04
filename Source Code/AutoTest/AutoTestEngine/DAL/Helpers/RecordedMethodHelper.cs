@@ -1,4 +1,5 @@
 ﻿using AutoTestEngine.DAL.Models;
+using AutoTestEngine.DAL.TexFileImplementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine.DAL.Helpers
 {
+    [Serializable]
     internal class RecordedMethodHelper : IRecordedMethodHelper
     {
         private IDAL _dal;
@@ -24,6 +26,7 @@ namespace AutoTestEngine.DAL.Helpers
 
             _dal.Create<RecordedMethod>(method);
             _dal.CommitChanges();
+            var x = Repository.StoredObject;
         }
 
         public List<RecordedMethod> GetAllRecordedMethods()

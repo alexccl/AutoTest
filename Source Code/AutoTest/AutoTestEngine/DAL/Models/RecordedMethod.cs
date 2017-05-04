@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine.DAL.Models
 {
+    [Serializable]
     internal class RecordedMethod
     {
         public Guid Identifier { get; set; }
         public SerializedValue InstanceAtExecutionTime { get; set; }
-        public object ReturnVal { get; set; }
+        public object ReturnVal { get;
+            set; }
         public Type TargetType { get; private set; }
         public List<object> Args { get; set; }
         public List<RecordedSubMethod> SubMethods { get; set; }

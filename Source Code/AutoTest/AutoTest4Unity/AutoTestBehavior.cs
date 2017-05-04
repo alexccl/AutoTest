@@ -1,4 +1,5 @@
 ﻿using AutoTestEngine;
+using AutoTestEngine.DAL.TexFileImplementation;
 using Microsoft.Practices.Unity.InterceptionExtension;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,8 @@ namespace AutoTest4Unity
             }
             else
             {
-                var exitModel = new InterceptionExitModel(targetVal, result, input.MethodBase);
+                var exitModel = new InterceptionExitModel(targetVal, result.ReturnValue, input.MethodBase);
+                var x = Repository.StoredObject;
                 engine.OnExit(exitModel);
             }
             ProcessContextExit();

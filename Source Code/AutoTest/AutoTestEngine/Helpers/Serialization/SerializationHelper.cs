@@ -34,7 +34,7 @@ namespace AutoTestEngine.Helpers.Serialization
         public T Deserialize<T>(string serializedObject)
         {
             var x = typeof(T);
-            return JsonConvert.DeserializeObject<T>(serializedObject, this.Settings);
+            return (T)JsonConvert.DeserializeObject(serializedObject, this.Settings);
         }
 
         public object Desierialize(Type objectType, string serializedObject)
@@ -49,7 +49,7 @@ namespace AutoTestEngine.Helpers.Serialization
                 return new JsonSerializerSettings()
                 {
                     ContractResolver = new MyContractResolver(),
-                    TypeNameHandling = TypeNameHandling.Objects
+                    TypeNameHandling = TypeNameHandling.All
                 };
             }
         }

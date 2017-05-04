@@ -70,6 +70,7 @@
     <Compile Include="EngineConfiguration.cs" />
     <Compile Include="EngineImplementation.cs" />
     <Compile Include="EntryProcessingResult.cs" />
+    <Compile Include="Helpers\Serialization\CloneExtensions.cs" />
     <Compile Include="Helpers\Serialization\ExtensionMethods.cs" />
     <Compile Include="Helpers\Serialization\ISerializationHelper.cs" />
     <Compile Include="Helpers\Serialization\SerializationHelper.cs" />

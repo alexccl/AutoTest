@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoTestEngine.Helpers.Serialization
 {
-    class SerializedValue
+    public class SerializedValue
     {
         public Type Type { get; set; }
         public string Value { get; set; }

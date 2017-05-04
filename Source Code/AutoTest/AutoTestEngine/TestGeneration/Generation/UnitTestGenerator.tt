@@ -110,7 +110,7 @@ using KellermanSoftware.CompareNetObjects;
 		{#>
 
 
-			var expectedReturnVal = (<#=test.ReturnVal?.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=test.ReturnVal?.GetType().GetFriendlyName()#>), "<#=test.SerializedReturnVal.Replace("\"", "\\\"")#>");
+			var expectedReturnVal = (<#=test.ReturnVal?.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=test.ReturnVal?.GetType().GetFriendlyName()#>), "<#=test.SerializedReturnVal?.Replace("\"", "\\\"")#>");
 			var equalityResult = Compare(testResult, expectedReturnVal);
 			Assert.IsTrue(equalityResult.AreEqual, 
 						"<#=test.TestName#> failed testing equality with the message: " + equalityResult.DifferencesString);
@@ -140,7 +140,7 @@ using KellermanSoftware.CompareNetObjects;
 		
 		private object DeserializeObject(Type t, string obj)
 		{
-			var settings = new JsonSerializerSettings() { ContractResolver = new MyContractResolver() };
+			var settings = new JsonSerializerSettings() { ContractResolver = new MyContractResolver() , TypeNameHandling = TypeNameHandling.Objects};
 			return JsonConvert.DeserializeObject(obj, t, settings);
 		}
 

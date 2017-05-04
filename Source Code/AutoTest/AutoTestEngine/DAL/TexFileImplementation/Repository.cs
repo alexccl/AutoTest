@@ -5,12 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoTestEngine.Helpers.Serialization;
+using AutoTestEngine.Helpers;
 
 namespace AutoTestEngine.DAL.TexFileImplementation
 {
-    internal class Repository : IRepository
+    public class Repository : IRepository
     {
-        private static Dictionary<Type, List<object>> _storedObjectBacking;
+        private static Dictionary<Type, List<object>> _storedObjectBacking
+        {
+            get;
+            set;
+        }
         public static Dictionary<Type, List<object>> StoredObject
         {
             get
@@ -36,15 +41,15 @@ namespace AutoTestEngine.DAL.TexFileImplementation
                 StoredObject[typeof(T)] = RetrieveStoredContents<T>().Select(x => (object)x).ToList();
             }
 
-            return StoredObject[typeof(T)].Select(x => (T)x).ToList();
+            return StoredObject[typeof(T)].Select(x => (T)((object)x).DeepClone()).ToList();
         }
 
         public void SetTypeRepository<T>(List<T> newRepository)
         {
             if (StoredObject.ContainsKey(typeof(T)))
-                StoredObject[typeof(T)] = newRepository.Select(x => (object)x).ToList();
+                StoredObject[typeof(T)] = newRepository.Select(x => ((object)x).DeepClone()).ToList();
             else
-                StoredObject.Add(typeof(T), newRepository.Select(x => (object)x).ToList());
+                StoredObject.Add(typeof(T), newRepository.Select(x => ((object)x).DeepClone()).ToList());
         }
 
         public Repository(ISerializationHelper serializationHelper)
@@ -67,7 +72,9 @@ namespace AutoTestEngine.DAL.TexFileImplementation
             if (!serVals.ContainsKey(typeof(T))) return new List<T>();
 
             var stringVal = serVals[typeof(T)];
-            var listVal = _serializationHelper.Deserialize<List<T>>(stringVal);
+            var listVal = _serializationHelper.Deserialize<List<object>>(stringVal)
+                                              .Select(x => (T)x)
+                                              .ToList();
             return listVal;
 
         }

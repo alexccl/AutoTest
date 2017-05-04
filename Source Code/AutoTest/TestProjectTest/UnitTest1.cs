@@ -18,17 +18,17 @@ namespace TestProjectTest
     public class AutoTest_Generated_Tests
     {
         [TestMethod]
-        public void Repository_GetTypeRepository_2032353863()
+        public void Repository_GetTypeRepository_746353907()
         {
-            var instance = (Repository)DeserializeObject(typeof(Repository), "{\"_dict\":{\"TestProject.Application.InvoiceModel, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\":[{\"InvoiceId\":\"ca77a961-b89b-4ca6-87c3-281b1e05c17d\",\"IsProcessed\":true,\"<InvoiceId>k__BackingField\":\"ca77a961-b89b-4ca6-87c3-281b1e05c17d\",\"<IsProcessed>k__BackingField\":true}]}}");
+            var instance = (Repository)DeserializeObject(typeof(Repository), "{\"$type\":\"TestProject.DAL.Repository, TestProject\",\"_dict\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Type, mscorlib],[System.Object, mscorlib]], mscorlib\",\"TestProject.Application.InvoiceModel, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\":{\"$type\":\"System.Collections.Generic.List`1[[TestProject.Application.InvoiceModel, TestProject]], mscorlib\",\"$values\":[{\"$type\":\"TestProject.Application.InvoiceModel, TestProject\",\"InvoiceId\":\"d226d895-13bb-4d93-8ce5-0843981e924d\",\"IsProcessed\":true,\"<InvoiceId>k__BackingField\":\"d226d895-13bb-4d93-8ce5-0843981e924d\",\"<IsProcessed>k__BackingField\":true}]}}}");
 
             var testResult = instance.GetTypeRepository<InvoiceModel>();
 
 
-            var expectedReturnVal = (List<InvoiceModel>)DeserializeObject(typeof(List<InvoiceModel>), "[{\"InvoiceId\":\"ca77a961-b89b-4ca6-87c3-281b1e05c17d\",\"IsProcessed\":true},{\"InvoiceId\":\"ca77a961-b89b-4ca6-87c3-281b1e05c17d\",\"IsProcessed\":true}]");
+            var expectedReturnVal = (List<InvoiceModel>)DeserializeObject(typeof(List<InvoiceModel>), "[{\"InvoiceId\":\"d226d895-13bb-4d93-8ce5-0843981e924d\",\"IsProcessed\":true},{\"InvoiceId\":\"d226d895-13bb-4d93-8ce5-0843981e924d\",\"IsProcessed\":true}]");
             var equalityResult = Compare(testResult, expectedReturnVal);
             Assert.IsTrue(equalityResult.AreEqual,
-                        "Repository_GetTypeRepository_2032353863 failed testing equality with the message: " + equalityResult.DifferencesString);
+                        "Repository_GetTypeRepository_1614928531 failed testing equality with the message: " + equalityResult.DifferencesString);
         }
         //[TestMethod]
         //public void DAL_Create_478846846()
@@ -118,7 +118,7 @@ namespace TestProjectTest
 
         private object DeserializeObject(Type t, string obj)
         {
-            var settings = new JsonSerializerSettings() { ContractResolver = new MyContractResolver() };
+            var settings = new JsonSerializerSettings() { ContractResolver = new MyContractResolver(), TypeNameHandling = TypeNameHandling.All };
             return JsonConvert.DeserializeObject(obj, t, settings);
         }
     }
