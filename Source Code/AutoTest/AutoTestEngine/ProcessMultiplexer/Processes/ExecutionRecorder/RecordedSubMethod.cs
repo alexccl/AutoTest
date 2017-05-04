@@ -19,7 +19,7 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
 
         public Exception MethodException { get; private set; }
 
-
+        public RecordedSubMethod() { }
         //TODO add a contructor to populate properties and methods to help closing it out
         public RecordedSubMethod(Guid identifier, Type targetType, List<object> args, Type returnType, MethodBase method)
         {

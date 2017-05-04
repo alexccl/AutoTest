@@ -17,7 +17,10 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
             {
                 return TypeParameters.Count != 0;
             }
+            set { }
         }
+
+        public MethodMetaData() { }
 
         public MethodMetaData(MethodBase method)
         {

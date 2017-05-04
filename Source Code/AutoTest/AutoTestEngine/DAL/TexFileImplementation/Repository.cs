@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoTestEngine.Helpers.Serialization;
 using AutoTestEngine.Helpers;
+using NClone;
 
 namespace AutoTestEngine.DAL.TexFileImplementation
 {
@@ -38,18 +39,18 @@ namespace AutoTestEngine.DAL.TexFileImplementation
             //if it's empty, it may need to sync up with storage
             if(!StoredObject[typeof(T)].Any())
             {
-                StoredObject[typeof(T)] = RetrieveStoredContents<T>().Select(x => (object)x).ToList();
+                StoredObject[typeof(T)] = RetrieveStoredContents<T>().Select(x => (object)Clone.ObjectGraph<T>(x)).ToList();
             }
 
-            return StoredObject[typeof(T)].Select(x => (T)((object)x).DeepClone()).ToList();
+            return StoredObject[typeof(T)].Select(x => (T)Clone.ObjectGraph<T>((T)x)).ToList();
         }
 
         public void SetTypeRepository<T>(List<T> newRepository)
         {
             if (StoredObject.ContainsKey(typeof(T)))
-                StoredObject[typeof(T)] = newRepository.Select(x => ((object)x).DeepClone()).ToList();
+                StoredObject[typeof(T)] = newRepository.Select(x => (object)Clone.ObjectGraph<T>(x)).ToList();
             else
-                StoredObject.Add(typeof(T), newRepository.Select(x => ((object)x).DeepClone()).ToList());
+                StoredObject.Add(typeof(T), newRepository.Select(x => (object)Clone.ObjectGraph<T>(x)).ToList());
         }
 
         public Repository(ISerializationHelper serializationHelper)
@@ -93,6 +94,12 @@ namespace AutoTestEngine.DAL.TexFileImplementation
             if (!newContents.Success) throw new Exception("Could not serialize data for repository", newContents.FailureException);
 
             File.WriteAllText(_storageFilePath, newContents.SerializedValue.Value);
+        }
+
+        private object DeepCloneObject(object obj, Type t)
+        {
+            var res = _serializationHelper.Serialize(obj).SerializedValue.Value;
+            return _serializationHelper.Desierialize(t, res);
         }
 
         private void EnsureFileExistence()
