@@ -49,7 +49,7 @@ using KellermanSoftware.CompareNetObjects;
 					}
 					else{#>
 						
-							.Returns((<#=retVal.ReturnVal?.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=retVal.ReturnVal?.GetType().GetFriendlyName()#>), "<#=retVal.SerializedValue.Replace("\"", "\\\"")#>"))<#
+							.Returns((<#=retVal.ReturnVal.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=retVal.ReturnVal.GetType().GetFriendlyName()#>), "<#=retVal.SerializedValue.Replace("\"", "\\\"")#>"))<#
 					}
 				}#>;
 
@@ -59,7 +59,7 @@ using KellermanSoftware.CompareNetObjects;
 <#		}#>
 <#		foreach(var arg in test.Args)
 		{#>
-			<#=arg?.GetType().GetFriendlyName()#> <#=arg.GeneratedArgName#> = (<#=arg?.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=arg?.GetType().GetFriendlyName()#>),"<#=arg.SerializedArgInstance.Replace("\"", "\\\"")#>");
+			<#=arg.Type.GetFriendlyName()#> <#=arg.GeneratedArgName#> = (<#=arg.Type.GetFriendlyName()#>)DeserializeObject(typeof(<#=arg.Type.GetFriendlyName()#>),"<#=arg.SerializedArgInstance.Replace("\"", "\\\"")#>");
 <#		}
 		if(test.WasExceptionThrown)
 		{#>
@@ -110,7 +110,7 @@ using KellermanSoftware.CompareNetObjects;
 		{#>
 
 
-			var expectedReturnVal = (<#=test.ReturnVal?.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=test.ReturnVal?.GetType().GetFriendlyName()#>), "<#=test.SerializedReturnVal?.Replace("\"", "\\\"")#>");
+			var expectedReturnVal = (<#=test.ReturnVal.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=test.ReturnVal.GetType().GetFriendlyName()#>), "<#=test.SerializedReturnVal.Replace("\"", "\\\"")#>");
 			var equalityResult = Compare(testResult, expectedReturnVal);
 			Assert.IsTrue(equalityResult.AreEqual, 
 						"<#=test.TestName#> failed testing equality with the message: " + equalityResult.DifferencesString);

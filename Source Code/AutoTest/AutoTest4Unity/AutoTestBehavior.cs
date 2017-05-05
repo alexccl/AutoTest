@@ -13,6 +13,7 @@ namespace AutoTest4Unity
     public class AutoTestBehavior : IInterceptionBehavior
     {
         private static int _stackDepth = 0;
+        private static Engine engine = new Engine(new EngineConfiguration());
         bool IInterceptionBehavior.WillExecute
         {
             get
@@ -30,7 +31,7 @@ namespace AutoTest4Unity
         {
 
             ProcessContextEntry();
-            var engine = new Engine(new EngineConfiguration());
+            
 
             var targetType = input.Target.GetType() ?? input.MethodBase.DeclaringType;
             var targetVal = input.Target;
