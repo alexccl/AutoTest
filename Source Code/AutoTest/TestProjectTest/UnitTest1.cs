@@ -17,44 +17,28 @@ namespace TestProjectTest
     [TestClass]
     public class AutoTest_Generated_Tests
     {
-        [TestMethod]
-        public void Repository_GetTypeRepository_792697141()
-        {
-            var instance = (Repository)DeserializeObject(typeof(Repository), "{\"$type\":\"TestProject.DAL.Repository, TestProject\",\"_dict\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Type, mscorlib],[System.Object, mscorlib]], mscorlib\"}}");
+		[TestMethod]
+		public void Application_SendInvoice_1279637324()
+		{
+            var instance = (Application)DeserializeObject(typeof(Application), "{\"$type\":\"TestProject.Application.Application, TestProject\",\"_notificationService\":{\"$type\":\"DynamicModule.ns.Wrapped_INotificationService_c5a385e02e894e8d9297cf8459973ad7, Unity_ILEmit_InterfaceProxies\"},\"_dal\":{\"$type\":\"DynamicModule.ns.Wrapped_IDAL_962102704dd7474a95d9cb6ace699ea2, Unity_ILEmit_InterfaceProxies\"}}");
 
-            var testResult = instance.GetTypeRepository<InvoiceModel>();
+            var mock_IDAL = new Mock<IDAL>();
+            mock_IDAL.Setup(x => x.Create<InvoiceModel>(It.IsAny<InvoiceModel>()));
 
+            instance = (Application)SetPropertyOnType(typeof(Application), instance, typeof(IDAL), mock_IDAL.Object);
 
-            var expectedReturnVal = (List<InvoiceModel>)DeserializeObject(typeof(List<InvoiceModel>), "[]");
-            var equalityResult = Compare(testResult, expectedReturnVal);
-            Assert.IsTrue(equalityResult.AreEqual,
-                        "Repository_GetTypeRepository_792697141 failed testing equality with the message: " + equalityResult.DifferencesString);
-        }
-        [TestMethod]
-        public void Repository_GetTypeRepository_152377277()
-        {
-            var instance = (Repository)DeserializeObject(typeof(Repository), "{\"$type\":\"TestProject.DAL.Repository, TestProject\",\"_dict\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Type, mscorlib],[System.Object, mscorlib]], mscorlib\",\"TestProject.Application.InvoiceModel, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\":{\"$type\":\"System.Collections.Generic.List`1[[TestProject.Application.InvoiceModel, TestProject]], mscorlib\",\"$values\":[{\"$type\":\"TestProject.Application.InvoiceModel, TestProject\",\"InvoiceId\":\"428f73d9-01d8-4a49-a197-698c6e0a0860\",\"IsProcessed\":true,\"<InvoiceId>k__BackingField\":\"428f73d9-01d8-4a49-a197-698c6e0a0860\",\"<IsProcessed>k__BackingField\":true}]}}}");
+            var mock_INotificationService = new Mock<INotificationService>();
+            mock_INotificationService.Setup(x => x.SendPushNotification(It.IsAny<PushNotificationSendModel>()));
 
-            var testResult = instance.GetTypeRepository<InvoiceModel>();
+            instance = (Application)SetPropertyOnType(typeof(Application), instance, typeof(INotificationService), mock_INotificationService.Object);
 
-
-            var expectedReturnVal = (List<InvoiceModel>)DeserializeObject(typeof(List<InvoiceModel>), "[{\"InvoiceId\":\"428f73d9-01d8-4a49-a197-698c6e0a0860\",\"IsProcessed\":true}]");
-            var equalityResult = Compare(testResult, expectedReturnVal);
-            Assert.IsTrue(equalityResult.AreEqual,
-                        "Repository_GetTypeRepository_152377277 failed testing equality with the message: " + equalityResult.DifferencesString);
-        }
-        [TestMethod]
-        public void Application_SendInvoice_152377277()
-        {
-            var instance = (Application)DeserializeObject(typeof(Application), "{\"$type\":\"TestProject.Application.Application, TestProject\",\"_notificationService\":{\"$type\":\"DynamicModule.ns.Wrapped_INotificationService_26de3825049d40b28ab378556471b98f, Unity_ILEmit_InterfaceProxies\",\"pipeline\":{\"$type\":\"Microsoft.Practices.Unity.InterceptionExtension.InterceptionBehaviorPipeline, Microsoft.Practices.Unity.Interception\",\"Count\":1,\"interceptionBehaviors\":{\"$type\":\"System.Collections.Generic.List`1[[Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior, Microsoft.Practices.Unity.Interception]], mscorlib\",\"$values\":[{\"$type\":\"AutoTest4Unity.AutoTestBehavior, AutoTest4Unity\",\"Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior.WillExecute\":true}]}},\"target\":{\"$type\":\"TestProject.NotificationService.NotificationService, TestProject\",\"NotificationRecieved\":null},\"typeToProxy\":\"TestProject.NotificationService.INotificationService, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\"},\"_dal\":{\"$type\":\"DynamicModule.ns.Wrapped_IDAL_75deb2bb0ee5414098760f33bd83d092, Unity_ILEmit_InterfaceProxies\",\"pipeline\":{\"$type\":\"Microsoft.Practices.Unity.InterceptionExtension.InterceptionBehaviorPipeline, Microsoft.Practices.Unity.Interception\",\"Count\":1,\"interceptionBehaviors\":{\"$type\":\"System.Collections.Generic.List`1[[Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior, Microsoft.Practices.Unity.Interception]], mscorlib\",\"$values\":[{\"$type\":\"AutoTest4Unity.AutoTestBehavior, AutoTest4Unity\",\"Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior.WillExecute\":true}]}},\"target\":{\"$type\":\"TestProject.DAL.DAL, TestProject\",\"_repository\":{\"$type\":\"DynamicModule.ns.Wrapped_IRepository_87d976b40bfa4fefa67f02900a44f156, Unity_ILEmit_InterfaceProxies\",\"pipeline\":{\"$type\":\"Microsoft.Practices.Unity.InterceptionExtension.InterceptionBehaviorPipeline, Microsoft.Practices.Unity.Interception\",\"Count\":1,\"interceptionBehaviors\":{\"$type\":\"System.Collections.Generic.List`1[[Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior, Microsoft.Practices.Unity.Interception]], mscorlib\",\"$values\":[{\"$type\":\"AutoTest4Unity.AutoTestBehavior, AutoTest4Unity\",\"Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior.WillExecute\":true}]}},\"target\":{\"$type\":\"TestProject.DAL.Repository, TestProject\",\"_dict\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Type, mscorlib],[System.Object, mscorlib]], mscorlib\"}},\"typeToProxy\":\"TestProject.DAL.IRepository, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\"}},\"typeToProxy\":\"TestProject.DAL.IDAL, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\"}}");
-
-            InvoiceModel arg_InvoiceModel_0 = (InvoiceModel)DeserializeObject(typeof(InvoiceModel), "{\"InvoiceId\":\"e1d24a97-864b-4b31-a887-1bc65fbf41cd\",\"IsProcessed\":true}");
+            InvoiceModel arg_InvoiceModel_0 = (InvoiceModel)DeserializeObject(typeof(InvoiceModel), "{\"InvoiceId\":\"e0c23413-4a2b-4059-aea4-a36cd1fd5efb\",\"IsProcessed\":true}");
             var testResult = instance.SendInvoice(arg_InvoiceModel_0);
 
-            var expectedReturnVal = (InvoiceModel)DeserializeObject(typeof(InvoiceModel), "{\"InvoiceId\":\"e1d24a97-864b-4b31-a887-1bc65fbf41cd\",\"IsProcessed\":true}");
+            var expectedReturnVal = (InvoiceModel)DeserializeObject(typeof(InvoiceModel), "{\"InvoiceId\":\"e0c23413-4a2b-4059-aea4-a36cd1fd5efb\",\"IsProcessed\":true}");
             var equalityResult = Compare(testResult, expectedReturnVal);
             Assert.IsTrue(equalityResult.AreEqual,
-                        "Application_SendInvoice_1516881835 failed testing equality with the message: " + equalityResult.DifferencesString);
+                        "Application_SendInvoice_1518612540 failed testing equality with the message: " + equalityResult.DifferencesString);
         }
 
         private ComparisonResult Compare(object obj1, object obj2)
@@ -89,12 +73,37 @@ namespace TestProjectTest
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                            .Select(p => base.CreateProperty(p, memberSerialization))
+                            .Select(p => CreateProperty(p, memberSerialization))
                         .Union(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                                   .Select(f => base.CreateProperty(f, memberSerialization)))
+                                   .Select(f => CreateProperty(f, memberSerialization)))
                         .ToList();
             props.ForEach(p => { p.Writable = true; p.Readable = true; });
             return props;
+        }
+
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            JsonProperty property = base.CreateProperty(member, memberSerialization);
+
+            property.ShouldSerialize = instance =>
+            {
+                try
+                {
+                    PropertyInfo prop = (PropertyInfo)member;
+                    if (prop.CanRead)
+                    {
+                        prop.GetValue(instance, null);
+                        return true;
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+                return false;
+            };
+
+            return property;
         }
     }
 }

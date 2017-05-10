@@ -49,7 +49,8 @@ namespace AutoTestEngine.Helpers.Serialization
                 return new JsonSerializerSettings()
                 {
                     ContractResolver = new MyContractResolver(),
-                    TypeNameHandling = TypeNameHandling.All
+                    TypeNameHandling = TypeNameHandling.All,
+                    NullValueHandling = NullValueHandling.Ignore
                 };
             }
         }
@@ -60,12 +61,33 @@ namespace AutoTestEngine.Helpers.Serialization
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                            .Select(p => base.CreateProperty(p, memberSerialization))
+                            .Select(p => CreateProperty(p, memberSerialization))
                         .Union(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                                   .Select(f => base.CreateProperty(f, memberSerialization)))
+                                   .Select(f => CreateProperty(f, memberSerialization)))
                         .ToList();
             props.ForEach(p => { p.Writable = true; p.Readable = true; });
             return props;
         }
+
+        protected override JsonProperty CreateProperty(MemberInfo member,
+                                 MemberSerialization memberSerialization)
+        {
+            JsonProperty property = base.CreateProperty(member, memberSerialization);
+            property.ShouldSerialize = instance =>
+            {
+                if (instance != null && instance.GetType().FullName.Contains("DynamicModule.ns.Wrapped"))
+                {
+                    return false;
+                }
+
+                return true;
+            };
+
+            
+
+            return property;
+        }
+
+
     }
 }

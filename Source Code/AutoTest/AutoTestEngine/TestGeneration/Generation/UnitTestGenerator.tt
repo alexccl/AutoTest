@@ -47,7 +47,7 @@ using KellermanSoftware.CompareNetObjects;
 						
 							.Throws((<#=retVal.ExceptionType.GetFriendlyName()#>)DeserializeObject(typeof(<#=retVal.ExceptionType.GetFriendlyName()#>), "<#=retVal.SerializedException.Replace("\"", "\\\"")#>"))<#
 					}
-					else{#>
+					else if(retVal.ReturnVal != null){#>
 						
 							.Returns((<#=retVal.ReturnVal.GetType().GetFriendlyName()#>)DeserializeObject(typeof(<#=retVal.ReturnVal.GetType().GetFriendlyName()#>), "<#=retVal.SerializedValue.Replace("\"", "\\\"")#>"))<#
 					}
