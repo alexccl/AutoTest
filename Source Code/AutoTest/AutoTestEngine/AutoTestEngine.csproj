@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AutoTest.cs" />
+    <Compile Include="Attributes\Dependency.cs" />
     <Compile Include="AutoTestEngineException.cs" />
     <Compile Include="Bindings.cs" />
     <Compile Include="BoundaryType.cs" />

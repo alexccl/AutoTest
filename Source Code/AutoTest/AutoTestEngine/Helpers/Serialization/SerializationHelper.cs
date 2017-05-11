@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
+using System.Runtime.Serialization;
+using AutoTestEngine.Attributes;
 
 namespace AutoTestEngine.Helpers.Serialization
 {
@@ -61,9 +63,11 @@ namespace AutoTestEngine.Helpers.Serialization
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                            .Where(x => !x.CustomAttributes.Any(z => z.AttributeType == typeof(Dependency)))
                             .Select(p => CreateProperty(p, memberSerialization))
                         .Union(type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                                   .Select(f => CreateProperty(f, memberSerialization)))
+                            .Where(x => !x.CustomAttributes.Any(z => z.AttributeType == typeof(Dependency)))
+                            .Select(f => CreateProperty(f, memberSerialization)))
                         .ToList();
             props.ForEach(p => { p.Writable = true; p.Readable = true; });
             return props;
@@ -73,21 +77,22 @@ namespace AutoTestEngine.Helpers.Serialization
                                  MemberSerialization memberSerialization)
         {
             JsonProperty property = base.CreateProperty(member, memberSerialization);
-            property.ShouldSerialize = instance =>
-            {
-                if (instance != null && instance.GetType().FullName.Contains("DynamicModule.ns.Wrapped"))
-                {
-                    return false;
-                }
-
-                return true;
-            };
+            //property.ShouldSerialize = instance =>
+            //{
+            //    if (instance != null && instance.GetType().FullName.Contains("DynamicModule.ns.Wrapped"))
+            //    {
+            //        property.Ignored = true;
+            //        property.ShouldSerialize = i => false;
+            //        return false;
+            //    }
+            //
+            //    return true;
+            //};
+            
 
             
             //t
             return property;
         }
-
-
     }
 }

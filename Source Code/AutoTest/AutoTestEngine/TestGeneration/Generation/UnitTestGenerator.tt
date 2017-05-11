@@ -124,19 +124,28 @@ using KellermanSoftware.CompareNetObjects;
 	        return compareLogic.Compare(obj1, obj2);
 		}
 	
-		private object SetPropertyOnType(Type classType, object classInstance, Type propertyType, object propertyInstance)
-		{
-			var props = classType.GetProperties();
-			foreach(var prop in props)
-			{
-				if(prop.PropertyType != propertyType) continue;
-	
-				prop.SetValue(classInstance, propertyInstance);
-				return classInstance;
-			}
-	
-			throw new Exception("Could not find type: " + propertyType.Name + " on type: " + classType.Name);
-		}
+        private object SetPropertyOnType(Type classType, object classInstance, Type propertyType, object propertyInstance)
+        {
+            var props = classType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            foreach (var prop in props)
+            {
+                if (prop.PropertyType != propertyType) continue;
+
+                prop.SetValue(classInstance, propertyInstance);
+                return classInstance;
+            }
+
+            var fields = classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            foreach(var field in fields)
+            {
+                if (field.FieldType != propertyType) continue;
+
+                field.SetValue(classInstance, propertyInstance);
+                return classInstance;
+            }
+
+            throw new Exception("Could not find type: " + propertyType.Name + " on type: " + classType.Name);
+        }
 		
 		private object DeserializeObject(Type t, string obj)
 		{

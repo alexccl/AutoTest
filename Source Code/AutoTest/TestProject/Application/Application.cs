@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoTestEngine.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,8 +12,10 @@ namespace TestProject.Application
 {
     public class Application : IApplication
     {
-
+        [Dependency]
         private INotificationService _notificationService;
+
+        [Dependency]
         private IDAL _dal;
         //public Func<int, bool> ex;
 
@@ -20,7 +23,6 @@ namespace TestProject.Application
         {
             _notificationService = notificationService;
             _dal = dal;
-           // ex = (x => x < 2);
         }
 
         public InvoiceModel SendInvoice(InvoiceModel invoice)

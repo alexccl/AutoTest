@@ -91,6 +91,10 @@
       <Project>{7434b808-0903-40a8-9aa4-5c51e0befb2e}</Project>
       <Name>AutoTest4Unity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AutoTestEngine\AutoTestEngine.csproj">
+      <Project>{ACCCC4EB-79D1-4390-A2E2-0DE5341E2A57}</Project>
+      <Name>AutoTestEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

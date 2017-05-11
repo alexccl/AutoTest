@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoTestEngine.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,6 +10,7 @@ namespace TestProject.DAL
 {
     public class DAL : IDAL
     {
+        [Dependency]
         private IRepository _repository;
         public DAL(IRepository repository)
         {

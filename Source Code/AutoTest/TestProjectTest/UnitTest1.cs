@@ -20,25 +20,15 @@ namespace TestProjectTest
 		[TestMethod]
 		public void Application_SendInvoice_1279637324()
 		{
-            var instance = (Application)DeserializeObject(typeof(Application), "{\"$type\":\"TestProject.Application.Application, TestProject\",\"_notificationService\":{\"$type\":\"DynamicModule.ns.Wrapped_INotificationService_c5a385e02e894e8d9297cf8459973ad7, Unity_ILEmit_InterfaceProxies\"},\"_dal\":{\"$type\":\"DynamicModule.ns.Wrapped_IDAL_962102704dd7474a95d9cb6ace699ea2, Unity_ILEmit_InterfaceProxies\"}}");
+            var instance = (Repository)DeserializeObject(typeof(Repository), "{\"$type\":\"TestProject.DAL.Repository, TestProject\",\"_dict\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Type, mscorlib],[System.Object, mscorlib]], mscorlib\",\"TestProject.Application.InvoiceModel, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\":{\"$type\":\"System.Collections.Generic.List`1[[TestProject.Application.InvoiceModel, TestProject]], mscorlib\",\"$values\":[{\"$type\":\"TestProject.Application.InvoiceModel, TestProject\",\"InvoiceId\":\"f9832d9d-1b1f-4ac5-b3ab-f1b6bdd4c661\",\"IsProcessed\":true,\"<InvoiceId>k__BackingField\":\"f9832d9d-1b1f-4ac5-b3ab-f1b6bdd4c661\",\"<IsProcessed>k__BackingField\":true}]}}}");
 
-            var mock_IDAL = new Mock<IDAL>();
-            mock_IDAL.Setup(x => x.Create<InvoiceModel>(It.IsAny<InvoiceModel>()));
+            var testResult = instance.GetTypeRepository<InvoiceModel>();
 
-            instance = (Application)SetPropertyOnType(typeof(Application), instance, typeof(IDAL), mock_IDAL.Object);
 
-            var mock_INotificationService = new Mock<INotificationService>();
-            mock_INotificationService.Setup(x => x.SendPushNotification(It.IsAny<PushNotificationSendModel>()));
-
-            instance = (Application)SetPropertyOnType(typeof(Application), instance, typeof(INotificationService), mock_INotificationService.Object);
-
-            InvoiceModel arg_InvoiceModel_0 = (InvoiceModel)DeserializeObject(typeof(InvoiceModel), "{\"InvoiceId\":\"e0c23413-4a2b-4059-aea4-a36cd1fd5efb\",\"IsProcessed\":true}");
-            var testResult = instance.SendInvoice(arg_InvoiceModel_0);
-
-            var expectedReturnVal = (InvoiceModel)DeserializeObject(typeof(InvoiceModel), "{\"InvoiceId\":\"e0c23413-4a2b-4059-aea4-a36cd1fd5efb\",\"IsProcessed\":true}");
+            var expectedReturnVal = (List<InvoiceModel>)DeserializeObject(typeof(List<InvoiceModel>), "[{\"InvoiceId\":\"f9832d9d-1b1f-4ac5-b3ab-f1b6bdd4c661\",\"IsProcessed\":true}]");
             var equalityResult = Compare(testResult, expectedReturnVal);
             Assert.IsTrue(equalityResult.AreEqual,
-                        "Application_SendInvoice_1518612540 failed testing equality with the message: " + equalityResult.DifferencesString);
+                        "Repository_GetTypeRepository_1115537187 failed testing equality with the message: " + equalityResult.DifferencesString);
         }
 
         private ComparisonResult Compare(object obj1, object obj2)
@@ -49,12 +39,21 @@ namespace TestProjectTest
 
         private object SetPropertyOnType(Type classType, object classInstance, Type propertyType, object propertyInstance)
         {
-            var props = classType.GetProperties();
+            var props = classType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var prop in props)
             {
                 if (prop.PropertyType != propertyType) continue;
 
                 prop.SetValue(classInstance, propertyInstance);
+                return classInstance;
+            }
+
+            var fields = classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            foreach(var field in fields)
+            {
+                if (field.FieldType != propertyType) continue;
+
+                field.SetValue(classInstance, propertyInstance);
                 return classInstance;
             }
 
