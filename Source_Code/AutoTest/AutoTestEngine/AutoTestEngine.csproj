@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ACCCC4EB-79D1-4390-A2E2-0DE5341E2A57}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutoTestEngine</RootNamespace>
+    <AssemblyName>AutoTestEngine</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.6.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompareNETObjects.3.06.0.0\lib\net452\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Projects\17.04\ASL\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Projects\17.04\ASL\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Projects\17.04\ASL\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Interception.4.0.1\lib\Net45\Microsoft.Practices.Unity.Interception.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Interception.4.0.1\lib\Net45\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Projects\17.04\ASL\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NClone, Version=1.1.0.0, Culture=neutral, PublicKeyToken=81c60607627cc572, processorArchitecture=MSIL">
+      <HintPath>..\packages\NClone.1.1.1\lib\net45\NClone.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Newtonsoft.Json\Src\Newtonsoft.Json\bin\Debug\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\AutoTest.cs" />
+    <Compile Include="Attributes\Dependency.cs" />
+    <Compile Include="AutoTestEngineException.cs" />
+    <Compile Include="Bindings.cs" />
+    <Compile Include="BoundaryType.cs" />
+    <Compile Include="DAL\Helpers\IRecordedMethodHelper.cs" />
+    <Compile Include="DAL\Helpers\IUnserializableTypeHelper.cs" />
+    <Compile Include="DAL\Helpers\RecordedMethodHelper.cs" />
+    <Compile Include="DAL\Helpers\UnserializableTypeHelper.cs" />
+    <Compile Include="DAL\IDAL.cs" />
+    <Compile Include="DAL\Models\RecordedMethod.cs" />
+    <Compile Include="DAL\Models\UnserializableType.cs" />
+    <Compile Include="DAL\TexFileImplementation\IRepository.cs" />
+    <Compile Include="DAL\TexFileImplementation\Repository.cs" />
+    <Compile Include="DAL\TexFileImplementation\TextFileDAL.cs" />
+    <Compile Include="Engine.cs" />
+    <Compile Include="EngineConfiguration.cs" />
+    <Compile Include="EngineImplementation.cs" />
+    <Compile Include="EntryProcessingResult.cs" />
+    <Compile Include="Helpers\Serialization\CloneExtensions.cs" />
+    <Compile Include="Helpers\Serialization\ExtensionMethods.cs" />
+    <Compile Include="Helpers\Serialization\ISerializationHelper.cs" />
+    <Compile Include="Helpers\Serialization\SerializationHelper.cs" />
+    <Compile Include="Helpers\Serialization\SerializationResult.cs" />
+    <Compile Include="Helpers\Serialization\SerializedValue.cs" />
+    <Compile Include="IEngine.cs" />
+    <Compile Include="IEngineImplementation.cs" />
+    <Compile Include="InterceptionEntryModel.cs" />
+    <Compile Include="InterceptionExceptionModel.cs" />
+    <Compile Include="InterceptionExitModel.cs" />
+    <Compile Include="InterceptionVerification\Failures.cs" />
+    <Compile Include="InterceptionVerification\IVerificationPipeline.cs" />
+    <Compile Include="InterceptionVerification\VerificationPipeline.cs" />
+    <Compile Include="InterceptionVerification\VerificationPipelineResult.cs" />
+    <Compile Include="InterceptionProcessingData.cs" />
+    <Compile Include="InterceptionVerification\Verifiers\InputParameterVerifier.cs" />
+    <Compile Include="InterceptionVerification\Verifiers\InstanceSerializationVerifier.cs" />
+    <Compile Include="InterceptionVerification\Verifiers\IVerifier.cs" />
+    <Compile Include="InterceptionVerification\VerificationResults\TypeSerializationFailure.cs" />
+    <Compile Include="InterceptionVerification\VerificationResults\VerificationFailure.cs" />
+    <Compile Include="InterceptionVerification\Verifiers\ReturnValVerifier.cs" />
+    <Compile Include="ProcessMultiplexer\IProcessMultiplexer.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionCache.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStack.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ExecutionStackEmptyException.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IExecutionCache.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IExecutionStack.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\IThreadIdProvider.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionCache\ThreadIdProvider.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\ExecutionRecorderProcess.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\IRecordingMethodManager.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\MethodMetaData.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedMethod.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordingMethodManager.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\RecordedSubMethod.cs" />
+    <Compile Include="TestGeneration\DependencyData.cs" />
+    <Compile Include="TestGeneration\DependencyMethodData.cs" />
+    <Compile Include="TestGeneration\Generation\UnitTestGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnitTestGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestGeneration\MethodCallReturnData.cs" />
+    <Compile Include="TestGeneration\SerializedArg.cs" />
+    <Compile Include="TestGeneration\SingleTest.cs" />
+    <Compile Include="TestGeneration\TestData.cs" />
+    <Compile Include="TestGeneration\TestGenerationData.cs" />
+    <Compile Include="TestGeneration\UnitTestGenerator.cs" />
+    <Compile Include="ProcessMultiplexer\Processes\ExecutionRecorder\IProcess.cs" />
+    <Compile Include="ProcessMultiplexer\ProcessMultiplexer.cs" />
+    <Compile Include="ProcessMultiplexer\ProcessResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AppReadme\Compare-NET-Objects-Help.chm" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DAL\TexFileImplementation\Storage.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestGeneration\Generation\UnitTestGenerator.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>UnitTestGenerator.cs</LastGenOutput>
+    </Content>
+    <Content Include="Unity.Wcf.README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
