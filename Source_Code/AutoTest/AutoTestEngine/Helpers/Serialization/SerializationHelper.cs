@@ -35,7 +35,6 @@ namespace AutoTestEngine.Helpers.Serialization
 
         public T Deserialize<T>(string serializedObject)
         {
-            var x = typeof(T);
             return (T)JsonConvert.DeserializeObject(serializedObject, this.Settings);
         }
 

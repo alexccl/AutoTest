@@ -76,7 +76,6 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
                     ProcessExit(processingData, methods, executingMethodId, threadId);
                     break;
             }
-            var x = Repository.StoredObject;
         }
 
         private void ProcessEntry(InterceptionProcessingData data, List<RecordingMethod> methods, Guid executingMethodId, int threadId)
@@ -135,7 +134,6 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
                 {
                     executingMethod.CloseOutMethodWithReturnVal(data.ReturnValue);
                     OnMethodRecordingComplete(new MethodRecordingCompleteEventArgs(executingMethod));
-                    var x = Repository.StoredObject;
                     ClearMethod(executingMethodId, threadId);
                 }
                 else

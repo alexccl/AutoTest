@@ -33,7 +33,6 @@ namespace AutoTestEngine.ProcessMultiplexer
                     return process.ExecuteProcess(processingData);
                 }
             }
-            var x = Repository.StoredObject;
             return new ProcessResult();
         }
     }

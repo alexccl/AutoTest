@@ -62,7 +62,6 @@ namespace AutoTestEngine
         {
             var procData = new InterceptionProcessingData(exitModel, _configuration);
             _engineImp.RunEngine(procData);
-            var x = Repository.StoredObject;
         }
 
         /// <summary>

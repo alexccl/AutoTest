@@ -35,7 +35,6 @@ namespace AutoTestEngine.DAL.Helpers
 
             _dal.Create<RecordedMethod>(CloneRecordedMethod(method));
             _dal.CommitChanges();
-            var x = Repository.StoredObject;
         }
 
         public List<RecordedMethod> GetAllRecordedMethods()

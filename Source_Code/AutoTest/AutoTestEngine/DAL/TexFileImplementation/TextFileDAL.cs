@@ -25,7 +25,6 @@ namespace AutoTestEngine.DAL.TexFileImplementation
             var rep = _repository.GetTypeRepostiory<T>();
             rep.Add(entity);
             _repository.SetTypeRepository<T>(rep);
-            var x = Repository.StoredObject;
         }
 
         public List<T> Fetch<T>(Func<T, bool> predicate) where T : class

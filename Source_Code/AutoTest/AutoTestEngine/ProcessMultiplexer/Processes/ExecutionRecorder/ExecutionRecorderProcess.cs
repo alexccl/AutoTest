@@ -43,8 +43,6 @@ namespace AutoTestEngine.ProcessMultiplexer.Processes.ExecutionRecorder
         {
             _methodManager.ProcessCapture(processingData);
             return new ProcessResult();
-
-            var x = Repository.StoredObject;
         }
 
         public bool ShouldExecuteProcess(InterceptionProcessingData processingData)

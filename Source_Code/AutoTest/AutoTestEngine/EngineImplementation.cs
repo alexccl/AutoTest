@@ -25,7 +25,6 @@ namespace AutoTestEngine
             processingData.AddVerificationFailures(verifierResult.Failures);
 
             var res = _processMultiplexor.Process(processingData);
-            var x = DAL.TexFileImplementation.Repository.StoredObject;
             return res;
         }
     }

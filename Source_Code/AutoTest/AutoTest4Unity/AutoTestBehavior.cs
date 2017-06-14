@@ -55,7 +55,6 @@ namespace AutoTest4Unity
             else
             {
                 var exitModel = new InterceptionExitModel(targetVal, result.ReturnValue, input.MethodBase);
-                var x = Repository.StoredObject;
                 engine.OnExit(exitModel);
             }
             ProcessContextExit();
